@@ -103,7 +103,21 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .bar { height: 10px; border-radius: 999px; background: rgba(30,22,51,.22); overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; transition: width .3s ease; }
 
-.table { flex: 1; min-height: 0; position: relative; margin: 6px 6px 12px; }
+.table { flex: 1; min-height: 0; position: relative; margin: 6px 6px 18px; }
+.sheet-wrap.center { align-items: center; padding: 16px; }
+.pop { width: 100%; max-width: 360px; background: var(--card); color: var(--ink); border: 3px solid var(--ink); border-radius: 28px; box-shadow: 0 8px 0 rgba(0,0,0,.45);
+  padding: 22px; display: grid; gap: 12px; text-align: center; animation: up .22s ease-out; }
+.pop h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.7rem; margin: 0; }
+.pop p { margin: 0; font-weight: 700; line-height: 1.45; color: var(--muted-ink); }
+.pop p b { color: var(--ink); }
+.demo { position: relative; height: 130px; width: 100px; justify-self: center; margin: 4px 0 6px; }
+.demo-back, .demo-card { position: absolute; inset: 0; border: 3px solid var(--ink); border-radius: 16px; background: var(--soft); }
+.demo-back { transform: rotate(4deg); }
+.demo-card { background: #FF6FAE; box-shadow: 0 5px 0 var(--ink); display: grid; align-content: center; gap: 8px; padding: 0 16px; animation: swipe 1.8s ease-in-out infinite; }
+.demo-card span { height: 8px; border-radius: 4px; background: var(--ink); opacity: .85; }
+.demo-card span:last-child { width: 60%; }
+@keyframes swipe { 0%, 15% { transform: none; opacity: 1; } 55% { transform: translateX(-90px) rotate(-16deg); opacity: 0; } 56% { transform: none; opacity: 0; } 80%, 100% { transform: none; opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .demo-card { animation: none; } .pop { animation: none; } }
 .ghost-card { position: absolute; inset: 0; background: var(--card); border: 3px solid var(--ink); border-radius: 28px; }
 .ghost-card.g1 { transform: rotate(3.5deg) translate(6px, 4px); opacity: .55; }
 .ghost-card.g2 { transform: rotate(-2.5deg) translate(-4px, 6px); opacity: .8; }
@@ -162,12 +176,16 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
     </div>
     <div class="bar"><i id="barfill"></i></div>
     <div class="table" id="table"></div>
-    <div class="controls" id="controls">
-      <button class="round" id="prev" type="button" aria-label="Carta anterior"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
-      <button class="next" id="next" type="button">Siguiente</button>
-    </div>
-    <p class="swipehint" id="hint">o desliza la carta</p>
   </section>
+</div>
+
+<div class="sheet-wrap center" id="swipePop" hidden>
+  <div class="pop" role="dialog" aria-labelledby="swipeTitle">
+    <div class="demo" aria-hidden="true"><div class="demo-back"></div><div class="demo-card"><span></span><span></span><span></span></div></div>
+    <h2 id="swipeTitle">Desliza las cartas</h2>
+    <p>Arrastra la carta hacia la <b>izquierda</b> para pasar a la siguiente. Si la arrastras hacia la <b>derecha</b>, vuelves a la anterior.</p>
+    <button class="play" id="swipeOk" type="button">¡A jugar!</button>
+  </div>
 </div>
 
 <div class="sheet-wrap" id="infoSheet" hidden>
@@ -608,6 +626,7 @@ function startMode(mode, level) {
   if (state.idx > state.deck.length) state.idx = 0;
   $("home").hidden = true; $("game").hidden = false;
   render("deal");
+  if (!store.get("sm.swipeSeen", false)) $("swipePop").hidden = false;
 }
 function goHome() {
   $("game").hidden = true; $("home").hidden = false;
@@ -655,8 +674,6 @@ function render(anim) {
   table.innerHTML = `<div class="ghost-card g1"></div><div class="ghost-card g2"></div>` + (done
     ? `<div class="card"><div class="end"><h2>¡Mazo terminado!</h2><p class="how">Habéis pasado las ${total} cartas.</p><button class="next" style="padding:14px 22px" type="button" id="reshuffle">Barajar otra vez</button></div></div>`
     : `<div class="card${anim === "deal" ? " deal" : ""}">${cardHTML(c)}</div>`);
-  $("controls").hidden = done; $("hint").hidden = done;
-  $("prev").disabled = state.idx === 0;
   if (done) $("reshuffle").onclick = () => { state.round++; state.idx = 0; state.deck = buildDeck(state.mode, state.level, state.round); save(); render("deal"); };
   else bindDrag(table.querySelector(".card"));
   save();
@@ -734,9 +751,9 @@ $("lvls").addEventListener("click", e => {
 $("cancelSheet").onclick = () => { $("sheet").hidden = true; };
 $("sheet").addEventListener("click", e => { if (e.target.id === "sheet") $("sheet").hidden = true; });
 $("back").onclick = goHome;
-$("next").onclick = () => throwCard(1);
-$("prev").onclick = () => throwCard(-1);
+$("swipeOk").onclick = () => { $("swipePop").hidden = true; store.set("sm.swipeSeen", true); };
 document.addEventListener("keydown", e => {
+  if (!$("swipePop").hidden) { if (e.key === "Escape" || e.key === "Enter") $("swipeOk").click(); return; }
   if (!$("infoSheet").hidden) { if (e.key === "Escape") $("infoSheet").hidden = true; return; }
   if (!$("sheet").hidden && e.key === "Escape") { $("sheet").hidden = true; return; }
   if ($("game").hidden) return;
