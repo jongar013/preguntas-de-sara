@@ -1,0 +1,749 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1E1633">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<link rel="manifest" href="manifest.webmanifest">
+<title>Preguntas de Sara</title>
+<meta name="apple-mobile-web-app-title" content="Preguntas de Sara">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lilita+One&family=Nunito:wght@600;700;800;900&display=swap">
+<style>
+/* Layout: a game table. Home = a shelf of chunky colour decks; play = one physical card on the deck's colour, thrown away with a swipe. Single dark look by choice. */
+:root {
+  --table: #1E1633;
+  --table-2: #2A2047;
+  --ink: #1E1633;
+  --card: #FFFFFF;
+  --muted-ink: #5E5574;
+  --soft: #F1EEF8;
+  --font-display: "Lilita One", "Arial Rounded MT Bold", "Trebuchet MS", sans-serif;
+  --font-body: "Nunito", "Segoe UI", system-ui, sans-serif;
+  color-scheme: dark;
+}
+[hidden] { display: none !important; }
+html, body { height: 100%; }
+body { background: var(--table); color: #fff; font-family: var(--font-body); font-size: 16px; transition: background-color .35s ease; overflow: hidden; }
+* { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
+button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
+
+.app { height: 100%; max-width: 540px; margin: 0 auto; display: flex; flex-direction: column;
+  padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 14px; }
+
+/* ---------- Home ---------- */
+#home { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 22px; padding-bottom: 18px; scrollbar-width: none; }
+.logo { padding-top: 10px; }
+.logo h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.6rem, 12.5vw, 3.8rem); line-height: .95; margin: 0;
+  color: #FFD84A; text-shadow: 4px 4px 0 #FF5A8A; transform: rotate(-3deg); transform-origin: left center; display: inline-block; letter-spacing: .01em; }
+.logo p { margin: 14px 0 0; color: #CFC6E6; font-weight: 700; font-size: 1.02rem; line-height: 1.4; max-width: 30ch; }
+
+.shelf-title { font-family: var(--font-display); font-size: 1.35rem; margin: 0 0 -8px; color: #fff; font-weight: 400; }
+.decks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.deck { position: relative; text-align: left; border-radius: 22px; padding: 14px 14px 16px; min-height: 138px;
+  background: var(--c); color: var(--fg); display: flex; flex-direction: column; gap: 8px;
+  box-shadow: 0 6px 0 rgba(0,0,0,.38); transition: transform .08s ease, box-shadow .08s ease; }
+.deck:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.38); }
+.deck .badge { width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,.28); display: grid; place-items: center; }
+.deck .name { font-family: var(--font-display); font-size: 1.18rem; line-height: 1.08; margin-top: auto; }
+.deck .count { font-size: .82rem; font-weight: 800; opacity: .78; }
+.deck-wrap { position: relative; display: flex; }
+.deck-wrap.wide { grid-column: 1 / -1; }
+.deck { width: 100%; }
+.info { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border-radius: 50%; background: var(--card); color: var(--ink);
+  border: 2.5px solid var(--ink); font-family: var(--font-display); font-size: 1.15rem; line-height: 1; display: grid; place-items: center; box-shadow: 0 3px 0 var(--ink); }
+.info:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.topbar .info { position: static; width: 40px; height: 40px; }
+.rules { font-weight: 700; font-size: 1.05rem; line-height: 1.5; margin: 0 0 6px; color: var(--ink); }
+.sheet .head { display: flex; align-items: center; gap: 12px; }
+.sheet .head .badge { width: 46px; height: 46px; border-radius: 14px; background: var(--c); color: var(--fg); border: 2.5px solid var(--ink); display: grid; place-items: center; flex: none; }
+.sheet .head h2 { margin: 0; line-height: 1.05; }
+.play { background: var(--ink); color: #fff; border-radius: 18px; padding: 14px; font-family: var(--font-display); font-size: 1.3rem; box-shadow: 0 5px 0 rgba(0,0,0,.35); }
+.play:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.35); }
+.deck.wide { min-height: 0; flex-direction: row; align-items: center; gap: 14px;
+  background: repeating-linear-gradient(-55deg, #FF6FAE 0 22px, #FFD84A 22px 44px, #1FC7AE 44px 66px, #6C5CFF 66px 88px, #FF5A36 88px 110px); }
+.deck.wide .label { background: var(--card); color: var(--ink); border-radius: 16px; padding: 10px 14px; display: flex; flex-direction: column; gap: 2px; }
+.deck.wide .badge { background: var(--card); color: var(--ink); flex: none; }
+.deck.wide .name { margin: 0; }
+
+/* Level sheet */
+.sheet-wrap { position: fixed; inset: 0; background: rgba(10,6,20,.6); display: flex; align-items: flex-end; justify-content: center; z-index: 20; }
+.sheet { width: 100%; max-width: 540px; background: var(--card); color: var(--ink); border-radius: 28px 28px 0 0;
+  padding: 22px max(18px, env(safe-area-inset-left, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-right, 0px));
+  display: grid; gap: 10px; animation: up .22s ease-out; }
+@keyframes up { from { transform: translateY(40px); opacity: 0; } }
+.sheet h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; margin: 0 0 4px; }
+.lvl { text-align: left; border: 3px solid var(--ink); border-radius: 18px; padding: 12px 14px; display: grid; gap: 2px; box-shadow: 0 4px 0 var(--ink); background: var(--card); }
+.lvl:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.lvl b { font-family: var(--font-display); font-weight: 400; font-size: 1.15rem; }
+.lvl span { font-weight: 700; font-size: .88rem; color: var(--muted-ink); }
+.lvl.rec { background: #E7E3FF; }
+.cancel { font-weight: 800; padding: 10px; color: var(--muted-ink); }
+
+/* ---------- Game ---------- */
+#game { flex: 1; min-height: 0; display: flex; flex-direction: column; gap: 14px; color: var(--fg, #fff); }
+.bg-dots { position: fixed; inset: 0; pointer-events: none; background-image: radial-gradient(rgba(0,0,0,.10) 1.6px, transparent 1.7px); background-size: 20px 20px; z-index: -1; }
+.topbar { display: grid; grid-template-columns: 48px 1fr auto auto; align-items: center; gap: 12px; }
+.round { width: 48px; height: 48px; border-radius: 50%; background: var(--card); color: var(--ink); display: grid; place-items: center; border: 3px solid var(--ink); box-shadow: 0 4px 0 var(--ink); }
+.round:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.round:disabled { opacity: .45; cursor: default; transform: none; }
+.round svg.i { width: 22px; height: 22px; stroke-width: 3; }
+.gtitle { font-family: var(--font-display); font-size: 1.25rem; line-height: 1.05; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.pill { background: var(--ink); color: #fff; border-radius: 999px; padding: 7px 12px; font-weight: 900; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.bar { height: 10px; border-radius: 999px; background: rgba(30,22,51,.22); overflow: hidden; }
+.bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; transition: width .3s ease; }
+
+.table { flex: 1; min-height: 0; position: relative; margin: 6px 6px 12px; }
+.ghost-card { position: absolute; inset: 0; background: var(--card); border: 3px solid var(--ink); border-radius: 28px; }
+.ghost-card.g1 { transform: rotate(3.5deg) translate(6px, 4px); opacity: .55; }
+.ghost-card.g2 { transform: rotate(-2.5deg) translate(-4px, 6px); opacity: .8; }
+.card { position: absolute; inset: 0; background: var(--card); color: var(--ink); border: 3px solid var(--ink); border-radius: 28px;
+  box-shadow: 0 9px 0 var(--ink); padding: 22px 22px 20px; display: flex; flex-direction: column; gap: 16px; overflow-y: auto;
+  touch-action: pan-y; user-select: none; cursor: grab; will-change: transform; }
+.card.deal { animation: deal .3s cubic-bezier(.2,.9,.3,1.3); }
+@keyframes deal { from { transform: translateY(26px) scale(.94) rotate(-2deg); } }
+.card.fly { transition: transform .28s ease-in, opacity .28s ease-in; }
+.tag { align-self: flex-start; display: inline-flex; align-items: center; gap: 7px; background: var(--c); color: var(--fg); border: 2.5px solid var(--ink);
+  border-radius: 999px; padding: 5px 12px 5px 8px; font-weight: 900; font-size: .9rem; }
+.tag svg.i { width: 18px; height: 18px; stroke-width: 2.8; }
+.q { font-weight: 900; font-size: clamp(1.55rem, 6.6vw, 2.15rem); line-height: 1.18; margin: auto 0; text-wrap: balance; letter-spacing: -.01em; }
+.or { display: grid; gap: 12px; margin: auto 0; }
+.or .opt { font-weight: 900; font-size: clamp(1.35rem, 5.8vw, 1.85rem); line-height: 1.18; text-wrap: balance; background: var(--soft); border-radius: 16px; padding: 12px 14px; }
+.or .vs { justify-self: center; font-family: var(--font-display); font-size: 1.4rem; background: var(--c); color: var(--fg); border: 2.5px solid var(--ink); border-radius: 12px; padding: 2px 12px; transform: rotate(-4deg); }
+.how { font-weight: 700; font-size: .95rem; color: var(--muted-ink); line-height: 1.4; margin: 0; }
+.verdicts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
+.verdicts span { border: 2.5px solid var(--ink); border-radius: 12px; padding: 6px 10px; font-weight: 900; font-size: .9rem; color: var(--ink); background: var(--soft); }
+.verdicts span:first-child { background: var(--c); color: var(--fg); }
+
+.end { margin: auto 0; display: grid; gap: 16px; justify-items: start; }
+.end h2 { font-family: var(--font-display); font-weight: 400; font-size: 2.2rem; margin: 0; line-height: 1; }
+
+.controls { display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: stretch; }
+.controls .round { width: 64px; height: 64px; }
+.next { background: var(--ink); color: #fff; border-radius: 20px; font-family: var(--font-display); font-size: 1.45rem; letter-spacing: .01em;
+  box-shadow: 0 6px 0 rgba(0,0,0,.45); border: 3px solid var(--ink); }
+.next:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.45); }
+.swipehint { text-align: center; font-weight: 800; font-size: .82rem; opacity: .8; margin: -4px 0 0; }
+
+@media (prefers-reduced-motion: reduce) {
+  .card.deal { animation: none; } .card.fly { transition: none; } body { transition: none; } .sheet { animation: none; }
+}
+</style>
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0}</style>
+</head>
+<body>
+<div class="app">
+  <section id="home">
+    <header class="logo">
+      <h1>Preguntas de Sara</h1>
+    </header>
+    <h2 class="shelf-title">Modos de juego</h2>
+    <div class="decks" id="decks"></div>
+  </section>
+
+  <section id="game" hidden>
+    <div class="bg-dots"></div>
+    <div class="topbar">
+      <button class="round" id="back" type="button" aria-label="Volver a los mazos"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+      <div class="gtitle" id="gtitle"></div>
+      <div class="pill" id="count"></div>
+      <button class="info" id="gameInfo" type="button" aria-label="Cómo se juega">i</button>
+    </div>
+    <div class="bar"><i id="barfill"></i></div>
+    <div class="table" id="table"></div>
+    <div class="controls" id="controls">
+      <button class="round" id="prev" type="button" aria-label="Carta anterior"><svg class="i" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="next" id="next" type="button">Siguiente</button>
+    </div>
+    <p class="swipehint" id="hint">o desliza la carta</p>
+  </section>
+</div>
+
+<div class="sheet-wrap" id="infoSheet" hidden>
+  <div class="sheet" role="dialog" aria-labelledby="infoTitle" id="infoPanel">
+    <div class="head"><span class="badge" id="infoIcon"></span><h2 id="infoTitle"></h2></div>
+    <p class="rules" id="infoText"></p>
+    <button class="play" id="infoPlay" type="button">Jugar</button>
+    <button class="cancel" id="infoClose" type="button">Cerrar</button>
+  </div>
+</div>
+
+<div class="sheet-wrap" id="sheet" hidden>
+  <div class="sheet" role="dialog" aria-labelledby="sheetTitle">
+    <h2 id="sheetTitle">¿Cuánta intensidad?</h2>
+    <div id="lvls" style="display:grid;gap:10px"></div>
+    <button class="cancel" id="cancelSheet" type="button">Cancelar</button>
+  </div>
+</div>
+
+<script>
+const DATA = {
+  profundas: {
+    ligero: [
+      "¿Cuál es el mejor consejo que te han dado nunca?",
+      "¿Qué cosa pequeña te alegra el día sin falta?",
+      "¿Qué canción te devuelve a una época concreta de tu vida?",
+      "¿Qué soñabas con ser de mayor en tu infancia, y qué queda de eso hoy?",
+      "¿En qué época o lugar te gustaría vivir un año entero?",
+      "¿Qué se te da bien y casi nadie lo sabe?",
+      "¿Cuál ha sido el mejor día de este año hasta ahora?",
+      "¿Qué olor te transporta a otro sitio?",
+      "¿Qué hábito tuyo te gustaría que todo el mundo copiase?",
+      "¿Cómo sería tu domingo perfecto sin ninguna obligación?",
+      "¿Qué te hace reír aunque no quieras?",
+      "¿Qué objeto que tienes guarda una historia que merece contarse?",
+      "¿Qué opinión tuya ha cambiado en los últimos años?",
+      "¿Qué aprenderías si tuvieras tiempo de sobra?",
+      "¿Qué recuerdo de tu infancia aparece cuando no lo buscas?",
+      "¿Con qué persona famosa cenarías, y qué le preguntarías?",
+      "¿Cómo te gusta que te cuiden cuando estás mal?",
+      "¿Qué lugar sientes como tuyo?",
+      "¿Qué primera impresión tuviste de mí?",
+      "¿Qué es lo más espontáneo que has hecho?"
+    ],
+    profundo: [
+      "¿Qué es algo que todavía estás aprendiendo a perdonarte?",
+      "¿Qué logro tuyo nadie ha valorado tanto como merecía?",
+      "¿Qué te da más miedo perder?",
+      "¿Qué momento marcó el final de tu infancia?",
+      "¿Qué parte de ti escondes al principio cuando conoces a alguien?",
+      "¿Qué le dirías a tu yo de hace cinco años?",
+      "¿Qué relación de tu vida te ha cambiado más, y cómo?",
+      "¿Qué necesitas oír más a menudo de la gente que te quiere?",
+      "¿Qué creencia heredaste de tu familia y has decidido dejar atrás?",
+      "¿Cuál ha sido el momento de más soledad de tu vida?",
+      "¿Qué haces para gustar a los demás aunque no te salga de dentro?",
+      "¿Qué te cuesta pedir?",
+      "¿Qué significa para ti que alguien sea de confianza?",
+      "¿Qué decisión de tu vida volverías a tomar sin dudar?",
+      "¿De qué tema evitas hablar, y por qué?",
+      "¿Cómo sabes que estás bien de verdad y no solo funcionando?",
+      "¿Qué ves de tus padres en ti que te gusta? ¿Y qué no?",
+      "¿Qué es lo que más valoras de nuestra amistad?",
+      "¿En qué te gustaría que la gente te conociera mejor?",
+      "¿Qué sueño has aparcado y todavía no has soltado del todo?",
+      "¿Qué te hace sentir en casa con una persona?",
+      "¿Qué aprendiste de una ruptura, de pareja o de amistad?",
+      "¿Qué te pone a la defensiva, y qué hay detrás?"
+    ],
+    muy: [
+      "¿Qué pregunta te da miedo que te haga?",
+      "Si supieras que nadie te va a juzgar, ¿qué cambiarías mañana de tu vida?",
+      "¿Qué herida sigue influyendo en cómo quieres a la gente?",
+      "¿Qué es lo que más te cuesta aceptar de ti?",
+      "¿Qué te gustaría que dijeran de ti cuando ya no estés?",
+      "¿Qué verdad sobre tu vida estás evitando mirar?",
+      "¿Cuándo has sentido que no eras suficiente, y qué te ayudó?",
+      "¿Qué parte de tu historia no le has contado casi a nadie?",
+      "¿Qué crees que no sé de ti y te gustaría que supiera?",
+      "¿Qué es para ti una vida bien vivida?",
+      "¿Qué miedo ha tomado decisiones por ti?",
+      "¿Con quién tienes una conversación pendiente?",
+      "¿Qué te gustaría que yo hiciera más por ti?",
+      "¿Qué versión de ti echas de menos?",
+      "¿Cuándo has sentido que alguien te veía de verdad?",
+      "¿Qué cambiarías de cómo te hablas a ti?",
+      "¿Qué has fingido durante mucho tiempo?",
+      "Si este fuera nuestro último café, ¿qué me dirías?"
+    ]
+  },
+  princess: [
+    "Te escribe para saber si has llegado bien a casa.",
+    "Se acuerda de algo que mencionaste hace meses y te lo regala.",
+    "Contesta a tus mensajes.",
+    "Te presenta a sus amistades.",
+    "Te deja la última patata frita.",
+    "Planea una cita entera sin que tengas que decidir nada.",
+    "Te pide perdón cuando se equivoca.",
+    "Te trae tu comida favorita cuando estás mal, sin que se lo pidas.",
+    "Te pregunta qué tal te fue la entrevista.",
+    "Te abre la puerta del coche.",
+    "Paga la cena en la primera cita.",
+    "Respeta tus planes con tus amistades.",
+    "Se aprende cómo tomas el café.",
+    "Te escribe una carta a mano.",
+    "Te avisa si va a llegar tarde.",
+    "Te hace fotos bonitas sin que se lo pidas.",
+    "Te escucha sin mirar el móvil.",
+    "Se ofrece a acompañarte al médico.",
+    "Se acuerda de vuestro aniversario.",
+    "Te deja su chaqueta cuando tienes frío.",
+    "Te defiende cuando no estás delante.",
+    "Te manda una canción porque le ha recordado a ti.",
+    "Te prepara el desayuno el fin de semana.",
+    "Te hace un cumplido sincero sin que venga a cuento.",
+    "Te pregunta antes de subir una foto contigo.",
+    "Espera a que llegues para irse a dormir.",
+    "Te organiza una sorpresa por tu cumpleaños.",
+    "Dice «te quiero» primero.",
+    "Friega los platos cuando tú has cocinado.",
+    "Cambia sus planes para ayudarte con una mudanza."
+  ],
+  adivina: [
+    "¿Qué pediría en un restaurante que no conoce?",
+    "¿Qué superpoder elegiría?",
+    "¿Cuál es su mayor manía?",
+    "¿Qué haría con un millón de euros?",
+    "¿Qué canción pondría para animar una fiesta?",
+    "¿Qué plan rechazaría siempre?",
+    "¿Qué personaje de ficción se le parece más?",
+    "¿Qué única cosa se llevaría a una isla desierta?",
+    "¿Cuál es su comida de consuelo?",
+    "¿Qué le pone de mal humor más rápido?",
+    "¿A qué destino se iría ahora mismo?",
+    "¿Qué emoji usa más?",
+    "¿Cómo sería su día perfecto?",
+    "¿A qué se dedicaría en otra vida?",
+    "¿Cuál es su miedo más absurdo?",
+    "¿Qué cumplido le gusta más recibir?",
+    "¿Qué serie volvería a ver desde el principio?",
+    "¿Qué le diría a su yo de 15 años?",
+    "¿Qué compra impulsiva haría ahora mismo?",
+    "¿Qué es lo primero que hace al despertarse?"
+  ],
+  prefieres: [
+    ["Saber lo que todo el mundo piensa de ti", "que nadie piense nada de ti"],
+    ["Vivir sin música", "vivir sin películas"],
+    ["Poder volver al pasado", "poder ver el futuro"],
+    ["Un viaje improvisado", "un viaje planeado al detalle"],
+    ["Decir siempre la verdad", "no volver a escuchar una mentira"],
+    ["Una amistad para toda la vida", "diez amistades por épocas"],
+    ["Vivir junto al mar", "vivir en la montaña"],
+    ["Olvidar tu peor recuerdo", "revivir tu mejor día"],
+    ["Tener fama", "tener mucho dinero en secreto"],
+    ["Leer mentes", "hacerte invisible"],
+    ["Una cena en casa con velas", "una fiesta hasta el amanecer"],
+    ["Que te lo digan todo a la cara", "que se lo callen por cariño"],
+    ["Hablar cualquier idioma", "tocar cualquier instrumento"],
+    ["Vivir 200 años", "vivir 80 con salud perfecta"],
+    ["No volver a usar redes sociales", "no volver a ver series"],
+    ["Que te escriban una canción", "que te escriban un libro"],
+    ["Viajar un mes sin compañía", "viajar un mes con alguien que apenas conoces"],
+    ["Ser la persona más lista de la sala", "ser la más divertida"],
+    ["Perder todas tus fotos", "perder todos tus mensajes"],
+    ["Cambiar algo de tu pasado", "saber una cosa de tu futuro"]
+  ],
+  hot: [
+    "El primer mensaje lo tiene que mandar quien más interés tenga.",
+    "Ver una serie juntos cuenta como plan.",
+    "Mejor una verdad incómoda que una mentira piadosa.",
+    "Leer un mensaje y no contestar es de mala educación.",
+    "Las amistades de la infancia están sobrevaloradas.",
+    "Se puede tener una amistad sana con una ex pareja.",
+    "Un poco de celos es normal.",
+    "El cumpleaños hay que celebrarlo aunque no apetezca.",
+    "La piña en la pizza está buenísima.",
+    "Llegar pronto es peor que llegar tarde.",
+    "Las parejas deberían compartir contraseñas.",
+    "Los audios de más de un minuto deberían estar prohibidos.",
+    "Viajar en grupo grande nunca sale bien.",
+    "Está bien no tener metas claras en la vida.",
+    "Los horóscopos dicen más de lo que parece.",
+    "Quien cocina no friega.",
+    "Un buen libro siempre gana a una buena peli.",
+    "A veces desaparecer sin explicaciones está justificado.",
+    "Los planes improvisados son siempre los mejores.",
+    "Hay que poder enfadarse con una amistad sin que pase nada."
+  ],
+  redflag: [
+    "Nunca habla de sus ex.",
+    "Habla todo el rato de su ex.",
+    "Se lleva genial con su madre.",
+    "Tarda horas en contestar, pero siempre contesta.",
+    "No conserva ninguna amistad de hace más de dos años.",
+    "Te pide compartir la ubicación en tiempo real.",
+    "Llora viendo películas.",
+    "Es borde con quien le atiende en un bar.",
+    "Tiene un plan de vida a cinco años.",
+    "No suelta el móvil durante la cena.",
+    "Te da la contraseña de su móvil sin que se la pidas.",
+    "Dice que todas sus ex parejas estaban locas.",
+    "Va a terapia.",
+    "Sigue en contacto con su ex.",
+    "Nunca pide perdón, pero lo compensa con detalles.",
+    "Le encanta hacer planes con tus amistades.",
+    "Cancela planes a última hora a menudo.",
+    "Tiene una opinión fuerte sobre todo.",
+    "Te cuenta sus inseguridades en la segunda cita.",
+    "Prefiere a los animales antes que a la gente."
+  ],
+  yonunca: [
+    "he mentido para librarme de un plan.",
+    "he cotilleado las redes de un ex.",
+    "he llorado en el transporte público.",
+    "he enviado un mensaje a la persona equivocada.",
+    "he fingido que me gustaba un regalo.",
+    "he dejado a alguien en visto a propósito.",
+    "he hecho un viaje sin planearlo.",
+    "he mentido sobre mi edad.",
+    "he tenido un crush en clase o en el trabajo.",
+    "he borrado un mensaje justo después de mandarlo.",
+    "he dicho «te quiero» sin sentirlo.",
+    "he cantado a gritos en la ducha.",
+    "he comido algo que se había caído al suelo.",
+    "he leído el móvil de otra persona.",
+    "he ido a una cita a ciegas.",
+    "he roto algo y me lo he callado.",
+    "he enviado un audio de más de cinco minutos.",
+    "he puesto una excusa falsa para no ir a trabajar o a clase.",
+    "he perdido una amistad sin saber por qué.",
+    "he escrito algo a las tres de la mañana y me he arrepentido."
+  ],
+  verdad: [
+    ["Verdad", "¿Cuál es la última mentira que has dicho?"],
+    ["Verdad", "¿Qué es lo más vergonzoso que tienes en el móvil?"],
+    ["Verdad", "¿A quién le escribirías ahora mismo si no te diera vergüenza?"],
+    ["Verdad", "¿Cuál es tu mayor inseguridad?"],
+    ["Verdad", "¿Qué es lo que más te molesta de mí? Con cariño."],
+    ["Verdad", "¿Cuál ha sido tu peor cita?"],
+    ["Verdad", "¿Qué secreto has guardado durante más tiempo?"],
+    ["Verdad", "¿Qué cosa infantil sigues haciendo?"],
+    ["Verdad", "¿Cuál ha sido tu momento más vergonzoso del año?"],
+    ["Verdad", "¿Qué es lo último que te ha dado celos?"],
+    ["Verdad", "¿Qué búsqueda de Google no enseñarías nunca?"],
+    ["Verdad", "¿Qué opinas de verdad de alguien con quien he salido?"],
+    ["Reto", "Enseña la última foto de tu carrete."],
+    ["Reto", "Lee en voz alta el último mensaje que has enviado."],
+    ["Reto", "Imita a la otra persona durante 30 segundos."],
+    ["Reto", "Canta el estribillo de la última canción que has escuchado."],
+    ["Reto", "Manda un audio a alguien diciéndole algo bonito."],
+    ["Reto", "Habla con un acento durante las dos próximas cartas."],
+    ["Reto", "Enseña tus emojis más usados."],
+    ["Reto", "Haz tu mejor pose de foto de perfil."],
+    ["Reto", "Cuenta chistes malos hasta que la otra persona se ría."],
+    ["Reto", "Pon la canción que más vergüenza te da que te guste."],
+    ["Reto", "Describe a la otra persona con tres palabras sinceras."],
+    ["Reto", "Haz 10 sentadillas sin dejar de hablar."]
+  ],
+  probable: [
+    "¿Quién es más probable que acabe viviendo en otro país?",
+    "¿Quién es más probable que llore en una boda?",
+    "¿Quién es más probable que salga en la tele?",
+    "¿Quién es más probable que olvide un cumpleaños importante?",
+    "¿Quién es más probable que adopte demasiados animales?",
+    "¿Quién es más probable que se case primero?",
+    "¿Quién es más probable que se pierda en una ciudad nueva?",
+    "¿Quién es más probable que se gaste el sueldo en un fin de semana?",
+    "¿Quién es más probable que escriba a su ex a las tres de la mañana?",
+    "¿Quién es más probable que monte su propio negocio?",
+    "¿Quién es más probable que llegue tarde a su propia boda?",
+    "¿Quién es más probable que se ría en un momento serio?",
+    "¿Quién es más probable que sobreviva a un apocalipsis zombi?",
+    "¿Quién es más probable que lo deje todo para irse a vivir al campo?",
+    "¿Quién es más probable que lea las instrucciones antes de montar un mueble?",
+    "¿Quién es más probable que cante en un karaoke sin que se lo pidan?",
+    "¿Quién es más probable que haga amistad con alguien desconocido en el bus?",
+    "¿Quién es más probable que llore con un anuncio?",
+    "¿Quién es más probable que se cambie el color de pelo por impulso?",
+    "¿Quién es más probable que se duerma en el cine?"
+  ],
+  completa: [
+    "Lo que más me cuesta decir en voz alta es…",
+    "Me siento en casa cuando…",
+    "Algo que me gustaría que supieras de mí es…",
+    "Lo que más me ha sorprendido de mí este año es…",
+    "Siento que me quieren cuando…",
+    "Si pudiera volver a un día de mi vida, sería…",
+    "Algo que nunca he contado es…",
+    "Me da paz…",
+    "Lo que más admiro de ti es…",
+    "Mi mayor contradicción es…",
+    "Me arrepiento de no haber…",
+    "Hoy necesito…",
+    "Cuando me enfado, en realidad muchas veces estoy…",
+    "La persona que más me ha marcado es… porque…",
+    "Algo que estoy aprendiendo es…",
+    "Si no tuviera miedo, yo…",
+    "Un plan que me gustaría que hiciéramos es…",
+    "Un recuerdo contigo que guardo es…",
+    "Mi lugar seguro es…",
+    "Ojalá alguien me hubiera dicho antes que…"
+  ],
+  termometro: [
+    "La familia", "El amor", "El trabajo o los estudios", "Las amistades", "La salud",
+    "El dinero", "La autoestima", "El descanso", "La creatividad", "La vida social",
+    "Las ganas de futuro", "La relación con tu cuerpo", "La paz mental", "La rutina"
+  ],
+  dosverdades: [
+    "Tu infancia", "Viajes", "Citas desastrosas", "Comida", "El instituto", "Tu familia",
+    "Cosas que te dan miedo", "Trabajos que has tenido", "Talentos ocultos", "Accidentes y heridas",
+    "Tus ex", "Fiestas", "Algo que rompiste", "Música", "Animales", "Cosas que has ganado"
+  ]
+};
+
+const ICONS = {
+  profundas: '<circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><circle cx="12" cy="12" r="1.2"/>',
+  princess: '<path d="M3 19h18M4.5 16L3 7l5 4 4-7 4 7 5-4-1.5 9z"/>',
+  adivina: '<path d="M2 12s4-7 10-7 10 7 10 7-4 7-10 7S2 12 2 12z"/><circle cx="12" cy="12" r="3"/>',
+  prefieres: '<path d="M12 21v-9M12 12L5 5M12 12l7-7M5 5v5M5 5h5M19 5v5M19 5h-5"/>',
+  hot: '<path d="M12 22c4 0 7-3 7-7 0-5-5-7-5-12-3 2-5 5-5 8-1-1-2-2-2-4-2 2-2 5-2 8 0 4 3 7 7 7z"/>',
+  redflag: '<path d="M5 22V3M5 4h13l-3 4.5L18 13H5"/>',
+  yonunca: '<path d="M7 11V5a1.5 1.5 0 013 0v5M10 10V3.5a1.5 1.5 0 013 0V10M13 10V4.5a1.5 1.5 0 013 0V12M16 9a1.5 1.5 0 013 0v5a8 8 0 01-8 8 7 7 0 01-6-3.5L3 14a1.6 1.6 0 012.6-1.8L7 14"/>',
+  verdad: '<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3"/><circle cx="15.5" cy="15.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/>',
+  probable: '<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6M15 13l3 3 4-5"/>',
+  completa: '<path d="M4 4h16v12H9l-5 4z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/>',
+  termometro: '<path d="M10 14V5a2 2 0 014 0v9a4 4 0 11-4 0z"/><path d="M12 9v7"/>',
+  dosverdades: '<path d="M3 7l2 2 4-4M3 16l2 2 4-4M14 7h7M15 15l5 5M20 15l-5 5"/>',
+  mezcla: '<path d="M3 6h4l10 12h4M3 18h4l10-12h4M18 3l3 3-3 3M18 15l3 3-3 3"/>'
+};
+const icon = (m, cls = "i") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[m]}</svg>`;
+
+const MODES = {
+  profundas:  { name: "Preguntas profundas", tag: "Pregunta", c: "#6C5CFF", fg: "#FFFFFF" },
+  princess:   { name: "Princess treatment o bare minimum", short: "Princess o bare minimum", tag: "Situación", c: "#FF6FAE", fg: "#1E1633" },
+  adivina:    { name: "Adivina mi respuesta", tag: "Adivina", c: "#1FC7AE", fg: "#1E1633" },
+  prefieres:  { name: "¿Qué prefieres?", tag: "Elige una", c: "#FFA62B", fg: "#1E1633" },
+  hot:        { name: "Hot takes", tag: "Opinión", c: "#FF5A36", fg: "#1E1633" },
+  redflag:    { name: "Red flag o green flag", tag: "Rasgo", c: "#F0384F", fg: "#1E1633" },
+  yonunca:    { name: "Yo nunca", tag: "Yo nunca", c: "#C8E63C", fg: "#1E1633" },
+  verdad:     { name: "Verdad o reto", tag: "Verdad o reto", c: "#A35BFF", fg: "#FFFFFF" },
+  probable:   { name: "¿Quién es más probable?", tag: "¿Quién?", c: "#3D7BFF", fg: "#FFFFFF" },
+  completa:   { name: "Completa la frase", tag: "Completa", c: "#2CC8F0", fg: "#1E1633" },
+  termometro: { name: "Termómetro", tag: "Termómetro", c: "#22B573", fg: "#1E1633" },
+  dosverdades:{ name: "Dos verdades y una mentira", tag: "Tema", c: "#FFD84A", fg: "#1E1633" },
+  mezcla:     { name: "Mezcla de todo", tag: "Mezcla", c: "#FFFFFF", fg: "#1E1633", wide: true }
+};
+const RULES = {
+  profundas: "Sale una pregunta y la contestáis por turnos, sin prisa. No hay respuestas buenas ni malas: la idea es conoceros mejor. Antes de empezar eliges la intensidad.",
+  princess: "Sale algo que alguien hace por su pareja o por una amistad. Contáis 3, 2, 1 y decís a la vez si es princess treatment (un detallazo), bare minimum (lo mínimo que se espera) o red flag. Si no coincidís, toca debatir.",
+  adivina: "Quien tiene la carta intenta adivinar qué respondería la otra persona. Luego la otra contesta de verdad y veis si ha acertado. Podéis llevar la cuenta de aciertos.",
+  prefieres: "Salen dos opciones. Elegís una a la vez y explicáis por qué. No vale decir «ninguna».",
+  hot: "Sale una opinión polémica. Cada persona dice si está de acuerdo o no y defiende su postura. Gana quien convenza a la otra.",
+  redflag: "Sale un rasgo o una costumbre de alguien. Decís a la vez si para vosotros es green flag, red flag o depende, y explicáis por qué.",
+  yonunca: "Se lee la frase «Yo nunca he…». Quien sí lo haya hecho lo confiesa y cuenta la historia.",
+  verdad: "Cada carta es una verdad o un reto. Os turnáis: una carta para cada persona. Los retos se pueden hacer también por videollamada.",
+  probable: "Sale una situación y señaláis a la vez a quién le pega más. Si no coincidís, cada persona defiende su elección.",
+  completa: "Sale una frase a medias. Cada persona la termina en voz alta con lo primero que le salga, sin pensarlo mucho.",
+  termometro: "Sale un tema de la vida, como la familia o el dinero. Decís a la vez un número del 1 al 10 según cómo estáis ahora mismo con ese tema, y luego explicáis por qué.",
+  dosverdades: "La app os da un tema. Quien tiene la carta cuenta tres cosas sobre ese tema: dos verdaderas y una inventada. La otra persona tiene que adivinar cuál es la mentira.",
+  mezcla: "Cartas de todos los juegos barajadas. Cada carta indica a qué juego pertenece y el fondo cambia de color para que lo sepáis."
+};
+const LEVELS = [
+  ["subiendo", "Ir subiendo", "Empieza suave y acaba muy profundo."],
+  ["ligero", "Ligero", "Para romper el hielo."],
+  ["profundo", "Profundo", "Cosas que no se cuentan a cualquiera."],
+  ["muy", "Muy profundo", "Para cuando ya estáis en confianza total."],
+  ["todo", "Todo mezclado", "Cualquier nivel, al azar."]
+];
+const LEVEL_NAME = { ligero: "Ligero", profundo: "Profundo", muy: "Muy profundo" };
+
+// Seeded shuffle so a deck keeps its order between visits on this phone.
+function seedFrom(str) {
+  let h = 1779033703 ^ str.length;
+  for (let i = 0; i < str.length; i++) { h = Math.imul(h ^ str.charCodeAt(i), 3432918353); h = (h << 13) | (h >>> 19); }
+  h = Math.imul(h ^ (h >>> 16), 2246822507); h = Math.imul(h ^ (h >>> 13), 3266489909);
+  return (h ^= h >>> 16) >>> 0;
+}
+function rng(seed) {
+  return function () {
+    seed |= 0; seed = (seed + 0x6D2B79F5) | 0;
+    let t = Math.imul(seed ^ (seed >>> 15), 1 | seed);
+    t = (t + Math.imul(t ^ (t >>> 7), 61 | t)) ^ t;
+    return ((t ^ (t >>> 14)) >>> 0) / 4294967296;
+  };
+}
+function shuffle(arr, rand) {
+  const a = arr.slice();
+  for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
+  return a;
+}
+function cardsFor(mode, level) {
+  if (mode === "profundas") {
+    const lv = level === "subiendo" || level === "todo" ? ["ligero", "profundo", "muy"] : [level];
+    return lv.flatMap(l => DATA.profundas[l].map(text => ({ mode, text, level: l })));
+  }
+  if (mode === "prefieres") return DATA.prefieres.map(([a, b]) => ({ mode, a, b }));
+  if (mode === "verdad") return DATA.verdad.map(([kind, text]) => ({ mode, kind, text }));
+  if (mode === "mezcla") return Object.keys(MODES).filter(m => m !== "mezcla").flatMap(m => cardsFor(m, "todo"));
+  return DATA[mode].map(text => ({ mode, text }));
+}
+function buildDeck(mode, level, round) {
+  const base = `${state.seed}|${mode}|${level}|${round}`;
+  if (mode === "profundas" && level === "subiendo") {
+    return ["ligero", "profundo", "muy"].flatMap(l => shuffle(cardsFor(mode, l), rng(seedFrom(base + l))));
+  }
+  return shuffle(cardsFor(mode, level), rng(seedFrom(base)));
+}
+
+const store = {
+  get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
+  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+};
+
+const state = { seed: store.get("sm.code", null) || String(Math.random()).slice(2, 10), level: "subiendo", mode: null, deck: [], idx: 0, round: 0 };
+store.set("sm.code", state.seed);
+
+const $ = id => document.getElementById(id);
+const vars = m => `--c:${MODES[m].c};--fg:${MODES[m].fg};`;
+
+function renderHome() {
+  $("decks").innerHTML = Object.entries(MODES).map(([k, m]) => {
+    const n = cardsFor(k, "todo").length;
+    const info = `<button class="info" type="button" data-info="${k}" aria-label="Cómo se juega a ${m.name}">i</button>`;
+    if (m.wide) return `<div class="deck-wrap wide"><button class="deck wide" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${m.name}</span><span class="count">${n} cartas de todos los juegos</span></span></button>${info}</div>`;
+    return `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${m.name}</span><span class="count">${n} cartas</span></button>${info}</div>`;
+  }).join("");
+  $("lvls").innerHTML = LEVELS.map(([k, n, d], i) => `<button class="lvl${i === 0 ? " rec" : ""}" type="button" data-level="${k}"><b>${n}</b><span>${d}</span></button>`).join("");
+}
+
+const progressKey = () => `sm.pos|${state.mode}|${state.level}`;
+function save() { store.set(progressKey(), { idx: state.idx, round: state.round }); }
+
+function startMode(mode, level) {
+  state.mode = mode; state.level = level || "todo";
+  const saved = store.get(progressKey(), { idx: 0, round: 0 });
+  state.round = saved.round; state.idx = saved.idx;
+  state.deck = buildDeck(mode, state.level, state.round);
+  if (state.idx > state.deck.length) state.idx = 0;
+  $("home").hidden = true; $("game").hidden = false;
+  render("deal");
+}
+function goHome() {
+  $("game").hidden = true; $("home").hidden = false;
+  document.body.style.backgroundColor = "";
+}
+
+const HOW = {
+  princess: "Contad 3, 2, 1 y decidlo a la vez.",
+  redflag: "Decidid a la vez y explicad por qué.",
+  adivina: "Quien tenga la carta adivina primero. La otra persona dice si ha acertado.",
+  prefieres: "Elegid a la vez y defended vuestra respuesta.",
+  hot: "¿De acuerdo o no? Gana quien convenza a la otra persona.",
+  yonunca: "Si lo has hecho, confiesa y cuenta la historia.",
+  verdad: "Os turnáis: una carta para cada persona.",
+  probable: "Señalad a la vez a la persona que creéis.",
+  completa: "Termina la frase en voz alta. Luego le toca a la otra persona.",
+  termometro: "Del 1 al 10, ¿cómo estás ahora mismo con esto? Decid el número a la vez y luego explicadlo.",
+  dosverdades: "Di dos verdades y una mentira sobre este tema. La otra persona adivina cuál es la mentira."
+};
+const VERDICTS = { princess: ["Princess treatment", "Bare minimum", "Red flag"], redflag: ["Green flag", "Red flag", "Depende"] };
+
+function cardHTML(c) {
+  let tag = c.kind || MODES[c.mode].tag;
+  if (c.level) tag += `: ${LEVEL_NAME[c.level].toLowerCase()}`;
+  let body;
+  if (c.mode === "prefieres") body = `<div class="or"><div class="opt">${c.a}</div><div class="vs">o</div><div class="opt">${c.b}</div></div>`;
+  else if (c.mode === "hot") body = `<p class="q">«${c.text}»</p>`;
+  else if (c.mode === "yonunca") body = `<p class="q">Yo nunca ${c.text}</p>`;
+  else body = `<p class="q">${c.text}</p>`;
+  const v = VERDICTS[c.mode] ? `<div class="verdicts">${VERDICTS[c.mode].map(x => `<span>${x}</span>`).join("")}</div>` : "";
+  const how = HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
+  return `<span class="tag">${icon(c.mode)}${tag}</span>${body}${how}`;
+}
+
+function render(anim) {
+  const total = state.deck.length, done = state.idx >= total, c = state.deck[state.idx];
+  const colorMode = done ? (state.mode === "mezcla" ? "profundas" : state.mode) : c.mode;
+  const m = MODES[colorMode];
+  document.body.style.backgroundColor = m.c;
+  $("game").style.cssText = vars(colorMode);
+  const lvl = state.mode === "profundas" ? LEVELS.find(l => l[0] === state.level)[1] : "";
+  $("gtitle").textContent = lvl ? `Profundas: ${lvl.toLowerCase()}` : (MODES[state.mode].short || MODES[state.mode].name);
+  $("count").textContent = `${Math.min(state.idx + 1, total)}/${total}`;
+  $("barfill").style.width = `${(Math.min(state.idx, total) / total) * 100}%`;
+  const table = $("table");
+  table.innerHTML = `<div class="ghost-card g1"></div><div class="ghost-card g2"></div>` + (done
+    ? `<div class="card"><div class="end"><h2>¡Mazo terminado!</h2><p class="how">Habéis pasado las ${total} cartas.</p><button class="next" style="padding:14px 22px" type="button" id="reshuffle">Barajar otra vez</button></div></div>`
+    : `<div class="card${anim === "deal" ? " deal" : ""}">${cardHTML(c)}</div>`);
+  $("controls").hidden = done; $("hint").hidden = done;
+  $("prev").disabled = state.idx === 0;
+  if (done) $("reshuffle").onclick = () => { state.round++; state.idx = 0; state.deck = buildDeck(state.mode, state.level, state.round); save(); render("deal"); };
+  else bindDrag(table.querySelector(".card"));
+  save();
+}
+
+let busy = false;
+const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+function throwCard(dir) {
+  if (busy) return;
+  if (dir > 0 && state.idx >= state.deck.length) return;
+  if (dir < 0 && state.idx === 0) return;
+  const card = $("table").querySelector(".card");
+  const after = () => { busy = false; state.idx += dir; render("deal"); };
+  if (!card || reduced || dir < 0) { after(); return; }
+  busy = true;
+  card.classList.add("fly");
+  card.style.transform = `translateX(-130%) rotate(-18deg)`;
+  card.style.opacity = "0";
+  setTimeout(after, 260);
+}
+
+function bindDrag(el) {
+  let x0 = null, dx = 0;
+  el.addEventListener("pointerdown", e => { if (busy) return; x0 = e.clientX; dx = 0; el.setPointerCapture(e.pointerId); el.classList.remove("deal"); });
+  el.addEventListener("pointermove", e => {
+    if (x0 == null) return;
+    dx = e.clientX - x0;
+    el.style.transform = `translateX(${dx}px) rotate(${dx / 18}deg)`;
+  });
+  const end = () => {
+    if (x0 == null) return; x0 = null;
+    if (dx < -90 && state.idx < state.deck.length) {
+      busy = true; el.classList.add("fly");
+      el.style.transform = `translateX(-140%) rotate(-22deg)`; el.style.opacity = "0";
+      setTimeout(() => { busy = false; state.idx++; render("deal"); }, 240);
+    } else if (dx > 90 && state.idx > 0) {
+      state.idx--; render("deal");
+    } else {
+      el.classList.add("fly"); el.style.transform = "";
+      setTimeout(() => el.classList.remove("fly"), 280);
+    }
+  };
+  el.addEventListener("pointerup", end);
+  el.addEventListener("pointercancel", end);
+}
+
+function openMode(mode) {
+  if (mode === "profundas") { $("sheet").hidden = false; return; }
+  startMode(mode);
+}
+let infoMode = null;
+function openInfo(mode) {
+  infoMode = mode;
+  $("infoPanel").style.cssText = mode === "mezcla" ? "--c:#FFD84A;--fg:#1E1633;" : vars(mode);
+  $("infoIcon").innerHTML = icon(mode);
+  $("infoTitle").textContent = MODES[mode].name;
+  $("infoText").textContent = RULES[mode];
+  const inGame = !$("game").hidden;
+  $("infoPlay").textContent = inGame ? "Seguir jugando" : "Jugar";
+  $("infoClose").hidden = inGame;
+  $("infoSheet").hidden = false;
+}
+$("infoPlay").onclick = () => { $("infoSheet").hidden = true; if ($("game").hidden) openMode(infoMode); };
+$("infoClose").onclick = () => { $("infoSheet").hidden = true; };
+$("infoSheet").addEventListener("click", e => { if (e.target.id === "infoSheet") $("infoSheet").hidden = true; });
+$("gameInfo").onclick = () => openInfo(state.mode === "mezcla" ? state.deck[Math.min(state.idx, state.deck.length - 1)].mode : state.mode);
+$("decks").addEventListener("click", e => {
+  const i = e.target.closest("[data-info]"); if (i) { openInfo(i.dataset.info); return; }
+  const b = e.target.closest("[data-mode]"); if (!b) return;
+  openMode(b.dataset.mode);
+});
+$("lvls").addEventListener("click", e => {
+  const b = e.target.closest("[data-level]"); if (!b) return;
+  $("sheet").hidden = true; startMode("profundas", b.dataset.level);
+});
+$("cancelSheet").onclick = () => { $("sheet").hidden = true; };
+$("sheet").addEventListener("click", e => { if (e.target.id === "sheet") $("sheet").hidden = true; });
+$("back").onclick = goHome;
+$("next").onclick = () => throwCard(1);
+$("prev").onclick = () => throwCard(-1);
+document.addEventListener("keydown", e => {
+  if (!$("infoSheet").hidden) { if (e.key === "Escape") $("infoSheet").hidden = true; return; }
+  if (!$("sheet").hidden && e.key === "Escape") { $("sheet").hidden = true; return; }
+  if ($("game").hidden) return;
+  if (e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); throwCard(1); }
+  if (e.key === "ArrowLeft") throwCard(-1);
+  if (e.key === "Escape") goHome();
+});
+
+renderHome();
+</script>
+
+</body>
+</html>

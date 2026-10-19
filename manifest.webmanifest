@@ -1,0 +1,9 @@
+{
+  "name": "Preguntas de Sara",
+  "short_name": "Preguntas de Sara",
+  "lang": "es",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#1E1633",
+  "theme_color": "#1E1633"
+}
