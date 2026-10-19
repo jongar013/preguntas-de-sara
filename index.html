@@ -515,7 +515,7 @@ const MODES = {
   mezcla:     { name: "Mezcla de todo", tag: "Mezcla", c: "#FFFFFF", fg: "#1E1633", wide: true }
 };
 const RULES = {
-  profundas: "Sale una pregunta y la contestáis por turnos, sin prisa. No hay respuestas buenas ni malas: la idea es conoceros mejor. Antes de empezar eliges la intensidad.",
+  profundas: "Sale una pregunta y la contestáis por turnos, sin prisa. No hay respuestas buenas ni malas: la idea es conoceros mejor.",
   princess: "Sale algo que alguien hace por su pareja o por una amistad. Contáis 3, 2, 1 y decís a la vez si es princess treatment (un detallazo), bare minimum (lo mínimo que se espera) o red flag. Si no coincidís, toca debatir.",
   adivina: "Quien tiene la carta intenta adivinar qué respondería la otra persona. Luego la otra contesta de verdad y veis si ha acertado. Podéis llevar la cuenta de aciertos.",
   prefieres: "Salen dos opciones. Elegís una a la vez y explicáis por qué. No vale decir «ninguna».",
@@ -631,7 +631,6 @@ const VERDICTS = { princess: ["Princess treatment", "Bare minimum", "Red flag"],
 
 function cardHTML(c) {
   let tag = c.kind || MODES[c.mode].tag;
-  if (c.level) tag += `: ${LEVEL_NAME[c.level].toLowerCase()}`;
   let body;
   if (c.mode === "prefieres") body = `<div class="or"><div class="opt">${c.a}</div><div class="vs">o</div><div class="opt">${c.b}</div></div>`;
   else if (c.mode === "hot") body = `<p class="q">«${c.text}»</p>`;
@@ -648,7 +647,7 @@ function render(anim) {
   const m = MODES[colorMode];
   document.body.style.backgroundColor = m.c;
   $("game").style.cssText = vars(colorMode);
-  const lvl = state.mode === "profundas" ? LEVELS.find(l => l[0] === state.level)[1] : "";
+  const lvl = "";
   $("gtitle").textContent = lvl ? `Profundas: ${lvl.toLowerCase()}` : (MODES[state.mode].short || MODES[state.mode].name);
   $("count").textContent = `${Math.min(state.idx + 1, total)}/${total}`;
   $("barfill").style.width = `${(Math.min(state.idx, total) / total) * 100}%`;
@@ -705,7 +704,6 @@ function bindDrag(el) {
 }
 
 function openMode(mode) {
-  if (mode === "profundas") { $("sheet").hidden = false; return; }
   startMode(mode);
 }
 let infoMode = null;
