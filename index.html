@@ -101,7 +101,12 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .round:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
 .round:disabled { opacity: .45; cursor: default; transform: none; }
 .round svg.i { width: 22px; height: 22px; stroke-width: 3; }
-.gtitle { font-family: var(--font-display); font-size: 1.25rem; line-height: 1.05; min-width: 0; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.gt { min-width: 0; display: grid; justify-items: start; gap: 2px; }
+.gtitle { font-family: var(--font-display); font-size: 1.25rem; line-height: 1.05; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.lvlbtn { position: relative; font-weight: 900; font-size: .85rem; padding: 3px 10px; margin-left: -2px; min-height: 30px; border-radius: 999px; background: rgba(30,22,51,.28); color: var(--fg); }
+.lvlbtn::before { content: ""; position: absolute; inset: -7px -4px; }
+.lvlbtn::after { content: " ▾"; }
+.lvl[aria-pressed="true"] b::after { content: "  ✓"; }
 .pill { background: var(--ink); color: #fff; border-radius: 999px; padding: 7px 12px; font-weight: 900; font-size: .9rem; font-variant-numeric: tabular-nums; }
 .bar { height: 10px; border-radius: 999px; background: rgba(30,22,51,.22); overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; transition: width .3s ease; }
@@ -140,7 +145,16 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .fav[aria-pressed="true"] svg.i { fill: currentColor; }
 .fav.pop-in svg { animation: heart .35s cubic-bezier(.2,.9,.3,1.5); }
 @keyframes heart { 40% { transform: scale(1.35); } }
-.q { font-weight: 900; font-size: clamp(1.55rem, 6.6vw, 2.15rem); line-height: 1.18; margin: auto 0; text-wrap: balance; letter-spacing: -.01em; }
+.q { font-weight: 900; font-size: clamp(1.75rem, 7.8vw, 2.6rem); line-height: 1.14; margin: auto 0; text-wrap: balance; letter-spacing: -.015em; }
+.q.long { font-size: clamp(1.45rem, 6.2vw, 2.05rem); line-height: 1.2; }
+.score { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.pt { display: inline-flex; align-items: center; gap: 10px; min-height: 44px; padding: 6px 8px 6px 14px; border: 2.5px solid var(--ink); border-radius: 999px;
+  background: var(--soft); font-weight: 900; font-size: .95rem; box-shadow: 0 3px 0 var(--ink); }
+.pt b { min-width: 30px; height: 30px; border-radius: 999px; background: var(--c); color: var(--fg); display: grid; place-items: center; font-variant-numeric: tabular-nums; }
+.pt:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.pt.bump b { animation: bump .3s cubic-bezier(.2,.9,.3,1.5); }
+@keyframes bump { 45% { transform: scale(1.35); } }
+.undo { min-height: 44px; padding: 0 8px; font-weight: 800; font-size: .9rem; color: var(--muted-ink); text-decoration: underline; text-underline-offset: 3px; }
 .or { display: grid; gap: 12px; margin: auto 0; }
 .or .opt { font-weight: 900; font-size: clamp(1.35rem, 5.8vw, 1.85rem); line-height: 1.18; text-wrap: balance; background: var(--soft); border-radius: 16px; padding: 12px 14px; }
 .or .vs { justify-self: center; font-family: var(--font-display); font-size: 1.4rem; background: var(--c); color: var(--fg); border: 2.5px solid var(--ink); border-radius: 12px; padding: 2px 12px; transform: rotate(-4deg); }
@@ -162,7 +176,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .swipehint { text-align: center; font-weight: 800; font-size: .82rem; opacity: .8; margin: -4px 0 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  .fav.pop-in svg { animation: none; }
+  .fav.pop-in svg, .pt.bump b { animation: none; }
   .card.deal { animation: none; } .card.fly { transition: none; } body { transition: none; } .sheet { animation: none; }
 }
 </style>
@@ -183,7 +197,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
     <div class="bg-dots"></div>
     <div class="topbar">
       <button class="round" id="back" type="button" aria-label="Volver a los mazos"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-      <div class="gtitle" id="gtitle"></div>
+      <div class="gt"><div class="gtitle" id="gtitle"></div><button class="lvlbtn" id="lvlBtn" type="button" hidden aria-haspopup="dialog"></button></div>
       <div class="pill" id="count"></div>
       <button class="info" id="gameInfo" type="button" aria-label="Cómo se juega">i</button>
     </div>
@@ -218,7 +232,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 
 <div class="sheet-wrap" id="sheet" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
-    <h2 id="sheetTitle">¿Cuánta intensidad?</h2>
+    <h2 id="sheetTitle">¿Cómo queréis las preguntas?</h2>
     <div id="lvls" style="display:grid;gap:10px"></div>
     <button class="cancel" id="cancelSheet" type="button">Cancelar</button>
   </div>
@@ -390,7 +404,7 @@ const DATA = {
     "¿Cuál es su miedo más absurdo?",
     "¿Qué cumplido le gusta más recibir?",
     "¿Qué serie volvería a ver desde el principio?",
-    "¿Qué le diría a su yo de 15 años?",
+    "¿Qué palabra repite sin darse cuenta?",
     "¿Qué compra impulsiva haría ahora mismo?",
     "¿Qué es lo primero que hace al despertarse?",
     "¿Qué haría si le tocara un día libre sorpresa?",
@@ -484,7 +498,7 @@ const DATA = {
     "Contestar con un «ok» es de borde."
   ],
   redflag: [
-    "Nunca habla de sus ex.",
+    "Nunca habla de su familia.",
     "Habla todo el rato de su ex.",
     "Se lleva genial con su madre.",
     "Tarda horas en contestar, pero siempre contesta.",
@@ -610,14 +624,14 @@ const DATA = {
     "¿Quién es más probable que se gaste el sueldo en un fin de semana?",
     "¿Quién es más probable que escriba a su ex a las tres de la mañana?",
     "¿Quién es más probable que monte su propio negocio?",
-    "¿Quién es más probable que llegue tarde a su propia boda?",
+    "¿Quién es más probable que llegue tarde a su propio cumpleaños?",
     "¿Quién es más probable que se ría en un momento serio?",
     "¿Quién es más probable que sobreviva a un apocalipsis zombi?",
     "¿Quién es más probable que lo deje todo para irse a vivir al campo?",
     "¿Quién es más probable que lea las instrucciones antes de montar un mueble?",
     "¿Quién es más probable que cante en un karaoke sin que se lo pidan?",
     "¿Quién es más probable que haga amistad con alguien desconocido en el bus?",
-    "¿Quién es más probable que llore con un anuncio?",
+    "¿Quién es más probable que se apunte a un plan sin preguntar de qué va?",
     "¿Quién es más probable que se cambie el color de pelo por impulso?",
     "¿Quién es más probable que se duerma en el cine?",
     "¿Quién es más probable que se haga viral en internet?",
@@ -638,12 +652,12 @@ const DATA = {
   ],
   completa: [
     "Lo que más me cuesta decir en voz alta es…",
-    "Me siento en casa cuando…",
-    "Algo que me gustaría que supieras de mí es…",
+    "Me siento con energía cuando…",
+    "Algo que he aprendido de ti es…",
     "Lo que más me ha sorprendido de mí este año es…",
     "Siento que me quieren cuando…",
     "Si pudiera volver a un día de mi vida, sería…",
-    "Algo que nunca he contado es…",
+    "Una cosa que me hace sentir orgullo es…",
     "Me da paz…",
     "Lo que más admiro de ti es…",
     "Mi mayor contradicción es…",
@@ -673,12 +687,16 @@ const DATA = {
   termometro: [
     "La familia", "El amor", "El trabajo o los estudios", "Las amistades", "La salud",
     "El dinero", "La autoestima", "El descanso", "La creatividad", "La vida social",
-    "Las ganas de futuro", "La relación con tu cuerpo", "La paz mental", "La rutina", "El ocio", "El sueño", "La ilusión", "El lugar donde vives", "Las redes sociales", "La relación con tu familia elegida"
+    "Las ganas de futuro", "La relación con tu cuerpo", "La paz mental", "La rutina", "El ocio", "La energía", "La ilusión", "El lugar donde vives", "Las redes sociales", "La relación con tu familia elegida",
+    "La paciencia", "Las ganas de viajar", "El orden en casa", "La motivación", "El sentido del humor",
+    "La independencia", "Tus aficiones", "La capacidad de decir que no"
   ],
   dosverdades: [
     "Tu infancia", "Viajes", "Citas desastrosas", "Comida", "El instituto", "Tu familia",
     "Cosas que te dan miedo", "Trabajos que has tenido", "Talentos ocultos", "Accidentes y heridas",
-    "Tus ex", "Fiestas", "Algo que rompiste", "Música", "Animales", "Cosas que has ganado", "Primeras veces", "Vacaciones de verano", "Cosas que has perdido", "Gente famosa", "Deportes", "Tu primer móvil", "Cumpleaños", "Sueños raros"
+    "Tus ex", "Fiestas", "Algo que rompiste", "Música", "Animales", "Cosas que has ganado", "Primeras veces", "Vacaciones de verano", "Cosas que has perdido", "Gente famosa", "Deportes", "Tu primer móvil", "Cumpleaños", "Sueños raros",
+    "Tu barrio", "Profesores", "Vergüenzas en público", "Regalos", "Supersticiones", "Cosas que coleccionas",
+    "Bodas y celebraciones", "Mudanzas"
   ]
 };
 
@@ -708,7 +726,7 @@ const MODES = {
   hot:        { name: "Opiniones polémicas", tag: "Opinión", c: "#FF5A36", fg: "#1E1633" },
   redflag:    { name: "Red flag o green flag", tag: "Rasgo", c: "#F55167", fg: "#1E1633" },
   yonunca:    { name: "Yo nunca", tag: "Yo nunca", c: "#C8E63C", fg: "#1E1633" },
-  verdad:     { name: "Verdad o reto", tag: "Verdad o reto", c: "#8B3FF2", fg: "#FFFFFF" },
+  verdad:     { name: "Verdad o reto", tag: "Verdad o reto", c: "#B5249E", fg: "#FFFFFF" },
   probable:   { name: "¿Quién es más probable?", tag: "¿Quién?", c: "#2C67E6", fg: "#FFFFFF" },
   completa:   { name: "Completa la frase", tag: "Completa", c: "#2CC8F0", fg: "#1E1633" },
   termometro: { name: "Termómetro", tag: "Termómetro", c: "#22B573", fg: "#1E1633" },
@@ -719,29 +737,29 @@ const MODES = {
 // Modes that gather cards from the other decks instead of having their own.
 const META = ["mezcla", "favoritas"];
 const RULES = {
-  profundas: "Sale una pregunta y la contestáis por turnos, sin prisa. No hay respuestas buenas ni malas: la idea es conoceros mejor.",
-  princess: "Sale algo que alguien hace por su pareja o por una amistad. Hay tres respuestas: princess treatment (un detallazo), bare minimum (lo mínimo que se espera) o red flag. Contáis 3, 2, 1 y lo decís a la vez. Si no coincidís, toca debatir.",
-  adivina: "Quien tiene la carta intenta adivinar qué respondería la otra persona. Luego la otra contesta de verdad y veis si ha acertado. Podéis llevar la cuenta de aciertos.",
-  prefieres: "Salen dos opciones. Elegís una a la vez y explicáis por qué. No vale decir «ninguna».",
-  hot: "Sale una opinión polémica. Cada persona dice si está de acuerdo o no y defiende su postura. Gana quien convenza a la otra.",
-  redflag: "Sale un rasgo o una costumbre de alguien. Decís a la vez si os parece green flag, red flag o depende, y explicáis por qué.",
-  yonunca: "Se lee la frase «Yo nunca he…». Quien sí lo haya hecho lo confiesa y cuenta la historia.",
-  verdad: "Cada carta es una verdad o un reto. Os turnáis: una carta para cada persona. Si una carta no os apetece, pulsad «Pasar»: se va al final del mazo y no pasa nada. Nadie tiene que hacer nada que no quiera.",
-  probable: "Sale una situación y señaláis a la vez a quién le pega más. Si no coincidís, cada persona defiende su elección.",
-  completa: "Sale una frase a medias. Cada persona la termina en voz alta con lo primero que le salga, sin pensarlo mucho.",
-  termometro: "Sale un tema de la vida, como la familia o el dinero. Decís a la vez un número del 1 al 10 según cómo estáis ahora mismo con ese tema, y luego explicáis por qué.",
-  dosverdades: "La app os da un tema. Quien tiene la carta cuenta tres cosas sobre ese tema: dos verdaderas y una inventada. La otra persona tiene que adivinar cuál es la mentira.",
-  mezcla: "Cartas de todos los juegos barajadas. Cada carta indica a qué juego pertenece y el fondo cambia de color para que lo sepáis.",
-  favoritas: "Aquí están las cartas que habéis marcado con el corazón en cualquier juego. Cada carta indica a qué juego pertenece. Para quitar una, toca otra vez el corazón."
+  profundas: "Contestad la pregunta por turnos, sin prisa. No hay respuestas buenas ni malas. Tocad el título para elegir si van todas mezcladas o de suaves a profundas.",
+  princess: "Contad 3, 2, 1 y decid a la vez: princess treatment (un detallazo), bare minimum (lo mínimo) o red flag. Si no coincidís, a debatir.",
+  adivina: "Quien tiene el móvil adivina qué respondería la otra persona, y luego esta contesta de verdad. Apuntad los aciertos en el marcador de la carta.",
+  prefieres: "Elegid una opción a la vez y explicad por qué. No vale decir «ninguna».",
+  hot: "Decid si estáis de acuerdo y defended vuestra postura. Gana quien convenza a la otra persona.",
+  redflag: "Decid a la vez si os parece green flag, red flag o depende, y explicad por qué.",
+  yonunca: "Quien lo haya hecho, lo confiesa y cuenta la historia.",
+  verdad: "Una carta para cada persona, por turnos. Si una carta no os apetece, pulsad «Pasar»: se va al final y no pasa nada.",
+  probable: "Señalad a la vez a quién le pega más. Si no coincidís, defended vuestra elección.",
+  completa: "Terminad la frase en voz alta, por turnos, con lo primero que os salga.",
+  termometro: "Decid a la vez un número del 1 al 10 según cómo estáis con ese tema ahora mismo, y luego explicadlo.",
+  dosverdades: "Quien tiene el móvil cuenta tres cosas sobre el tema: dos verdaderas y una inventada. La otra persona adivina cuál es la mentira.",
+  mezcla: "Cartas de todos los juegos. Cada carta dice a qué juego pertenece y el fondo toma su color.",
+  favoritas: "Las cartas que habéis marcado con el corazón. Para quitar una, tocad otra vez el corazón."
 };
 const LEVELS = [
+  ["todo", "Todo mezclado", "Cualquier nivel, al azar."],
   ["subiendo", "Ir subiendo", "Empieza suave y acaba muy profundo."],
-  ["ligero", "Ligero", "Para romper el hielo."],
-  ["profundo", "Profundo", "Cosas que no se cuentan a cualquiera."],
-  ["muy", "Muy profundo", "Para cuando ya estáis en confianza total."],
-  ["todo", "Todo mezclado", "Cualquier nivel, al azar."]
+  ["ligero", "Solo ligeras", "Para romper el hielo."],
+  ["profundo", "Solo profundas", "Cosas que no se cuentan a cualquiera."],
+  ["muy", "Solo muy profundas", "Para cuando ya estáis en confianza total."]
 ];
-const LEVEL_NAME = { ligero: "Ligero", profundo: "Profundo", muy: "Muy profundo" };
+const LEVEL_NAME = { ligero: "Ligera", profundo: "Profunda", muy: "Muy profunda" };
 
 // Seeded shuffle so a deck keeps its order between visits on this phone.
 function seedFrom(str) {
@@ -810,14 +828,20 @@ const $ = id => document.getElementById(id);
 const vars = m => `--c:${MODES[m].c};--fg:${MODES[m].fg};`;
 
 function renderHome() {
-  $("decks").innerHTML = Object.entries(MODES).map(([k, m]) => {
+  const order = [...META, ...Object.keys(MODES).filter(k => !META.includes(k))];
+  $("decks").innerHTML = order.map(k => [k, MODES[k]]).map(([k, m]) => {
     const n = cardsFor(k, "todo").length;
     if (k === "favoritas" && !n) return "";
     const info = `<button class="info" type="button" data-info="${k}" aria-label="Cómo se juega a ${m.name}">i</button>`;
     if (m.wide) return `<div class="deck-wrap wide"><button class="deck wide${k === "favoritas" ? " favs" : ""}" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${m.name}</span><span class="count">${k === "favoritas" ? `${n} ${n === 1 ? "carta guardada" : "cartas guardadas"}` : `${n} cartas de todos los juegos`}</span></span></button>${info}</div>`;
     return `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${m.name}</span><span class="count">${n} cartas</span></button>${info}</div>`;
   }).join("");
-  $("lvls").innerHTML = LEVELS.map(([k, n, d], i) => `<button class="lvl${i === 0 ? " rec" : ""}" type="button" data-level="${k}"><b>${n}</b><span>${d}</span></button>`).join("");
+  renderLevels();
+}
+
+function renderLevels() {
+  const cur = store.get("sm.lvl", "todo");
+  $("lvls").innerHTML = LEVELS.map(([k, n, d]) => `<button class="lvl${k === cur ? " rec" : ""}" type="button" data-level="${k}" aria-pressed="${k === cur}"><b>${n}</b><span>${d}</span></button>`).join("");
 }
 
 const progressKey = () => `sm.pos|${state.mode}|${state.level}`;
@@ -849,7 +873,8 @@ function loadDeck() {
 }
 
 function startMode(mode, level) {
-  state.mode = mode; state.level = level || "todo";
+  state.mode = mode; state.level = level || (mode === "profundas" ? store.get("sm.lvl", "todo") : "todo");
+  state.score = [0, 0]; state.lastPoint = null;
   const saved = mode === "favoritas" ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
   state.round = saved.round; state.idx = saved.idx;
   state.deck = mode === "favoritas" ? buildDeck(mode, state.level, state.round) : loadDeck();
@@ -881,17 +906,43 @@ const VERDICTS = { princess: "¿Princess treatment, bare minimum o red flag?", r
 const upper = s => s.charAt(0).toUpperCase() + s.slice(1);
 
 function cardHTML(c) {
-  let tag = c.kind || MODES[c.mode].tag;
+  let tag = c.kind || (c.level ? LEVEL_NAME[c.level] : MODES[c.mode].tag);
+  if (META.includes(state.mode) && !c.kind) tag = MODES[c.mode].short || MODES[c.mode].name;
   let body;
   if (c.mode === "prefieres") body = `<div class="or"><div class="opt">${upper(c.a)}</div><div class="vs">o</div><div class="opt">${upper(c.b)}</div></div>`;
   else if (c.mode === "hot") body = `<p class="q">«${c.text}»</p>`;
   else if (c.mode === "yonunca") body = `<p class="q">Yo nunca ${c.text}</p>`;
-  else body = `<p class="q">${c.text}</p>`;
+  else body = `<p class="q${c.text.length > 80 ? " long" : ""}">${c.text}</p>`;
   const v = VERDICTS[c.mode] ? `<p class="verdicts">${VERDICTS[c.mode]}</p>` : "";
   const how = HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
   const fav = favs().includes(cardId(c));
   const heart = `<button class="fav" type="button" aria-pressed="${fav}" aria-label="Guardar en favoritas">${icon("favoritas")}</button>`;
-  return `<div class="cardtop"><span class="tag">${icon(c.mode)}${tag}</span>${heart}</div>${body}${how}`;
+  const score = c.mode === "adivina" ? scoreHTML() : "";
+  return `<div class="cardtop"><span class="tag">${icon(c.mode)}${tag}</span>${heart}</div>${body}${how}${score}`;
+}
+
+// Score for "Adivina mi respuesta": only lives while you play, back to 0 when you leave the deck.
+const PLAYERS = ["Persona 1", "Persona 2"];
+function scoreHTML() {
+  return `<div class="score" role="group" aria-label="Aciertos">${state.score.map((n, i) =>
+    `<button class="pt" type="button" data-p="${i}" aria-label="Sumar un acierto a ${PLAYERS[i]}, lleva ${n}"><span>${PLAYERS[i]}</span><b>${n}</b></button>`).join("")}${
+    state.lastPoint != null ? `<button class="undo" type="button">Deshacer</button>` : ""}</div>`;
+}
+function bindScore(card) {
+  card.querySelectorAll(".score button").forEach(b => {
+    b.addEventListener("pointerdown", e => e.stopPropagation());
+    b.onclick = () => {
+      const undo = b.classList.contains("undo");
+      if (undo) { state.score[state.lastPoint]--; state.lastPoint = null; }
+      else { state.lastPoint = +b.dataset.p; state.score[state.lastPoint]++; }
+      card.querySelector(".score").outerHTML = scoreHTML();
+      bindScore(card);
+      const again = card.querySelector(undo ? ".pt" : `.pt[data-p="${b.dataset.p}"]`);
+      again.focus();
+      if (!undo) again.classList.add("bump");
+      $("live").textContent = `${PLAYERS[0]}: ${state.score[0]}. ${PLAYERS[1]}: ${state.score[1]}.`;
+    };
+  });
 }
 
 function render(anim) {
@@ -900,8 +951,9 @@ function render(anim) {
   const m = MODES[colorMode];
   document.body.style.backgroundColor = m.c;
   $("game").style.cssText = vars(colorMode);
-  const lvl = "";
-  $("gtitle").textContent = lvl ? `Profundas: ${lvl.toLowerCase()}` : (MODES[state.mode].short || MODES[state.mode].name);
+  $("gtitle").textContent = MODES[state.mode].short || MODES[state.mode].name;
+  $("lvlBtn").hidden = state.mode !== "profundas";
+  $("lvlBtn").textContent = (LEVELS.find(l => l[0] === state.level) || LEVELS[0])[1];
   $("count").textContent = `${Math.min(state.idx + 1, total)}/${total}`;
   $("count").setAttribute("aria-label", `Carta ${Math.min(state.idx + 1, total)} de ${total}`);
   $("barfill").style.width = `${(Math.min(state.idx + 1, total) / total) * 100}%`;
@@ -913,7 +965,7 @@ function render(anim) {
     ? `<div class="card"><div class="end"><h2>¡Mazo terminado!</h2><p class="how">Habéis pasado las ${total} cartas.</p><button class="next" style="padding:14px 22px" type="button" id="reshuffle">Barajar otra vez</button></div></div>`
     : `<div class="card${anim === "deal" ? " deal" : ""}" role="group" aria-roledescription="carta">${cardHTML(c)}</div>`);
   if (anim) $("live").textContent = done ? `Mazo terminado. Habéis pasado las ${total} cartas.`
-    : `Carta ${state.idx + 1} de ${total}. ${table.querySelector(".card").innerText.replace(/\s+/g, " ")}`;
+    : `Carta ${state.idx + 1} de ${total}. ${[...table.querySelector(".card").children].filter(e => !e.matches(".score")).map(e => e.innerText).join(" ").replace(/\s+/g, " ")}`;
   if (done) $("reshuffle").onclick = () => { state.round++; state.idx = 0; state.deck = buildDeck(state.mode, state.level, state.round); save(); render("deal"); };
   else {
     const card = table.querySelector(".card"), fav = card.querySelector(".fav");
@@ -922,6 +974,7 @@ function render(anim) {
       fav.setAttribute("aria-pressed", toggleFav(c));
       fav.classList.remove("pop-in"); void fav.offsetWidth; fav.classList.add("pop-in");
     };
+    bindScore(card);
     bindDrag(card);
   }
   save();
@@ -1024,11 +1077,13 @@ $("decks").addEventListener("click", e => {
 });
 $("lvls").addEventListener("click", e => {
   const b = e.target.closest("[data-level]"); if (!b) return;
+  store.set("sm.lvl", b.dataset.level); renderLevels();
   closeDialog("sheet"); startMode("profundas", b.dataset.level);
 });
 $("cancelSheet").onclick = () => closeDialog("sheet");
 $("sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeDialog("sheet"); });
 $("back").onclick = goHome;
+$("lvlBtn").onclick = () => { openDialog("sheet", "cancelSheet"); $("lvls").querySelector('[aria-pressed="true"]').focus(); };
 $("prev").onclick = () => throwCard(-1);
 $("next").onclick = () => throwCard(1);
 $("skip").onclick = skipCard;
