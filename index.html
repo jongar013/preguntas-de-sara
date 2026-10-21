@@ -77,18 +77,13 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .deck.wide .badge { background: var(--card); color: var(--ink); flex: none; }
 .deck.wide .name { margin: 0; }
 
-/* Level sheet */
+/* Sheets */
 .sheet-wrap { position: fixed; inset: 0; background: rgba(10,6,20,.6); display: flex; align-items: flex-end; justify-content: center; z-index: 20; }
 .sheet { width: 100%; max-width: 540px; background: var(--card); color: var(--ink); border-radius: 28px 28px 0 0;
   padding: 22px max(18px, env(safe-area-inset-left, 0px)) calc(18px + env(safe-area-inset-bottom, 0px)) max(18px, env(safe-area-inset-right, 0px));
   display: grid; gap: 10px; animation: up .22s ease-out; }
 @keyframes up { from { transform: translateY(40px); opacity: 0; } }
 .sheet h2 { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; margin: 0 0 4px; }
-.lvl { text-align: left; border: 3px solid var(--ink); border-radius: 18px; padding: 12px 14px; display: grid; gap: 2px; box-shadow: 0 4px 0 var(--ink); background: var(--card); }
-.lvl:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
-.lvl b { font-family: var(--font-display); font-weight: 400; font-size: 1.15rem; }
-.lvl span { font-weight: 700; font-size: .88rem; color: var(--muted-ink); }
-.lvl.rec { background: #E7E3FF; }
 .cancel { font-weight: 800; padding: 10px; color: var(--muted-ink); }
 
 /* ---------- Game ---------- */
@@ -198,14 +193,6 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
   </div>
 </div>
 
-<div class="sheet-wrap" id="sheet" hidden>
-  <div class="sheet" role="dialog" aria-labelledby="sheetTitle">
-    <h2 id="sheetTitle">¿Cuánta intensidad?</h2>
-    <div id="lvls" style="display:grid;gap:10px"></div>
-    <button class="cancel" id="cancelSheet" type="button">Cancelar</button>
-  </div>
-</div>
-
 <script>
 const DATA = {
   profundas: {
@@ -229,7 +216,15 @@ const DATA = {
       "¿Cómo te gusta que te cuiden cuando estás mal?",
       "¿Qué lugar sientes como tuyo?",
       "¿Qué primera impresión tuviste de mí?",
-      "¿Qué es lo más espontáneo que has hecho?"
+      "¿Qué es lo más espontáneo que has hecho?",
+      "¿Qué serie o peli te ha marcado más de lo que admitirías?",
+      "¿Cuál es tu plan favorito para un día de lluvia?",
+      "¿Qué comida te recuerda a casa?",
+      "¿Qué te gustaría hacer al menos una vez en la vida?",
+      "¿Qué manía tuya te hace gracia?",
+      "¿Qué viaje repetirías mañana mismo?",
+      "¿Qué pequeño lujo te das cuando te lo mereces?",
+      "¿Qué es lo último que te ha hecho ilusión?"
     ],
     profundo: [
       "¿Qué es algo que todavía estás aprendiendo a perdonarte?",
@@ -254,7 +249,14 @@ const DATA = {
       "¿Qué sueño has aparcado y todavía no has soltado del todo?",
       "¿Qué te hace sentir en casa con una persona?",
       "¿Qué aprendiste de una ruptura, de pareja o de amistad?",
-      "¿Qué te pone a la defensiva, y qué hay detrás?"
+      "¿Qué te pone a la defensiva, y qué hay detrás?",
+      "¿Qué has dejado de hacer porque te dio miedo hacerlo mal?",
+      "¿Qué te hace sentir orgullo de ti?",
+      "¿Qué cosa de tu día a día te pesa más de lo que cuentas?",
+      "¿Cómo has cambiado en los últimos dos años?",
+      "¿Qué te gustaría que la gente entendiera de tu forma de ser?",
+      "¿Qué te ayuda a volver a ti cuando todo va mal?",
+      "¿A quién le debes mucho y nunca se lo has dicho?"
     ],
     muy: [
       "¿Qué pregunta te da miedo que te haga?",
@@ -274,7 +276,13 @@ const DATA = {
       "¿Cuándo has sentido que alguien te veía de verdad?",
       "¿Qué cambiarías de cómo te hablas a ti?",
       "¿Qué has fingido durante mucho tiempo?",
-      "Si este fuera nuestro último café, ¿qué me dirías?"
+      "Si este fuera nuestro último café, ¿qué me dirías?",
+      "¿Qué te gustaría que te perdonaran?",
+      "¿Cuándo fue la última vez que lloraste, y por qué?",
+      "¿Qué parte de ti sientes que nadie ha llegado a querer del todo?",
+      "¿De qué te arrepientes en una relación importante?",
+      "¿Qué consejo te darías si te vieras desde fuera?",
+      "¿Qué te gustaría que cambiara entre nosotros?"
     ]
   },
   princess: [
@@ -307,7 +315,17 @@ const DATA = {
     "Te organiza una sorpresa por tu cumpleaños.",
     "Dice «te quiero» primero.",
     "Friega los platos cuando tú has cocinado.",
-    "Cambia sus planes para ayudarte con una mudanza."
+    "Cambia sus planes para ayudarte con una mudanza.",
+    "Te deja elegir la peli aunque no le apetezca.",
+    "Te pregunta cómo estás y espera la respuesta de verdad.",
+    "Te guarda el último trozo de tarta.",
+    "Te acompaña a casa aunque le pille lejos.",
+    "Recuerda los nombres de tus amistades.",
+    "Te manda un mensaje de buenos días.",
+    "Te lleva al aeropuerto a las seis de la mañana.",
+    "Se pone de tu parte en una discusión con su familia.",
+    "Te cede el lado bueno de la cama.",
+    "Te anima antes de un examen o una reunión importante."
   ],
   adivina: [
     "¿Qué pediría en un restaurante que no conoce?",
@@ -329,7 +347,19 @@ const DATA = {
     "¿Qué serie volvería a ver desde el principio?",
     "¿Qué le diría a su yo de 15 años?",
     "¿Qué compra impulsiva haría ahora mismo?",
-    "¿Qué es lo primero que hace al despertarse?"
+    "¿Qué es lo primero que hace al despertarse?",
+    "¿Qué app abre más veces al día?",
+    "¿Cuál es su peli favorita de todos los tiempos?",
+    "¿Qué haría en un día libre sin nadie alrededor?",
+    "¿Qué estación del año prefiere?",
+    "¿Qué snack elegiría en una gasolinera?",
+    "¿Qué animal le representa?",
+    "¿Qué es lo que más le cuesta tirar a la basura?",
+    "¿Qué tema podría explicar durante una hora sin preparar nada?",
+    "¿Qué hace cuando no puede dormir?",
+    "¿Qué regalo le haría más ilusión ahora mismo?",
+    "¿Cuál fue su asignatura favorita en el colegio?",
+    "¿Qué palabra o expresión repite sin darse cuenta?"
   ],
   prefieres: [
     ["Saber lo que todo el mundo piensa de ti", "que nadie piense nada de ti"],
@@ -351,7 +381,19 @@ const DATA = {
     ["Viajar un mes sin compañía", "viajar un mes con alguien que apenas conoces"],
     ["Ser la persona más lista de la sala", "ser la más divertida"],
     ["Perder todas tus fotos", "perder todos tus mensajes"],
-    ["Cambiar algo de tu pasado", "saber una cosa de tu futuro"]
+    ["Cambiar algo de tu pasado", "saber una cosa de tu futuro"],
+    ["Dormir siempre lo que necesitas", "no necesitar dormir"],
+    ["Saber cocinar como en un restaurante", "tener a alguien que cocine para ti"],
+    ["Vivir en una gran ciudad", "vivir en un pueblo tranquilo"],
+    ["Recordarlo todo", "poder olvidar lo que quieras"],
+    ["Un perro", "un gato"],
+    ["Mucho calor", "mucho frío"],
+    ["Reírte siempre en el peor momento", "llorar en el peor momento"],
+    ["Que se lean tus mensajes en voz alta", "que se vea tu historial de búsqueda"],
+    ["Trabajar en lo que te apasiona cobrando poco", "en algo aburrido cobrando mucho"],
+    ["Hablar con tu yo de diez años", "hablar con tu yo de ochenta"],
+    ["Un fin de semana sin móvil", "un mes sin dulces"],
+    ["Ser siempre la primera persona en llegar", "ser siempre la última"]
   ],
   hot: [
     "El primer mensaje lo tiene que mandar quien más interés tenga.",
@@ -373,7 +415,19 @@ const DATA = {
     "Un buen libro siempre gana a una buena peli.",
     "A veces desaparecer sin explicaciones está justificado.",
     "Los planes improvisados son siempre los mejores.",
-    "Hay que poder enfadarse con una amistad sin que pase nada."
+    "Hay que poder enfadarse con una amistad sin que pase nada.",
+    "Dormir la siesta es un plan en sí mismo.",
+    "Los regalos hechos a mano valen más que los comprados.",
+    "Hay canciones que no se pueden escuchar después de una ruptura.",
+    "Ir al cine sin compañía es un planazo.",
+    "Mandar memes ya cuenta como mantener una amistad.",
+    "Las cenas de Navidad están sobrevaloradas.",
+    "Es mejor ser quien más quiere en una relación.",
+    "El desayuno es la mejor comida del día.",
+    "Hay que tener al menos una amistad que te diga las cosas claras.",
+    "Los mensajes de voz son mejores que los de texto.",
+    "El primer amor nunca se olvida.",
+    "Volver con una ex pareja nunca sale bien."
   ],
   redflag: [
     "Nunca habla de sus ex.",
@@ -395,7 +449,19 @@ const DATA = {
     "Cancela planes a última hora a menudo.",
     "Tiene una opinión fuerte sobre todo.",
     "Te cuenta sus inseguridades en la segunda cita.",
-    "Prefiere a los animales antes que a la gente."
+    "Prefiere a los animales antes que a la gente.",
+    "Te cuenta todo lo que hace durante el día.",
+    "No tiene redes sociales.",
+    "Siempre quiere tener razón.",
+    "Se acuerda de todo lo que le cuentas.",
+    "No sabe estar sin planes.",
+    "Te presenta a su familia a las dos semanas.",
+    "Hace bromas pesadas sobre tus inseguridades.",
+    "Sabe decir que no sin sentirse mal.",
+    "Tiene la misma amistad desde la guardería.",
+    "Te escribe mensajes muy largos.",
+    "Nunca quiere hablar de sentimientos.",
+    "Te deja espacio cuando lo necesitas."
   ],
   yonunca: [
     "he mentido para librarme de un plan.",
@@ -417,7 +483,19 @@ const DATA = {
     "he enviado un audio de más de cinco minutos.",
     "he puesto una excusa falsa para no ir a trabajar o a clase.",
     "he perdido una amistad sin saber por qué.",
-    "he escrito algo a las tres de la mañana y me he arrepentido."
+    "he escrito algo a las tres de la mañana y me he arrepentido.",
+    "he fingido estar al teléfono para no hablar con alguien.",
+    "he visto una serie entera en un solo día.",
+    "he stalkeado a alguien hasta fotos de hace años.",
+    "he dado like sin querer a una foto antigua.",
+    "he cancelado un plan y me he quedado en casa tan a gusto.",
+    "he llorado con una peli de dibujos.",
+    "he mentido sobre haber visto una peli.",
+    "he hablado mal de alguien y luego me he arrepentido.",
+    "he guardado capturas de una conversación.",
+    "he ensayado una conversación en la ducha.",
+    "he usado la ropa de otra persona sin pedirla.",
+    "he olvidado el nombre de alguien justo al presentarle."
   ],
   verdad: [
     ["Verdad", "¿Cuál es la última mentira que has dicho?"],
@@ -443,7 +521,19 @@ const DATA = {
     ["Reto", "Cuenta chistes malos hasta que la otra persona se ría."],
     ["Reto", "Pon la canción que más vergüenza te da que te guste."],
     ["Reto", "Describe a la otra persona con tres palabras sinceras."],
-    ["Reto", "Haz 10 sentadillas sin dejar de hablar."]
+    ["Reto", "Haz 10 sentadillas sin dejar de hablar."],
+    ["Verdad", "¿Qué es lo que más te gusta de ti?"],
+    ["Verdad", "¿Qué harías si fueras la otra persona durante un día?"],
+    ["Verdad", "¿Cuál es la excusa más ridícula que has puesto?"],
+    ["Verdad", "¿Qué es lo que peor llevas que te digan?"],
+    ["Verdad", "¿Qué canción te pones cuando estás de bajón?"],
+    ["Verdad", "¿Qué cosa has hecho solo para impresionar a alguien?"],
+    ["Reto", "Di tres cosas que te gustan de la otra persona."],
+    ["Reto", "Escribe un mensaje de buenos días a la última persona con la que hablaste."],
+    ["Reto", "Haz un baile de diez segundos sin música."],
+    ["Reto", "Deja que la otra persona elija tu foto de perfil durante un día."],
+    ["Reto", "Cuenta una anécdota vergonzosa con todos los detalles."],
+    ["Reto", "Habla como en un anuncio de la tele durante un minuto."]
   ],
   probable: [
     "¿Quién es más probable que acabe viviendo en otro país?",
@@ -465,7 +555,19 @@ const DATA = {
     "¿Quién es más probable que haga amistad con alguien desconocido en el bus?",
     "¿Quién es más probable que llore con un anuncio?",
     "¿Quién es más probable que se cambie el color de pelo por impulso?",
-    "¿Quién es más probable que se duerma en el cine?"
+    "¿Quién es más probable que se duerma en el cine?",
+    "¿Quién es más probable que se haga viral en internet?",
+    "¿Quién es más probable que pierda las llaves esta semana?",
+    "¿Quién es más probable que se apunte a un plan sin preguntar de qué va?",
+    "¿Quién es más probable que tenga mil pestañas abiertas en el móvil?",
+    "¿Quién es más probable que escriba un libro?",
+    "¿Quién es más probable que se enamore en un viaje?",
+    "¿Quién es más probable que se coma algo de la nevera que no es suyo?",
+    "¿Quién es más probable que acabe siendo la persona rica del grupo?",
+    "¿Quién es más probable que conteste un mensaje tres días después?",
+    "¿Quién es más probable que tenga una planta muerta en casa?",
+    "¿Quién es más probable que se haga un tatuaje del que se arrepienta?",
+    "¿Quién es más probable que lo cuente todo en un audio de diez minutos?"
   ],
   completa: [
     "Lo que más me cuesta decir en voz alta es…",
@@ -487,17 +589,29 @@ const DATA = {
     "Un plan que me gustaría que hiciéramos es…",
     "Un recuerdo contigo que guardo es…",
     "Mi lugar seguro es…",
-    "Ojalá alguien me hubiera dicho antes que…"
+    "Ojalá alguien me hubiera dicho antes que…",
+    "Lo que me hace perder la noción del tiempo es…",
+    "Una cosa que me gustaría hacer más a menudo es…",
+    "Me siento fuerte cuando…",
+    "Lo que menos soporto de mí es…",
+    "Una persona a la que echo de menos es…",
+    "Si mañana no tuviera que trabajar ni estudiar, yo…",
+    "Me cuesta confiar cuando…",
+    "Algo que me hace feliz y es muy tonto es…",
+    "Gracias por…",
+    "Dentro de diez años me gustaría…"
   ],
   termometro: [
     "La familia", "El amor", "El trabajo o los estudios", "Las amistades", "La salud",
     "El dinero", "La autoestima", "El descanso", "La creatividad", "La vida social",
-    "Las ganas de futuro", "La relación con tu cuerpo", "La paz mental", "La rutina"
+    "Las ganas de futuro", "La relación con tu cuerpo", "La paz mental", "La rutina",
+    "Tu forma de vestir", "La casa donde vives", "Tu barrio o tu ciudad", "Lo que comes", "La motivación", "El tiempo libre"
   ],
   dosverdades: [
     "Tu infancia", "Viajes", "Citas desastrosas", "Comida", "El instituto", "Tu familia",
     "Cosas que te dan miedo", "Trabajos que has tenido", "Talentos ocultos", "Accidentes y heridas",
-    "Tus ex", "Fiestas", "Algo que rompiste", "Música", "Animales", "Cosas que has ganado"
+    "Tus ex", "Fiestas", "Algo que rompiste", "Música", "Animales", "Cosas que has ganado",
+    "Vacaciones", "Primeras veces", "Cosas que has perdido", "Deportes", "Tus vecinos", "Regalos", "Tu primer trabajo", "Sitios donde has vivido"
   ]
 };
 
@@ -548,14 +662,6 @@ const RULES = {
   dosverdades: "La app os da un tema. Quien tiene la carta cuenta tres cosas sobre ese tema: dos verdaderas y una inventada. La otra persona tiene que adivinar cuál es la mentira.",
   mezcla: "Cartas de todos los juegos barajadas. Cada carta indica a qué juego pertenece y el fondo cambia de color para que lo sepáis."
 };
-const LEVELS = [
-  ["subiendo", "Ir subiendo", "Empieza suave y acaba muy profundo."],
-  ["ligero", "Ligero", "Para romper el hielo."],
-  ["profundo", "Profundo", "Cosas que no se cuentan a cualquiera."],
-  ["muy", "Muy profundo", "Para cuando ya estáis en confianza total."],
-  ["todo", "Todo mezclado", "Cualquier nivel, al azar."]
-];
-const LEVEL_NAME = { ligero: "Ligero", profundo: "Profundo", muy: "Muy profundo" };
 
 // Seeded shuffle so a deck keeps its order between visits on this phone.
 function seedFrom(str) {
@@ -578,21 +684,14 @@ function shuffle(arr, rand) {
   return a;
 }
 function cardsFor(mode, level) {
-  if (mode === "profundas") {
-    const lv = level === "subiendo" || level === "todo" ? ["ligero", "profundo", "muy"] : [level];
-    return lv.flatMap(l => DATA.profundas[l].map(text => ({ mode, text, level: l })));
-  }
+  if (mode === "profundas") return Object.values(DATA.profundas).flat().map(text => ({ mode, text }));
   if (mode === "prefieres") return DATA.prefieres.map(([a, b]) => ({ mode, a, b }));
   if (mode === "verdad") return DATA.verdad.map(([kind, text]) => ({ mode, kind, text }));
   if (mode === "mezcla") return Object.keys(MODES).filter(m => m !== "mezcla").flatMap(m => cardsFor(m, "todo"));
   return DATA[mode].map(text => ({ mode, text }));
 }
 function buildDeck(mode, level, round) {
-  const base = `${state.seed}|${mode}|${level}|${round}`;
-  if (mode === "profundas" && level === "subiendo") {
-    return ["ligero", "profundo", "muy"].flatMap(l => shuffle(cardsFor(mode, l), rng(seedFrom(base + l))));
-  }
-  return shuffle(cardsFor(mode, level), rng(seedFrom(base)));
+  return shuffle(cardsFor(mode, level), rng(seedFrom(`${state.seed}|${mode}|${level}|${round}`)));
 }
 
 const store = {
@@ -600,7 +699,7 @@ const store = {
   set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
 };
 
-const state = { seed: store.get("sm.code", null) || String(Math.random()).slice(2, 10), level: "subiendo", mode: null, deck: [], idx: 0, round: 0 };
+const state = { seed: store.get("sm.code", null) || String(Math.random()).slice(2, 10), level: "todo", mode: null, deck: [], idx: 0, round: 0 };
 store.set("sm.code", state.seed);
 
 const $ = id => document.getElementById(id);
@@ -613,7 +712,6 @@ function renderHome() {
     if (m.wide) return `<div class="deck-wrap wide"><button class="deck wide" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${m.name}</span><span class="count">${n} cartas de todos los juegos</span></span></button>${info}</div>`;
     return `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${m.name}</span><span class="count">${n} cartas</span></button>${info}</div>`;
   }).join("");
-  $("lvls").innerHTML = LEVELS.map(([k, n, d], i) => `<button class="lvl${i === 0 ? " rec" : ""}" type="button" data-level="${k}"><b>${n}</b><span>${d}</span></button>`).join("");
 }
 
 const progressKey = () => `sm.pos|${state.mode}|${state.level}`;
@@ -667,8 +765,7 @@ function render(anim) {
   const m = MODES[colorMode];
   document.body.style.backgroundColor = m.c;
   $("game").style.cssText = vars(colorMode);
-  const lvl = "";
-  $("gtitle").textContent = lvl ? `Profundas: ${lvl.toLowerCase()}` : (MODES[state.mode].short || MODES[state.mode].name);
+  $("gtitle").textContent = MODES[state.mode].short || MODES[state.mode].name;
   $("count").textContent = `${Math.min(state.idx + 1, total)}/${total}`;
   $("barfill").style.width = `${(Math.min(state.idx, total) / total) * 100}%`;
   const table = $("table");
@@ -721,9 +818,6 @@ function bindDrag(el) {
   el.addEventListener("pointercancel", end);
 }
 
-function openMode(mode) {
-  startMode(mode);
-}
 let infoMode = null;
 function openInfo(mode) {
   infoMode = mode;
@@ -736,27 +830,20 @@ function openInfo(mode) {
   $("infoClose").hidden = inGame;
   $("infoSheet").hidden = false;
 }
-$("infoPlay").onclick = () => { $("infoSheet").hidden = true; if ($("game").hidden) openMode(infoMode); };
+$("infoPlay").onclick = () => { $("infoSheet").hidden = true; if ($("game").hidden) startMode(infoMode); };
 $("infoClose").onclick = () => { $("infoSheet").hidden = true; };
 $("infoSheet").addEventListener("click", e => { if (e.target.id === "infoSheet") $("infoSheet").hidden = true; });
 $("gameInfo").onclick = () => openInfo(state.mode === "mezcla" ? state.deck[Math.min(state.idx, state.deck.length - 1)].mode : state.mode);
 $("decks").addEventListener("click", e => {
   const i = e.target.closest("[data-info]"); if (i) { openInfo(i.dataset.info); return; }
   const b = e.target.closest("[data-mode]"); if (!b) return;
-  openMode(b.dataset.mode);
+  startMode(b.dataset.mode);
 });
-$("lvls").addEventListener("click", e => {
-  const b = e.target.closest("[data-level]"); if (!b) return;
-  $("sheet").hidden = true; startMode("profundas", b.dataset.level);
-});
-$("cancelSheet").onclick = () => { $("sheet").hidden = true; };
-$("sheet").addEventListener("click", e => { if (e.target.id === "sheet") $("sheet").hidden = true; });
 $("back").onclick = goHome;
 $("swipeOk").onclick = () => { $("swipePop").hidden = true; store.set("sm.swipeSeen", true); };
 document.addEventListener("keydown", e => {
   if (!$("swipePop").hidden) { if (e.key === "Escape" || e.key === "Enter") $("swipeOk").click(); return; }
   if (!$("infoSheet").hidden) { if (e.key === "Escape") $("infoSheet").hidden = true; return; }
-  if (!$("sheet").hidden && e.key === "Escape") { $("sheet").hidden = true; return; }
   if ($("game").hidden) return;
   if (e.key === "ArrowUp" || e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); throwCard(1); }
   if (e.key === "ArrowDown" || e.key === "ArrowLeft") { e.preventDefault(); throwCard(-1); }
@@ -764,6 +851,10 @@ document.addEventListener("keydown", e => {
 });
 
 renderHome();
+
+if ("serviceWorker" in navigator && location.protocol === "https:") {
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
 </script>
 
 </body>
