@@ -1,5 +1,5 @@
 // Keeps the game playable offline: the page and icons are cached on install, fonts on first use.
-const CACHE = "preguntas-v8";
+const CACHE = "preguntas-v9";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 
 self.addEventListener("install", e => {

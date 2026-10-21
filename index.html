@@ -144,6 +144,15 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .fav[aria-pressed="true"] { color: #F0384F; }
 .fav[aria-pressed="true"] svg.i { fill: currentColor; }
 .fav.pop-in svg { animation: heart .35s cubic-bezier(.2,.9,.3,1.5); }
+.tools { display: flex; gap: 2px; margin: -6px -6px 0 0; }
+.tools .fav { margin: 0; }
+.hide { flex: none; width: 44px; height: 44px; border-radius: 50%; display: grid; place-items: center; color: var(--muted-ink); }
+.hide svg.i { width: 24px; height: 24px; stroke-width: 2.4; }
+.toast { position: fixed; left: 50%; bottom: calc(96px + env(safe-area-inset-bottom, 0px)); transform: translateX(-50%); z-index: 30; width: min(92vw, 420px); display: flex; align-items: center; justify-content: space-between; gap: 12px;
+  background: var(--ink); color: #fff; border-radius: 16px; padding: 6px 6px 6px 16px; font-weight: 800; box-shadow: 0 10px 24px rgba(0,0,0,.3); animation: toastIn .25s ease-out; }
+.toast button { min-height: 44px; padding: 0 14px; border-radius: 12px; background: #FFD84A; color: var(--ink); font-weight: 900; }
+#hCopy { background: var(--soft); color: var(--ink); box-shadow: none; }
+@keyframes toastIn { from { opacity: 0; transform: translate(-50%, 12px); } }
 @keyframes heart { 40% { transform: scale(1.35); } }
 .q { font-weight: 900; font-size: clamp(1.75rem, 7.8vw, 2.6rem); line-height: 1.14; margin: auto 0; text-wrap: balance; letter-spacing: -.015em; }
 .q.long { font-size: clamp(1.45rem, 6.2vw, 2.05rem); line-height: 1.2; }
@@ -226,7 +235,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .swipehint { text-align: center; font-weight: 800; font-size: .82rem; opacity: .8; margin: -4px 0 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  .fav.pop-in svg, .pt.bump b { animation: none; }
+  .fav.pop-in svg, .pt.bump b, .toast { animation: none; }
   .card.deal, .card.back, #game.enter, .timer.done, .table.shuffling .ghost-card { animation: none !important; }
   .card.fly, .card.gather { transition: none; } body { transition: none; } .sheet { animation: none; }
 }
@@ -260,6 +269,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
       <button class="next" id="next" type="button">Siguiente</button>
     </div>
     <p class="sr-only" id="live" aria-live="polite"></p>
+    <div class="toast" id="toast" hidden><span>Carta quitada</span><button type="button" id="undoHide">Deshacer</button></div>
   </section>
 </div>
 
@@ -302,6 +312,12 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
     <button class="add" id="cAdd" type="button">Añadir carta</button>
     <p class="hint" id="cMsg" aria-live="polite"></p>
     <ul class="mine" id="cList"></ul>
+    <hr class="sep">
+    <p class="group-title">Cartas quitadas</p>
+    <p class="hint" id="hHint" tabindex="-1">Las que habéis quitado con la papelera de la carta. Podéis recuperarlas cuando queráis.</p>
+    <ul class="mine" id="hList"></ul>
+    <button class="add" id="hCopy" type="button" hidden>Copiar la lista</button>
+    <p class="hint" id="hMsg" aria-live="polite"></p>
     <button class="play" id="setDone" type="button">Hecho</button>
   </div>
 </div>
@@ -910,6 +926,7 @@ const ICONS = {
   mezcla: '<path d="M3 6h4l10 12h4M3 18h4l10-12h4M18 3l3 3-3 3M18 15l3 3-3 3"/>',
   favoritas: '<path d="M12 20.5S3 15 3 8.8A4.6 4.6 0 0112 6.6a4.6 4.6 0 019 2.2C21 15 12 20.5 12 20.5z"/>',
   reloj: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/>',
+  quitar: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
   ajustes: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/>'
 };
 const icon = (m, cls = "i") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[m]}</svg>`;
@@ -988,6 +1005,10 @@ function shuffle(arr, rand) {
   return a;
 }
 function cardsFor(mode, level, data = DATA) {
+  const out = allCardsFor(mode, level, data), h = data === DATA ? new Set(hidden()) : null;
+  return h && h.size ? out.filter(c => !h.has(cardId(c))) : out;
+}
+function allCardsFor(mode, level, data) {
   const own = data === DATA ? custom().filter(c => c.mode === mode).map(c => ({ ...c, custom: true })) : [];
   if (mode === "profundas") {
     const lv = level === "subiendo" || level === "todo" ? subiendo() : [level];
@@ -1027,6 +1048,8 @@ const favs = () => store.get("sm.favs", []);
 // Cards you write yourselves, kept only on this phone: [{ mode, text } | { mode, a, b } | { mode, kind, text }].
 const custom = () => store.get("sm.custom", []).filter(c => MODES[c.mode]);
 const names = () => store.get("sm.names", ["", ""]);
+// Cards you removed with the bin on the card. They stay out of every deck until you bring them back in Ajustes.
+const hidden = () => store.get("sm.hidden", []);
 // The old Picante deck now lives inside Preguntillas, so its favourites and own cards move there too.
 store.set("sm.favs", favs().map(id => id.replace(/^picante\|/, "profundas|")));
 store.set("sm.custom", store.get("sm.custom", []).map(c => c.mode === "picante" ? { ...c, mode: "profundas" } : c));
@@ -1079,7 +1102,8 @@ function loadDeck() {
     state.idx -= ids.slice(0, state.idx).filter(id => !byId.has(id)).length;
     deck = ids.map(id => byId.get(id)).filter(Boolean);
   } else {
-    deck = buildDeck(mode, level, round, store.get(progressKey(), null) ? legacyData() : DATA);
+    const h = new Set(hidden());
+    deck = buildDeck(mode, level, round, store.get(progressKey(), null) ? legacyData() : DATA).filter(c => !h.has(cardId(c)));
   }
   const have = new Set(deck.map(cardId)), fresh = all.filter(c => !have.has(cardId(c)));
   const rand = rng(seedFrom(`${state.seed}|${mode}|${level}|${round}|${deck.length}`));
@@ -1103,6 +1127,7 @@ function startMode(mode, level) {
 }
 function goHome() {
   clearInterval(timerId);
+  $("toast").hidden = true; lastHidden = null;
   $("game").hidden = true; $("home").hidden = false;
   document.body.style.backgroundColor = "";
   renderHome();
@@ -1149,7 +1174,8 @@ function cardHTML(c) {
   const [n1, n2] = names();
   const turn = n1 && n2 && TURNS.includes(c.mode) ? `<p class="turn">Le toca a <b>${esc([n1, n2][state.idx % 2])}</b></p>` : "";
   const timer = TIMED.includes(c.mode) ? `<button class="timer" type="button" aria-pressed="false">${icon("reloj")}<span>30 s</span></button>` : "";
-  return `<div class="cardtop"><span class="tag">${icon(c.mode)}${tag}</span>${heart}</div>${turn}${body}${how}${score}${timer}`;
+  const bin = `<button class="hide" type="button" aria-label="Quitar esta carta">${icon("quitar")}</button>`;
+  return `<div class="cardtop"><span class="tag">${icon(c.mode)}${tag}</span><span class="tools">${bin}${heart}</span></div>${turn}${body}${how}${score}${timer}`;
 }
 
 // Score for "Adivina mi respuesta": only lives while you play, back to 0 when you leave the deck.
@@ -1215,6 +1241,9 @@ function render(anim) {
       fav.setAttribute("aria-pressed", toggleFav(c));
       fav.classList.remove("pop-in"); void fav.offsetWidth; fav.classList.add("pop-in");
     };
+    const bin = card.querySelector(".hide");
+    bin.addEventListener("pointerdown", e => e.stopPropagation());
+    bin.onclick = () => hideCard(c);
     bindScore(card);
     bindTimer(card);
     bindDrag(card);
@@ -1260,6 +1289,43 @@ function throwCard(dir) {
 }
 
 // "Pasar": the card goes to the bottom of the deck without counting, so nobody has to answer it now.
+// Quitar: the card leaves the deck at once, with a few seconds to undo it.
+let lastHidden = null, toastId = null;
+function hideCard(c) {
+  if (busy) return;
+  const id = cardId(c);
+  store.set("sm.hidden", [...hidden().filter(x => x !== id), id]);
+  lastHidden = { c, idx: state.idx };
+  const after = () => {
+    busy = false;
+    state.deck.splice(state.idx, 1);
+    render("deal");
+    $("live").textContent = `Carta quitada. ${$("live").textContent}`;
+    showToast();
+  };
+  const card = $("table").querySelector(".card");
+  if (!card || reduced) { after(); return; }
+  busy = true;
+  card.classList.add("fly");
+  card.style.transform = "scale(.6) rotate(-8deg)";
+  card.style.opacity = "0";
+  setTimeout(after, 260);
+}
+function showToast() {
+  $("toast").hidden = false;
+  clearTimeout(toastId);
+  toastId = setTimeout(() => { $("toast").hidden = true; }, 6000);
+}
+$("undoHide").onclick = () => {
+  if (!lastHidden) return;
+  const { c, idx } = lastHidden, id = cardId(c);
+  store.set("sm.hidden", hidden().filter(x => x !== id));
+  state.deck.splice(idx, 0, c); state.idx = idx; lastHidden = null;
+  $("toast").hidden = true;
+  render("back");
+  $("live").textContent = `Carta recuperada. ${$("live").textContent}`;
+};
+
 function skipCard() {
   if (busy || state.idx >= state.deck.length - 1) return;
   const card = $("table").querySelector(".card");
@@ -1378,7 +1444,7 @@ $("cMode").innerHTML = Object.keys(MODES).filter(m => !META.includes(m)).map(m =
 $("openSet").onclick = () => {
   [$("name1").value, $("name2").value] = names();
   $("picante").checked = store.get("sm.picante", false);
-  $("cMsg").textContent = ""; renderCustom();
+  $("cMsg").textContent = ""; $("hMsg").textContent = ""; renderCustom(); renderHidden();
   openDialog("setSheet", "setTitle");
 };
 const saveNames = () => store.set("sm.names", [$("name1").value.trim(), $("name2").value.trim()]);
@@ -1400,6 +1466,26 @@ $("cList").addEventListener("click", e => {
   const list = custom(); list.splice(+b.dataset.del, 1); store.set("sm.custom", list);
   $("cMsg").textContent = "Carta borrada."; renderCustom(); $("cMode").focus();
 });
+// Every card by its id, so the list of removed cards can show their text.
+function renderHidden() {
+  const h = hidden(), all = new Map(playable().flatMap(m => allCardsFor(m, "todo", DATA)).concat(allCardsFor("profundas", "chispa", DATA)).map(c => [cardId(c), c]));
+  const rows = h.map(id => [id, all.get(id)]).filter(([, c]) => c);
+  $("hList").innerHTML = rows.length ? rows.map(([id, c]) => `<li><span><small>${esc(MODES[c.mode].short || MODES[c.mode].name)}</small>${esc(c.text || `${c.a} o ${c.b}`)}</span>
+    <button type="button" data-back="${esc(id)}" aria-label="Recuperar la carta ${esc(c.text || c.a)}">Recuperar</button></li>`).join("")
+    : `<li><span>No habéis quitado ninguna carta.</span></li>`;
+  $("hCopy").hidden = !rows.length;
+  return rows;
+}
+$("hList").addEventListener("click", e => {
+  const b = e.target.closest("[data-back]"); if (!b) return;
+  store.set("sm.hidden", hidden().filter(x => x !== b.dataset.back));
+  $("hMsg").textContent = "Carta recuperada."; renderHidden(); $("hHint").focus();
+});
+$("hCopy").onclick = () => {
+  const text = renderHidden().map(([, c]) => `${MODES[c.mode].name}: ${c.text || `${c.a} o ${c.b}`}`).join("\n");
+  const done = () => { $("hMsg").textContent = "Lista copiada. Pégala en el chat para quitarlas de la app para siempre."; };
+  try { navigator.clipboard.writeText(text).then(done, () => { $("hMsg").textContent = text; }); } catch (e) { $("hMsg").textContent = text; }
+};
 const closeSettings = () => { closeDialog("setSheet"); renderHome(); };
 $("setDone").onclick = closeSettings;
 $("setSheet").addEventListener("click", e => { if (e.target.id === "setSheet") closeSettings(); });
