@@ -787,6 +787,70 @@ const DATA = {
     "Algo que antes me importaba mucho y ahora no es…",
     "Me gustaría que me recordaran por…"
   ],
+  anecdotas: [
+    "te reíste hasta llorar",
+    "hiciste algo muy valiente",
+    "te metiste en un lío sin querer",
+    "alguien te sorprendió para bien",
+    "pasaste muchísima vergüenza",
+    "te perdiste en un sitio nuevo",
+    "rompiste algo y nadie se enteró",
+    "te salió todo al revés",
+    "cambiaste de opinión sobre alguien",
+    "te dieron el mejor regalo de tu vida",
+    "lloraste viendo una película",
+    "te pillaron en una mentira",
+    "hiciste una locura por amistad",
+    "te quedaste sin palabras",
+    "dijiste algo en el peor momento",
+    "ayudaste a alguien sin que lo supiera",
+    "conociste a alguien que te cambió la vida",
+    "te equivocaste de persona o de mensaje",
+    "te dio un ataque de risa en el peor sitio",
+    "probaste algo que juraste que nunca probarías",
+    "te hicieron una broma muy buena",
+    "te fuiste de un sitio sin despedirte",
+    "todo salió mejor de lo esperado",
+    "tuviste muchísimo miedo",
+    "te enfadaste por una tontería",
+    "te reconciliaste con alguien",
+    "hiciste un viaje que no olvidarás",
+    "te tocó improvisar delante de gente",
+    "alguien te dijo justo lo que necesitabas oír",
+    "sentiste que habías hecho lo correcto"
+  ],
+  loharia: [
+    "Encuentras una cartera con 500 € y un DNI en la calle.",
+    "Te invitan a una boda donde no conoces a nadie más que a quien se casa.",
+    "Te equivocas de chat y mandas un audio criticando a alguien que está en ese grupo.",
+    "En un restaurante te traen un plato que no has pedido y está buenísimo.",
+    "Te ofrecen el trabajo de tus sueños, pero en otro país.",
+    "Tu mejor amistad empieza a salir con tu ex.",
+    "Te dan el cambio de más en una tienda.",
+    "Una persona famosa se sienta a tu lado en el tren.",
+    "Te regalan algo horrible delante de quien te lo regala.",
+    "Descubres que te han organizado una fiesta sorpresa.",
+    "Te ofrecen 1.000 € por no usar el móvil durante una semana.",
+    "Ves a alguien de tu familia en una app de citas.",
+    "Tienes que dar un discurso mañana y no has preparado nada.",
+    "El ascensor se para y pasas una hora dentro con tu jefe o jefa.",
+    "Alguien se te cuela en la cola del súper.",
+    "Te enteras de un secreto gordo de una amistad sin que te lo cuente.",
+    "Puedes volver un día al pasado, pero solo a mirar.",
+    "Te despiertas y tienes un día entero sin obligaciones.",
+    "Te piden que apadrines a un bebé de tu familia.",
+    "Te ofrecen salir en un reality.",
+    "Te llama un número desconocido a las 3 de la mañana.",
+    "Pierdes el último tren de la noche.",
+    "Te toca un viaje para dos y tienes que elegir con quién ir hoy mismo.",
+    "Una persona desconocida te pide ayuda en la calle.",
+    "Te equivocas de nombre al saludar a alguien que conoces de hace años.",
+    "Te dejan una casa enorme en herencia, pero en un pueblo perdido.",
+    "En el piso de al lado ponen música alta a las 2 de la mañana.",
+    "Puedes saber una sola cosa de tu futuro.",
+    "Te piden que guardes un secreto que no te parece bien.",
+    "Te ofrecen cambiar de vida con alguien durante un mes."
+  ],
   top3: [
     "Tus 3 comidas favoritas",
     "3 canciones que te definen",
@@ -839,6 +903,8 @@ const ICONS = {
   verdad: '<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3"/><circle cx="15.5" cy="15.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/>',
   probable: '<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6M15 13l3 3 4-5"/>',
   completa: '<path d="M4 4h16v12H9l-5 4z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/>',
+  anecdotas: '<path d="M4 5h16v10H9l-5 4z"/><path d="M8 9h8M8 12h5"/>',
+  loharia: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/><path d="M17 4l2-2M19 7h2"/>',
   top3: '<path d="M3 20h18"/><path d="M9 20V8h6v12"/><path d="M3 20v-7h6"/><path d="M15 20v-5h6v5"/>',
   dosverdades: '<path d="M3 7l2 2 4-4M3 16l2 2 4-4M14 7h7M15 15l5 5M20 15l-5 5"/>',
   mezcla: '<path d="M3 6h4l10 12h4M3 18h4l10-12h4M18 3l3 3-3 3M18 15l3 3-3 3"/>',
@@ -859,6 +925,8 @@ const MODES = {
   verdad:     { name: "Verdad o reto", tag: "Verdad o reto", c: "#B5249E", fg: "#FFFFFF" },
   probable:   { name: "¿Quién es más probable?", tag: "¿Quién?", c: "#2C67E6", fg: "#FFFFFF" },
   completa:   { name: "Completa la frase", tag: "Completa", c: "#2CC8F0", fg: "#1E1633" },
+  anecdotas:  { name: "Cuéntame una vez que…", short: "Una vez que…", tag: "Anécdota", c: "#B9A6FF", fg: "#1E1633" },
+  loharia:    { name: "Lo haría yo", tag: "Situación", c: "#14808A", fg: "#FFFFFF" },
   top3:       { name: "Top 3", tag: "Top 3", c: "#22B573", fg: "#1E1633" },
   dosverdades:{ name: "Dos verdades y una mentira", tag: "Tema", c: "#FFD84A", fg: "#1E1633" },
   mezcla:     { name: "Mezcla de todo", tag: "Mezcla", c: "#FFFFFF", fg: "#1E1633", wide: true },
@@ -877,6 +945,8 @@ const RULES = {
   verdad: "Una carta para cada persona, por turnos. Si una carta no os apetece, pulsad «Pasar»: se va al final y no pasa nada.",
   probable: "Señalad a la vez a quién le pega más. Si no coincidís, defended vuestra elección.",
   completa: "Terminad la frase en voz alta, por turnos, con lo primero que os salga.",
+  anecdotas: "Por turnos, contad una historia real que encaje con la carta. La otra persona puede hacer tres preguntas para sacar más detalles.",
+  loharia: "Cada persona dice qué haría de verdad en esa situación. Luego la otra dice si se lo cree o si en realidad haría otra cosa.",
   top3: "Cada persona dice su podio del tema, del tercero al primero, y explica por qué. Si coincidís en alguno, punto para los dos.",
   dosverdades: "Quien tiene el móvil cuenta tres cosas sobre el tema: dos verdaderas y una inventada. La otra persona adivina cuál es la mentira.",
   mezcla: "Cartas de todos los juegos. Cada carta dice a qué juego pertenece y el fondo toma su color.",
@@ -1048,6 +1118,8 @@ const HOW = {
   verdad: "Os turnáis: una carta para cada persona. Si no te apetece, pulsa «Pasar».",
   probable: "Señalad a la vez a la persona que creéis.",
   completa: "Termina la frase en voz alta. Luego le toca a la otra persona.",
+  anecdotas: "Cuenta la historia. La otra persona puede hacerte tres preguntas.",
+  loharia: "Di qué harías de verdad. ¿La otra persona se lo cree?",
   top3: "Decid vuestro podio, del tercero al primero. ¿Coincidís en alguno?",
   dosverdades: "Di dos verdades y una mentira sobre este tema. La otra persona adivina cuál es la mentira."
 };
@@ -1055,7 +1127,7 @@ const VERDICTS = { princess: "¿Princess treatment, bare minimum o red flag?", r
 const upper = s => s.charAt(0).toUpperCase() + s.slice(1);
 const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
 // Modes played in turns (the card says whose turn it is when you add names) and modes with the optional timer.
-const TURNS = ["profundas", "adivina", "verdad", "completa", "dosverdades"];
+const TURNS = ["profundas", "adivina", "verdad", "completa", "anecdotas", "dosverdades"];
 const TIMED = ["completa", "top3", "dosverdades"];
 
 function cardHTML(c) {
@@ -1067,6 +1139,7 @@ function cardHTML(c) {
   if (c.mode === "prefieres") body = `<div class="or"><div class="opt">${esc(upper(c.a))}</div><div class="vs">o</div><div class="opt">${esc(upper(c.b))}</div></div>`;
   else if (c.mode === "hot") body = `<p class="q">«${t}»</p>`;
   else if (c.mode === "yonunca") body = `<p class="q">Yo nunca ${t}</p>`;
+  else if (c.mode === "anecdotas") body = `<p class="q">Cuéntame una vez que ${t}.</p>`;
   else body = `<p class="q${c.text.length > 80 ? " long" : ""}">${t}</p>`;
   const v = VERDICTS[c.mode] ? `<p class="verdicts">${VERDICTS[c.mode]}</p>` : "";
   const how = c.level === "chispa" ? `<p class="how">Si no te apetece, pulsa «Pasar».</p>` : HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
@@ -1290,7 +1363,7 @@ document.addEventListener("keydown", e => {
 });
 
 // Ajustes: names, the cards with chispa and your own cards. Everything stays in localStorage on this phone.
-const CUSTOM_LABEL = { yonunca: "Lo que va después de «Yo nunca…»", prefieres: "Primera opción", top3: "El tema, por ejemplo «3 comidas favoritas»", dosverdades: "Tema", hot: "La opinión", princess: "Lo que hace", redflag: "El rasgo o la costumbre" };
+const CUSTOM_LABEL = { yonunca: "Lo que va después de «Yo nunca…»", prefieres: "Primera opción", anecdotas: "Lo que va después de «Cuéntame una vez que…»", loharia: "La situación", top3: "El tema, por ejemplo «3 comidas favoritas»", dosverdades: "Tema", hot: "La opinión", princess: "Lo que hace", redflag: "El rasgo o la costumbre" };
 function renderCustom() {
   const mode = $("cMode").value;
   $("cKindWrap").hidden = mode !== "verdad";
@@ -1313,7 +1386,7 @@ $("name1").oninput = saveNames; $("name2").oninput = saveNames;
 $("picante").onchange = () => store.set("sm.picante", $("picante").checked);
 $("cMode").onchange = renderCustom;
 $("cAdd").onclick = () => {
-  const mode = $("cMode").value, text = $("cText").value.trim().replace(/^yo nunca\s*/i, ""), b = $("cText2").value.trim();
+  const mode = $("cMode").value, text = $("cText").value.trim().replace(/^yo nunca\s*/i, "").replace(/^(cuéntame )?una vez que\s*/i, "").replace(/\.$/, ""), b = $("cText2").value.trim();
   if (!text || (mode === "prefieres" && !b)) { $("cMsg").textContent = mode === "prefieres" ? "Escribe las dos opciones." : "Escribe el texto de la carta."; return; }
   const card = mode === "prefieres" ? { mode, a: text, b } : mode === "verdad" ? { mode, kind: $("cKind").value, text } : { mode, text };
   if (custom().some(c => cardId(c) === cardId(card)) || cardsFor(mode, "todo").some(c => cardId(c) === cardId(card))) { $("cMsg").textContent = "Esa carta ya existe."; return; }
