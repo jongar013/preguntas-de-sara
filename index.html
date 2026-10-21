@@ -189,6 +189,14 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 @keyframes sh2 { 50% { transform: translateX(34%) rotate(10deg); } }
 #game.enter { animation: enter .26s ease-out; }
 @keyframes enter { from { opacity: 0; transform: scale(.97); } }
+.wheel-wrap { position: relative; display: grid; justify-items: center; gap: 16px; margin: auto 0; }
+.wheel { width: min(62vw, 230px); aspect-ratio: 1; max-width: 100%; transition: transform 1.9s cubic-bezier(.15,.85,.2,1); }
+.wheel text { font-family: var(--font-display); font-size: 6.4px; fill: #1E1633; }
+.pointer { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border: 12px solid transparent; border-top: 20px solid var(--ink); border-bottom: 0; z-index: 1; }
+.spin { min-height: 50px; padding: 0 22px; border-radius: 16px; background: var(--ink); color: #fff; font-family: var(--font-display); font-size: 1.2rem; box-shadow: 0 4px 0 rgba(0,0,0,.3); }
+.spin:disabled { opacity: .7; }
+.q.reveal { animation: reveal .35s cubic-bezier(.2,.9,.3,1.3); }
+@keyframes reveal { from { opacity: 0; transform: scale(.9); } }
 .turn { margin: -4px 0 0; font-weight: 800; font-size: 1rem; color: var(--muted-ink); }
 .turn b { color: var(--ink); font-weight: 900; }
 .timer { align-self: flex-start; display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 12px; border-radius: 999px;
@@ -236,7 +244,8 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .swipehint { text-align: center; font-weight: 800; font-size: .82rem; opacity: .8; margin: -4px 0 0; }
 
 @media (prefers-reduced-motion: reduce) {
-  .fav.pop-in svg, .pt.bump b, .toast { animation: none; }
+  .fav.pop-in svg, .pt.bump b, .toast, .q.reveal { animation: none; }
+  .wheel { transition: none; }
   .card.deal, .card.back, #game.enter, .timer.done, .table.shuffling .ghost-card { animation: none !important; }
   .card.fly, .card.gather { transition: none; } body { transition: none; } .sheet { animation: none; }
 }
@@ -701,18 +710,6 @@ const DATA = {
     ["Verdad", "¿Qué es lo último que te ha dado celos?"],
     ["Verdad", "¿Qué búsqueda de Google no enseñarías nunca?"],
     ["Verdad", "¿Qué opinas de verdad de alguien con quien he salido?"],
-    ["Reto", "Enseña una foto de tu carrete que te guste mucho y cuenta su historia."],
-    ["Reto", "Narra lo que hace la otra persona como en un documental de animales, durante 30 segundos."],
-    ["Reto", "Imita a la otra persona durante 30 segundos."],
-    ["Reto", "Canta el estribillo de la última canción que has escuchado."],
-    ["Reto", "Inventa y canta una canción de diez segundos sobre la otra persona."],
-    ["Reto", "Habla con un acento durante las dos próximas cartas."],
-    ["Reto", "Enseña tus emojis más usados."],
-    ["Reto", "Haz tu mejor pose de foto de perfil."],
-    ["Reto", "Cuenta chistes malos hasta que la otra persona se ría."],
-    ["Reto", "Pon la canción que más vergüenza te da que te guste."],
-    ["Reto", "Describe a la otra persona con tres palabras sinceras."],
-    ["Reto", "Haz 10 sentadillas sin dejar de hablar."],
     ["Verdad", "¿Qué es lo que más te gusta de ti?"],
     ["Verdad", "¿Con quién fue tu último mensaje antes de este juego?"],
     ["Verdad", "¿Has tenido un crush con alguien que conozco?"],
@@ -721,14 +718,36 @@ const DATA = {
     ["Verdad", "¿Cuál es la mayor tontería por la que te has enfadado?"],
     ["Verdad", "¿Qué te gustaría que hiciera más a menudo?"],
     ["Verdad", "¿Qué canción pones cuando nadie te escucha?"],
-    ["Reto", "Cuenta una película solo con emojis y que la otra persona la adivine."],
-    ["Reto", "Haz tu mejor imitación de un personaje famoso."],
-    ["Reto", "Di tres cosas que te gusten de la otra persona."],
-    ["Reto", "Baila 20 segundos sin música."],
-    ["Reto", "Deja que la otra persona te elija una pose y aguántala 20 segundos."],
-    ["Reto", "Habla solo con preguntas hasta tu próximo turno."],
-    ["Reto", "Enseña una foto tuya de hace años y cuenta qué pasaba ese día."],
-    ["Reto", "Cuenta tu anécdota más vergonzosa en 30 segundos."]
+    ["Reto", "Narra lo que hace la otra persona como en un documental de animales, durante 30 segundos.", "Risas"],
+    ["Reto", "Imita a la otra persona durante 30 segundos.", "Risas"],
+    ["Reto", "Cuenta chistes malos hasta que la otra persona se ría.", "Risas"],
+    ["Reto", "Habla con un acento durante las dos próximas cartas.", "Risas"],
+    ["Reto", "Habla solo con preguntas hasta tu próximo turno.", "Risas"],
+    ["Reto", "Da el pronóstico del tiempo de cómo va a ir la noche, como en la tele.", "Risas"],
+    ["Reto", "Canta el estribillo de la última canción que has escuchado.", "Espectáculo"],
+    ["Reto", "Inventa y canta una canción de diez segundos sobre la otra persona.", "Espectáculo"],
+    ["Reto", "Haz tu mejor imitación de un personaje famoso.", "Espectáculo"],
+    ["Reto", "Baila 20 segundos sin música.", "Espectáculo"],
+    ["Reto", "Haz tu mejor pose de foto de perfil.", "Espectáculo"],
+    ["Reto", "Representa una película sin hablar y que la otra persona la adivine.", "Espectáculo"],
+    ["Reto", "Cuenta una película solo con emojis y que la otra persona la adivine.", "Habilidad"],
+    ["Reto", "Haz 10 sentadillas sin dejar de hablar.", "Habilidad"],
+    ["Reto", "Deja que la otra persona te elija una pose y aguántala 20 segundos.", "Habilidad"],
+    ["Reto", "Di el abecedario al revés lo más rápido que puedas.", "Habilidad"],
+    ["Reto", "Dibuja a la otra persona en el móvil en 30 segundos.", "Habilidad"],
+    ["Reto", "Aguanta 30 segundos sin reírte mientras la otra persona intenta hacerte reír.", "Habilidad"],
+    ["Reto", "Describe a la otra persona con tres palabras sinceras.", "Cariño"],
+    ["Reto", "Di tres cosas que te gusten de la otra persona.", "Cariño"],
+    ["Reto", "Cuenta un recuerdo bonito que tengas con la otra persona.", "Cariño"],
+    ["Reto", "Escribe en el móvil una frase bonita para la otra persona y léela en voz alta.", "Cariño"],
+    ["Reto", "Dale a la otra persona un cumplido que nunca le hayas dicho.", "Cariño"],
+    ["Reto", "Haz un brindis por la otra persona, aunque sea con agua.", "Cariño"],
+    ["Reto", "Enseña una foto de tu carrete que te guste mucho y cuenta su historia.", "Vergüenza"],
+    ["Reto", "Enseña tus emojis más usados.", "Vergüenza"],
+    ["Reto", "Pon la canción que más vergüenza te da que te guste.", "Vergüenza"],
+    ["Reto", "Enseña una foto tuya de hace años y cuenta qué pasaba ese día.", "Vergüenza"],
+    ["Reto", "Cuenta tu anécdota más vergonzosa en 30 segundos.", "Vergüenza"],
+    ["Reto", "Deja que la otra persona vea lo que más has escuchado esta semana.", "Vergüenza"]
   ],
   probable: [
     "¿Quién es más probable que acabe viviendo en otro país?",
@@ -957,7 +976,7 @@ const RULES = {
   hot: "Decid si estáis de acuerdo y defended vuestra postura. Gana quien convenza a la otra persona.",
   redflag: "Decid a la vez si os parece green flag, red flag o depende, y explicad por qué.",
   yonunca: "Quien lo haya hecho, lo confiesa y cuenta la historia.",
-  verdad: "Una carta para cada persona, por turnos. Si una carta no os apetece, pulsad «Pasar»: se va al final y no pasa nada.",
+  verdad: "Una carta para cada persona, por turnos. En los retos, girad la ruleta para ver de qué estilo os toca. Los retos son siempre solo entre vosotros dos. Si una carta no os apetece, pulsad «Pasar»: se va al final y no pasa nada.",
   probable: "Señalad a la vez a quién le pega más. Si no coincidís, defended vuestra elección.",
   completa: "Terminad la frase en voz alta, por turnos, con lo primero que os salga.",
   anecdotas: "Por turnos, contad una historia real que encaje con la carta. La otra persona puede hacer tres preguntas para sacar más detalles.",
@@ -1011,7 +1030,7 @@ function allCardsFor(mode, level, data) {
     return lv.flatMap(l => (data.profundas[l] || []).map(text => ({ mode, text, level: l })).concat(l === "profundo" ? own.map(c => ({ ...c, level: l })) : []));
   }
   if (mode === "prefieres") return data.prefieres.map(([a, b]) => ({ mode, a, b })).concat(own);
-  if (mode === "verdad") return data.verdad.map(([kind, text]) => ({ mode, kind, text })).concat(own);
+  if (mode === "verdad") return data.verdad.map(([kind, text, style]) => ({ mode, kind, text, style })).concat(own);
   if (mode === "mezcla") return playable().flatMap(m => cardsFor(m, "todo", data));
   if (mode === "favoritas") { const f = new Set(favs()); return cardsFor("mezcla").filter(c => f.has(cardId(c))); }
   return (data[mode] || []).map(text => ({ mode, text })).concat(own);
@@ -1113,7 +1132,7 @@ function loadDeck() {
 function startMode(mode, level) {
   state.mode = mode; state.level = level || (mode === "profundas" ? store.get("sm.lvl", "todo") : "todo");
   if (!levels().some(l => l[0] === state.level)) state.level = "todo";
-  state.score = [0, 0]; state.lastPoint = null;
+  state.score = [0, 0]; state.lastPoint = null; state.spun = new Set();
   const saved = mode === "favoritas" ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
   state.round = saved.round; state.idx = saved.idx;
   state.deck = mode === "favoritas" ? buildDeck(mode, state.level, state.round) : loadDeck();
@@ -1153,8 +1172,40 @@ const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;"
 const TURNS = ["profundas", "adivina", "verdad", "completa", "anecdotas", "dosverdades"];
 const TIMED = ["completa", "top3", "dosverdades"];
 
+// Ruleta for Verdad o reto: the reto card already knows its style, the wheel shows which one it is.
+const STYLES = [["Risas", "#FFD84A"], ["Espectáculo", "#FF6FAE"], ["Habilidad", "#2CC8F0"], ["Cariño", "#22B573"], ["Vergüenza", "#FF5A36"]];
+const needsSpin = c => c.kind === "Reto" && c.style && !(state.spun && state.spun.has(cardId(c)));
+function wheelHTML() {
+  const a = 360 / STYLES.length, pt = d => { const r = (d - 90) * Math.PI / 180; return `${(46 * Math.cos(r)).toFixed(2)} ${(46 * Math.sin(r)).toFixed(2)}`; };
+  const parts = STYLES.map(([n, col], i) => `<path d="M0 0L${pt(i * a)}A46 46 0 0 1 ${pt((i + 1) * a)}Z" fill="${col}"/>
+    <text transform="rotate(${i * a + a / 2}) translate(0 -27) rotate(90)" text-anchor="middle" dominant-baseline="middle">${n}</text>`).join("");
+  return `<div class="wheel-wrap"><span class="pointer" aria-hidden="true"></span>
+    <svg class="wheel" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="48" fill="#1E1633"/>${parts}<circle r="7" fill="#1E1633"/></svg>
+    <button class="spin" type="button">Girar la ruleta</button></div>`;
+}
+function bindSpin(card, c) {
+  const b = card.querySelector(".spin"); if (!b) return;
+  b.addEventListener("pointerdown", e => e.stopPropagation());
+  b.onclick = () => {
+    if (busy) return;
+    const i = STYLES.findIndex(st => st[0] === c.style), a = 360 / STYLES.length;
+    const turn = 360 * 5 - (i * a + a / 2) + (Math.random() - .5) * a * .6;
+    const done = () => {
+      busy = false; state.spun.add(cardId(c)); render(null);
+      $("live").textContent = `Reto de ${c.style.toLowerCase()}. ${c.text}`;
+      const q = $("table").querySelector(".q"); if (q) q.classList.add("reveal");
+    };
+    b.disabled = true; b.textContent = "Girando…";
+    if (reduced) { done(); return; }
+    busy = true;
+    card.querySelector(".wheel").style.transform = `rotate(${turn}deg)`;
+    setTimeout(done, 2000);
+  };
+}
+
 function cardHTML(c) {
   let tag = c.kind || (c.level ? LEVEL_NAME[c.level] : MODES[c.mode].tag);
+  if (c.kind === "Reto" && c.style && !needsSpin(c)) tag = `Reto de ${c.style.toLowerCase()}`;
   if (META.includes(state.mode) && !c.kind) tag = MODES[c.mode].short || MODES[c.mode].name;
   if (c.custom) tag += " (vuestra)";
   let body;
@@ -1163,6 +1214,7 @@ function cardHTML(c) {
   else if (c.mode === "hot") body = `<p class="q">«${t}»</p>`;
   else if (c.mode === "yonunca") body = `<p class="q">Yo nunca ${t}</p>`;
   else if (c.mode === "anecdotas") body = `<p class="q">Cuéntame una vez que ${t}.</p>`;
+  else if (needsSpin(c)) body = wheelHTML();
   else body = `<p class="q${c.text.length > 80 ? " long" : ""}">${t}</p>`;
   const v = VERDICTS[c.mode] ? `<p class="verdicts">${VERDICTS[c.mode]}</p>` : "";
   const how = c.level === "chispa" ? `<p class="how">Si no te apetece, pulsa «Pasar».</p>` : HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
@@ -1243,6 +1295,7 @@ function render(anim) {
     bin.addEventListener("pointerdown", e => e.stopPropagation());
     bin.onclick = () => hideCard(c);
     bindScore(card);
+    bindSpin(card, c);
     bindTimer(card);
     bindDrag(card);
   }
