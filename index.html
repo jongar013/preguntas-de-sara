@@ -221,6 +221,12 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .sheet textarea { resize: vertical; }
 .sheet input:focus-visible, .sheet select:focus-visible, .sheet textarea:focus-visible { outline: 3px solid #6C5CFF; outline-offset: 2px; }
 .row2 { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.names { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.names .nm { display: flex; min-width: 0; position: relative; }
+.names .nm input { width: 100%; min-width: 0; }
+.names .nm.x input { padding-right: 44px; }
+.names .del { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; display: grid; place-items: center; font-size: 1.4rem; font-weight: 900; color: var(--muted-ink); }
+.more { justify-self: start; min-height: 44px; padding: 0 16px; border-radius: 14px; background: var(--soft); color: var(--ink); font-weight: 900; }
 .switch { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 48px; }
 .switch b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 1.2rem; }
 .switch input { flex: none; width: 26px; height: 26px; accent-color: var(--ink); }
@@ -305,11 +311,9 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
   <div class="sheet tall" role="dialog" aria-modal="true" aria-labelledby="setTitle">
     <h2 id="setTitle" tabindex="-1">Ajustes</h2>
     <p class="group-title">¿Quién juega?</p>
-    <p class="hint">Opcional. Con vuestros nombres, la carta dice a quién le toca y el marcador de Adivina los usa.</p>
-    <div class="row2">
-      <input type="text" id="name1" maxlength="16" autocomplete="off" placeholder="Persona 1" aria-label="Nombre de la primera persona">
-      <input type="text" id="name2" maxlength="16" autocomplete="off" placeholder="Persona 2" aria-label="Nombre de la segunda persona">
-    </div>
+    <p class="hint">Opcional. Con vuestros nombres, la carta dice a quién le toca o quién empieza, y el marcador de Adivina los usa.</p>
+    <div class="names" id="nameList"></div>
+    <button class="more" id="addName" type="button">Añadir persona</button>
     <hr class="sep">
     <p class="group-title">Vuestras cartas</p>
     <p class="hint">Escribid vuestras propias cartas. Se guardan solo en este móvil.</p>
@@ -1065,6 +1069,8 @@ const favs = () => store.get("sm.favs", []);
 // Cards you write yourselves, kept only on this phone: [{ mode, text } | { mode, a, b } | { mode, kind, text }].
 const custom = () => store.get("sm.custom", []).filter(c => MODES[c.mode]);
 const names = () => store.get("sm.names", ["", ""]);
+// The names actually filled in, in the order they take turns.
+const people = () => names().map(n => String(n).trim()).filter(Boolean);
 // Cards you removed with the bin on the card. They stay out of every deck until you bring them back in Ajustes.
 const hidden = () => store.get("sm.hidden", []);
 // The old Picante deck now lives inside Preguntillas, so its favourites and own cards move there too.
@@ -1132,7 +1138,7 @@ function loadDeck() {
 function startMode(mode, level) {
   state.mode = mode; state.level = level || (mode === "profundas" ? store.get("sm.lvl", "todo") : "todo");
   if (!levels().some(l => l[0] === state.level)) state.level = "todo";
-  state.score = [0, 0]; state.lastPoint = null; state.spun = new Set();
+  state.score = players().map(() => 0); state.lastPoint = null; state.spun = new Set();
   const saved = mode === "favoritas" ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
   state.round = saved.round; state.idx = saved.idx;
   state.deck = mode === "favoritas" ? buildDeck(mode, state.level, state.round) : loadDeck();
@@ -1221,15 +1227,15 @@ function cardHTML(c) {
   const fav = favs().includes(cardId(c));
   const heart = `<button class="fav" type="button" aria-pressed="${fav}" aria-label="Guardar en favoritas">${icon("favoritas")}</button>`;
   const score = c.mode === "adivina" ? scoreHTML() : "";
-  const [n1, n2] = names();
-  const turn = n1 && n2 && TURNS.includes(c.mode) ? `<p class="turn">Le toca a <b>${esc([n1, n2][state.idx % 2])}</b></p>` : "";
+  const ppl = people(), who = ppl.length > 1 ? esc(ppl[state.idx % ppl.length]) : "";
+  const turn = who ? `<p class="turn">${TURNS.includes(c.mode) ? "Le toca a" : "Empieza"} <b>${who}</b></p>` : "";
   const timer = TIMED.includes(c.mode) ? `<button class="timer" type="button" aria-pressed="false">${icon("reloj")}<span>30 s</span></button>` : "";
   const bin = `<button class="hide" type="button" aria-label="Quitar esta carta">${icon("quitar")}</button>`;
   return `<div class="cardtop"><span class="tag">${icon(c.mode)}${tag}</span><span class="tools">${bin}${heart}</span></div>${turn}${body}${how}${score}${timer}`;
 }
 
 // Score for "Adivina mi respuesta": only lives while you play, back to 0 when you leave the deck.
-const players = () => names().map((n, i) => esc(n) || `Persona ${i + 1}`);
+const players = () => people().length > 1 ? people().map(esc) : ["Persona 1", "Persona 2"];
 function scoreHTML() {
   return `<div class="score" role="group" aria-label="Aciertos">${state.score.map((n, i) =>
     `<button class="pt" type="button" data-p="${i}" aria-label="Sumar un acierto a ${players()[i]}, lleva ${n}"><span>${players()[i]}</span><b>${n}</b></button>`).join("")}${
@@ -1247,7 +1253,7 @@ function bindScore(card) {
       const again = card.querySelector(undo ? ".pt" : `.pt[data-p="${b.dataset.p}"]`);
       again.focus();
       if (!undo) again.classList.add("bump");
-      $("live").textContent = `${names()[0] || "Persona 1"}: ${state.score[0]}. ${names()[1] || "Persona 2"}: ${state.score[1]}.`;
+      $("live").textContent = players().map((n, i) => `${n}: ${state.score[i]}.`).join(" ");
     };
   });
 }
@@ -1493,12 +1499,29 @@ function renderCustom() {
 $("openSet").querySelector("svg").innerHTML = ICONS.ajustes;
 $("cMode").innerHTML = Object.keys(MODES).filter(m => !META.includes(m)).map(m => `<option value="${m}">${esc(MODES[m].short || MODES[m].name)}</option>`).join("");
 $("openSet").onclick = () => {
-  [$("name1").value, $("name2").value] = names();
+  renderNames();
   $("cMsg").textContent = ""; $("hMsg").textContent = ""; renderCustom(); renderHidden();
   openDialog("setSheet", "setTitle");
 };
-const saveNames = () => store.set("sm.names", [$("name1").value.trim(), $("name2").value.trim()]);
-$("name1").oninput = saveNames; $("name2").oninput = saveNames;
+// Up to 8 people; the first two rows are always there, the rest can be removed.
+const MAX_PEOPLE = 8;
+function renderNames() {
+  const list = names().concat(["", ""]).slice(0, Math.max(2, names().length));
+  $("nameList").innerHTML = list.map((n, i) => `<div class="nm${i > 1 ? " x" : ""}"><input type="text" maxlength="16" autocomplete="off" data-i="${i}" value="${esc(n)}" placeholder="Persona ${i + 1}" aria-label="Nombre de la persona ${i + 1}">${
+    i > 1 ? `<button class="del" type="button" data-del-name="${i}" aria-label="Quitar a la persona ${i + 1}">×</button>` : ""}</div>`).join("");
+  $("addName").hidden = list.length >= MAX_PEOPLE;
+}
+const saveNames = () => store.set("sm.names", [...$("nameList").querySelectorAll("input")].map(x => x.value.trim()));
+$("nameList").addEventListener("input", saveNames);
+$("nameList").addEventListener("click", e => {
+  const b = e.target.closest("[data-del-name]"); if (!b) return;
+  const list = names(); list.splice(+b.dataset.delName, 1); store.set("sm.names", list);
+  renderNames(); $("addName").focus();
+});
+$("addName").onclick = () => {
+  saveNames(); store.set("sm.names", [...names().concat(["", ""]).slice(0, Math.max(2, names().length)), ""]);
+  renderNames(); const all = $("nameList").querySelectorAll("input"); all[all.length - 1].focus();
+};
 $("cMode").onchange = renderCustom;
 $("cAdd").onclick = () => {
   const mode = $("cMode").value, text = $("cText").value.trim().replace(/^yo nunca\s*/i, "").replace(/^(cuéntame )?una vez que\s*/i, "").replace(/\.$/, ""), b = $("cText2").value.trim();
