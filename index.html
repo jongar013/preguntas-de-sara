@@ -57,14 +57,15 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .deck:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.38); }
 .deck .badge { width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,.28); display: grid; place-items: center; }
 .deck .name { font-family: var(--font-display); font-size: 1.18rem; line-height: 1.08; margin-top: auto; }
-.deck .count { font-size: .82rem; font-weight: 800; opacity: .78; }
+.deck .count { font-size: .85rem; font-weight: 800; }
 .deck-wrap { position: relative; display: flex; }
 .deck-wrap.wide { grid-column: 1 / -1; }
 .deck { width: 100%; }
 .info { position: absolute; top: 10px; right: 10px; width: 34px; height: 34px; border-radius: 50%; background: var(--card); color: var(--ink);
   border: 2.5px solid var(--ink); font-family: var(--font-display); font-size: 1.15rem; line-height: 1; display: grid; place-items: center; box-shadow: 0 3px 0 var(--ink); }
+.info::after { content: ""; position: absolute; inset: -6px; }
 .info:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
-.topbar .info { position: static; width: 40px; height: 40px; }
+.topbar .info { position: relative; top: auto; right: auto; width: 40px; height: 40px; }
 .rules { font-weight: 700; font-size: 1.05rem; line-height: 1.5; margin: 0 0 6px; color: var(--ink); }
 .sheet .head { display: flex; align-items: center; gap: 12px; }
 .sheet .head .badge { width: 46px; height: 46px; border-radius: 14px; background: var(--c); color: var(--fg); border: 2.5px solid var(--ink); display: grid; place-items: center; flex: none; }
@@ -105,7 +106,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .bar { height: 10px; border-radius: 999px; background: rgba(30,22,51,.22); overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; transition: width .3s ease; }
 
-.table { flex: 1; min-height: 0; position: relative; margin: 6px 6px 18px; }
+.table { flex: 1; min-height: 0; position: relative; margin: 6px 6px 12px; }
 .sheet-wrap.center { align-items: center; padding: 16px; }
 .pop { width: 100%; max-width: 360px; background: var(--card); color: var(--ink); border: 3px solid var(--ink); border-radius: 28px; box-shadow: 0 8px 0 rgba(0,0,0,.45);
   padding: 22px; display: grid; gap: 12px; text-align: center; animation: up .22s ease-out; }
@@ -144,18 +145,20 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .or .opt { font-weight: 900; font-size: clamp(1.35rem, 5.8vw, 1.85rem); line-height: 1.18; text-wrap: balance; background: var(--soft); border-radius: 16px; padding: 12px 14px; }
 .or .vs { justify-self: center; font-family: var(--font-display); font-size: 1.4rem; background: var(--c); color: var(--fg); border: 2.5px solid var(--ink); border-radius: 12px; padding: 2px 12px; transform: rotate(-4deg); }
 .how { font-weight: 700; font-size: .95rem; color: var(--muted-ink); line-height: 1.4; margin: 0; }
-.verdicts { display: flex; flex-wrap: wrap; gap: 8px; margin-bottom: 10px; }
-.verdicts span { border: 2.5px solid var(--ink); border-radius: 12px; padding: 6px 10px; font-weight: 900; font-size: .9rem; color: var(--ink); background: var(--soft); }
-.verdicts span:first-child { background: var(--c); color: var(--fg); }
+.verdicts { font-weight: 900; font-size: 1.05rem; line-height: 1.3; color: var(--ink); margin: 0 0 4px; }
 
 .end { margin: auto 0; display: grid; gap: 16px; justify-items: start; }
 .end h2 { font-family: var(--font-display); font-weight: 400; font-size: 2.2rem; margin: 0; line-height: 1; }
 
-.controls { display: grid; grid-template-columns: 64px 1fr; gap: 12px; align-items: stretch; }
-.controls .round { width: 64px; height: 64px; }
-.next { background: var(--ink); color: #fff; border-radius: 20px; font-family: var(--font-display); font-size: 1.45rem; letter-spacing: .01em;
-  box-shadow: 0 6px 0 rgba(0,0,0,.45); border: 3px solid var(--ink); }
+.controls { display: grid; grid-template-columns: 60px 1fr 1.5fr; gap: 10px; align-items: stretch; padding-bottom: 6px; }
+.controls .round { width: 60px; height: 60px; }
+.next, .skip { border-radius: 20px; font-family: var(--font-display); font-size: 1.35rem; letter-spacing: .01em; min-height: 60px; border: 3px solid var(--ink); }
+.next { background: var(--ink); color: #fff; box-shadow: 0 6px 0 rgba(0,0,0,.45); }
 .next:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.45); }
+.skip { background: var(--card); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
+.skip:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ink); }
+.controls button:disabled { opacity: .45; cursor: default; transform: none; }
+.sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .swipehint { text-align: center; font-weight: 800; font-size: .82rem; opacity: .8; margin: -4px 0 0; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -166,7 +169,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0}</style>
 </head>
 <body>
-<div class="app">
+<div class="app" id="app">
   <section id="home">
     <header class="logo">
       <h1>Preguntas de Sara</h1>
@@ -186,20 +189,26 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
     </div>
     <div class="bar"><i id="barfill"></i></div>
     <div class="table" id="table"></div>
+    <div class="controls">
+      <button class="round" id="prev" type="button" aria-label="Carta anterior"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
+      <button class="skip" id="skip" type="button">Pasar</button>
+      <button class="next" id="next" type="button">Siguiente</button>
+    </div>
+    <p class="sr-only" id="live" aria-live="polite"></p>
   </section>
 </div>
 
 <div class="sheet-wrap center" id="swipePop" hidden>
-  <div class="pop" role="dialog" aria-labelledby="swipeTitle">
+  <div class="pop" role="dialog" aria-modal="true" aria-labelledby="swipeTitle">
     <div class="demo" aria-hidden="true"><div class="demo-back"></div><div class="demo-card"><span></span><span></span><span></span></div></div>
-    <h2 id="swipeTitle">Desliza las cartas</h2>
-    <p>Arrastra la carta hacia la <b>izquierda</b> para pasar a la siguiente. Si la arrastras hacia la <b>derecha</b>, vuelves a la anterior.</p>
+    <h2 id="swipeTitle">Cómo pasar cartas</h2>
+    <p>Pulsa <b>Siguiente</b> o desliza la carta a la izquierda. Si una carta no os apetece, pulsa <b>Pasar</b>: se va al final del mazo y no pasa nada.</p>
     <button class="play" id="swipeOk" type="button">¡A jugar!</button>
   </div>
 </div>
 
 <div class="sheet-wrap" id="infoSheet" hidden>
-  <div class="sheet" role="dialog" aria-labelledby="infoTitle" id="infoPanel">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="infoTitle" id="infoPanel">
     <div class="head"><span class="badge" id="infoIcon"></span><h2 id="infoTitle"></h2></div>
     <p class="rules" id="infoText"></p>
     <button class="play" id="infoPlay" type="button">Jugar</button>
@@ -208,7 +217,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 </div>
 
 <div class="sheet-wrap" id="sheet" hidden>
-  <div class="sheet" role="dialog" aria-labelledby="sheetTitle">
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="sheetTitle">
     <h2 id="sheetTitle">¿Cuánta intensidad?</h2>
     <div id="lvls" style="display:grid;gap:10px"></div>
     <button class="cancel" id="cancelSheet" type="button">Cancelar</button>
@@ -222,7 +231,7 @@ const DATA = {
       "¿Cuál es el mejor consejo que te han dado nunca?",
       "¿Qué cosa pequeña te alegra el día sin falta?",
       "¿Qué canción te devuelve a una época concreta de tu vida?",
-      "¿Qué soñabas con ser de mayor en tu infancia, y qué queda de eso hoy?",
+      "¿Qué querías ser de mayor cuando eras peque, y qué queda de eso hoy?",
       "¿En qué época o lugar te gustaría vivir un año entero?",
       "¿Qué se te da bien y casi nadie lo sabe?",
       "¿Cuál ha sido el mejor día de este año hasta ahora?",
@@ -443,7 +452,7 @@ const DATA = {
     "Mejor una verdad incómoda que una mentira piadosa.",
     "Leer un mensaje y no contestar es de mala educación.",
     "Las amistades de la infancia están sobrevaloradas.",
-    "Se puede tener una amistad sana con una ex pareja.",
+    "Se puede tener una amistad sana con una expareja.",
     "Un poco de celos es normal.",
     "El cumpleaños hay que celebrarlo aunque no apetezca.",
     "La piña en la pizza está buenísima.",
@@ -486,7 +495,7 @@ const DATA = {
     "Tiene un plan de vida a cinco años.",
     "No suelta el móvil durante la cena.",
     "Te da la contraseña de su móvil sin que se la pidas.",
-    "Dice que todas sus ex parejas estaban locas.",
+    "Dice que todas sus exparejas estaban locas.",
     "Va a terapia.",
     "Sigue en contacto con su ex.",
     "Nunca pide perdón, pero lo compensa con detalles.",
@@ -561,11 +570,11 @@ const DATA = {
     ["Verdad", "¿Qué es lo último que te ha dado celos?"],
     ["Verdad", "¿Qué búsqueda de Google no enseñarías nunca?"],
     ["Verdad", "¿Qué opinas de verdad de alguien con quien he salido?"],
-    ["Reto", "Enseña la última foto de tu carrete."],
-    ["Reto", "Lee en voz alta el último mensaje que has enviado."],
+    ["Reto", "Enseña una foto de tu carrete que te guste mucho y cuenta su historia."],
+    ["Reto", "Narra lo que hace la otra persona como en un documental de animales, durante 30 segundos."],
     ["Reto", "Imita a la otra persona durante 30 segundos."],
     ["Reto", "Canta el estribillo de la última canción que has escuchado."],
-    ["Reto", "Manda un audio a alguien diciéndole algo bonito."],
+    ["Reto", "Inventa y canta una canción de diez segundos sobre la otra persona."],
     ["Reto", "Habla con un acento durante las dos próximas cartas."],
     ["Reto", "Enseña tus emojis más usados."],
     ["Reto", "Haz tu mejor pose de foto de perfil."],
@@ -581,13 +590,13 @@ const DATA = {
     ["Verdad", "¿Cuál es la mayor tontería por la que te has enfadado?"],
     ["Verdad", "¿Qué te gustaría que hiciera más a menudo?"],
     ["Verdad", "¿Qué canción pones cuando nadie te escucha?"],
-    ["Reto", "Envía un emoji al azar a la quinta persona de tus chats."],
+    ["Reto", "Cuenta una película solo con emojis y que la otra persona la adivine."],
     ["Reto", "Haz tu mejor imitación de un personaje famoso."],
     ["Reto", "Di tres cosas que te gusten de la otra persona."],
     ["Reto", "Baila 20 segundos sin música."],
-    ["Reto", "Deja que la otra persona escriba tu próximo estado o historia."],
+    ["Reto", "Deja que la otra persona te elija una pose y aguántala 20 segundos."],
     ["Reto", "Habla solo con preguntas hasta tu próximo turno."],
-    ["Reto", "Enseña la foto más antigua de tu carrete."],
+    ["Reto", "Enseña una foto tuya de hace años y cuenta qué pasaba ese día."],
     ["Reto", "Cuenta tu anécdota más vergonzosa en 30 segundos."]
   ],
   probable: [
@@ -697,10 +706,10 @@ const MODES = {
   adivina:    { name: "Adivina mi respuesta", tag: "Adivina", c: "#1FC7AE", fg: "#1E1633" },
   prefieres:  { name: "¿Qué prefieres?", tag: "Elige una", c: "#FFA62B", fg: "#1E1633" },
   hot:        { name: "Opiniones polémicas", tag: "Opinión", c: "#FF5A36", fg: "#1E1633" },
-  redflag:    { name: "Red flag o green flag", tag: "Rasgo", c: "#F0384F", fg: "#1E1633" },
+  redflag:    { name: "Red flag o green flag", tag: "Rasgo", c: "#F55167", fg: "#1E1633" },
   yonunca:    { name: "Yo nunca", tag: "Yo nunca", c: "#C8E63C", fg: "#1E1633" },
-  verdad:     { name: "Verdad o reto", tag: "Verdad o reto", c: "#A35BFF", fg: "#FFFFFF" },
-  probable:   { name: "¿Quién es más probable?", tag: "¿Quién?", c: "#3D7BFF", fg: "#FFFFFF" },
+  verdad:     { name: "Verdad o reto", tag: "Verdad o reto", c: "#8B3FF2", fg: "#FFFFFF" },
+  probable:   { name: "¿Quién es más probable?", tag: "¿Quién?", c: "#2C67E6", fg: "#FFFFFF" },
   completa:   { name: "Completa la frase", tag: "Completa", c: "#2CC8F0", fg: "#1E1633" },
   termometro: { name: "Termómetro", tag: "Termómetro", c: "#22B573", fg: "#1E1633" },
   dosverdades:{ name: "Dos verdades y una mentira", tag: "Tema", c: "#FFD84A", fg: "#1E1633" },
@@ -711,13 +720,13 @@ const MODES = {
 const META = ["mezcla", "favoritas"];
 const RULES = {
   profundas: "Sale una pregunta y la contestáis por turnos, sin prisa. No hay respuestas buenas ni malas: la idea es conoceros mejor.",
-  princess: "Sale algo que alguien hace por su pareja o por una amistad. Contáis 3, 2, 1 y decís a la vez si es princess treatment (un detallazo), bare minimum (lo mínimo que se espera) o red flag. Si no coincidís, toca debatir.",
+  princess: "Sale algo que alguien hace por su pareja o por una amistad. Hay tres respuestas: princess treatment (un detallazo), bare minimum (lo mínimo que se espera) o red flag. Contáis 3, 2, 1 y lo decís a la vez. Si no coincidís, toca debatir.",
   adivina: "Quien tiene la carta intenta adivinar qué respondería la otra persona. Luego la otra contesta de verdad y veis si ha acertado. Podéis llevar la cuenta de aciertos.",
   prefieres: "Salen dos opciones. Elegís una a la vez y explicáis por qué. No vale decir «ninguna».",
   hot: "Sale una opinión polémica. Cada persona dice si está de acuerdo o no y defiende su postura. Gana quien convenza a la otra.",
-  redflag: "Sale un rasgo o una costumbre de alguien. Decís a la vez si para vosotros es green flag, red flag o depende, y explicáis por qué.",
+  redflag: "Sale un rasgo o una costumbre de alguien. Decís a la vez si os parece green flag, red flag o depende, y explicáis por qué.",
   yonunca: "Se lee la frase «Yo nunca he…». Quien sí lo haya hecho lo confiesa y cuenta la historia.",
-  verdad: "Cada carta es una verdad o un reto. Os turnáis: una carta para cada persona.",
+  verdad: "Cada carta es una verdad o un reto. Os turnáis: una carta para cada persona. Si una carta no os apetece, pulsad «Pasar»: se va al final del mazo y no pasa nada. Nadie tiene que hacer nada que no quiera.",
   probable: "Sale una situación y señaláis a la vez a quién le pega más. Si no coincidís, cada persona defiende su elección.",
   completa: "Sale una frase a medias. Cada persona la termina en voz alta con lo primero que le salga, sin pensarlo mucho.",
   termometro: "Sale un tema de la vida, como la familia o el dinero. Decís a la vez un número del 1 al 10 según cómo estáis ahora mismo con ese tema, y luego explicáis por qué.",
@@ -754,24 +763,32 @@ function shuffle(arr, rand) {
   for (let i = a.length - 1; i > 0; i--) { const j = Math.floor(rand() * (i + 1)); [a[i], a[j]] = [a[j], a[i]]; }
   return a;
 }
-function cardsFor(mode, level) {
+function cardsFor(mode, level, data = DATA) {
   if (mode === "profundas") {
     const lv = level === "subiendo" || level === "todo" ? ["ligero", "profundo", "muy"] : [level];
-    return lv.flatMap(l => DATA.profundas[l].map(text => ({ mode, text, level: l })));
+    return lv.flatMap(l => data.profundas[l].map(text => ({ mode, text, level: l })));
   }
-  if (mode === "prefieres") return DATA.prefieres.map(([a, b]) => ({ mode, a, b }));
-  if (mode === "verdad") return DATA.verdad.map(([kind, text]) => ({ mode, kind, text }));
-  if (mode === "mezcla") return Object.keys(MODES).filter(m => !META.includes(m)).flatMap(m => cardsFor(m, "todo"));
+  if (mode === "prefieres") return data.prefieres.map(([a, b]) => ({ mode, a, b }));
+  if (mode === "verdad") return data.verdad.map(([kind, text]) => ({ mode, kind, text }));
+  if (mode === "mezcla") return Object.keys(MODES).filter(m => !META.includes(m)).flatMap(m => cardsFor(m, "todo", data));
   if (mode === "favoritas") { const f = new Set(favs()); return cardsFor("mezcla").filter(c => f.has(cardId(c))); }
-  return DATA[mode].map(text => ({ mode, text }));
+  return data[mode].map(text => ({ mode, text }));
 }
-function buildDeck(mode, level, round) {
+function buildDeck(mode, level, round, data = DATA) {
   const base = `${state.seed}|${mode}|${level}|${round}`;
   if (mode === "profundas" && level === "subiendo") {
-    return ["ligero", "profundo", "muy"].flatMap(l => shuffle(cardsFor(mode, l), rng(seedFrom(base + l))));
+    return ["ligero", "profundo", "muy"].flatMap(l => shuffle(cardsFor(mode, l, data), rng(seedFrom(base + l))));
   }
-  return shuffle(cardsFor(mode, level), rng(seedFrom(base)));
+  return shuffle(cardsFor(mode, level, data), rng(seedFrom(base)));
 }
+
+// How many cards each list had before decks saved their own order (only `sm.pos` existed then).
+// New cards were always added at the end of each list, so slicing DATA to these sizes rebuilds
+// that old shuffle exactly, and a phone halfway through a deck keeps the same cards ahead.
+const LEGACY = { profundas: { ligero: 20, profundo: 23, muy: 18 }, princess: 30, adivina: 20, prefieres: 20, hot: 20,
+  redflag: 20, yonunca: 20, verdad: 24, probable: 20, completa: 20, termometro: 14, dosverdades: 16 };
+const legacyData = () => Object.fromEntries(Object.entries(DATA).map(([k, v]) => [k, Array.isArray(v) ? v.slice(0, LEGACY[k])
+  : Object.fromEntries(Object.entries(v).map(([l, list]) => [l, list.slice(0, LEGACY[k][l])]))]));
 
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -804,17 +821,42 @@ function renderHome() {
 }
 
 const progressKey = () => `sm.pos|${state.mode}|${state.level}`;
-function save() { store.set(progressKey(), { idx: state.idx, round: state.round }); }
+const orderKey = () => `sm.order|${state.mode}|${state.level}`;
+function save() {
+  if (state.mode === "favoritas") return;
+  store.set(progressKey(), { idx: state.idx, round: state.round });
+  store.set(orderKey(), state.deck.map(cardId));
+}
+
+// The deck in the order this phone has been playing it. Cards added to DATA since then are
+// shuffled into the part not played yet; cards that no longer exist are dropped.
+function loadDeck() {
+  const { mode, level, round } = state, all = cardsFor(mode, level);
+  const ids = store.get(orderKey(), null);
+  let deck;
+  if (ids) {
+    const byId = new Map(all.map(c => [cardId(c), c]));
+    state.idx -= ids.slice(0, state.idx).filter(id => !byId.has(id)).length;
+    deck = ids.map(id => byId.get(id)).filter(Boolean);
+  } else {
+    deck = buildDeck(mode, level, round, store.get(progressKey(), null) ? legacyData() : DATA);
+  }
+  const have = new Set(deck.map(cardId)), fresh = all.filter(c => !have.has(cardId(c)));
+  const rand = rng(seedFrom(`${state.seed}|${mode}|${level}|${round}|${deck.length}`));
+  const from = Math.min(state.idx + 1, deck.length);
+  for (const c of shuffle(fresh, rand)) deck.splice(from + Math.floor(rand() * (deck.length - from + 1)), 0, c);
+  return deck;
+}
 
 function startMode(mode, level) {
   state.mode = mode; state.level = level || "todo";
   const saved = mode === "favoritas" ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
   state.round = saved.round; state.idx = saved.idx;
-  state.deck = buildDeck(mode, state.level, state.round);
-  if (state.idx > state.deck.length) state.idx = 0;
+  state.deck = mode === "favoritas" ? buildDeck(mode, state.level, state.round) : loadDeck();
+  if (state.idx > state.deck.length || state.idx < 0) state.idx = 0;
   $("home").hidden = true; $("game").hidden = false;
   render("deal");
-  if (!store.get("sm.swipeSeen", false)) $("swipePop").hidden = false;
+  if (!store.get("sm.helpSeen", false)) openDialog("swipePop", "swipeOk");
 }
 function goHome() {
   $("game").hidden = true; $("home").hidden = false;
@@ -829,22 +871,23 @@ const HOW = {
   prefieres: "Elegid a la vez y defended vuestra respuesta.",
   hot: "¿De acuerdo o no? Gana quien convenza a la otra persona.",
   yonunca: "Si lo has hecho, confiesa y cuenta la historia.",
-  verdad: "Os turnáis: una carta para cada persona.",
+  verdad: "Os turnáis: una carta para cada persona. Si no te apetece, pulsa «Pasar».",
   probable: "Señalad a la vez a la persona que creéis.",
   completa: "Termina la frase en voz alta. Luego le toca a la otra persona.",
   termometro: "Del 1 al 10, ¿cómo estás ahora mismo con esto? Decid el número a la vez y luego explicadlo.",
   dosverdades: "Di dos verdades y una mentira sobre este tema. La otra persona adivina cuál es la mentira."
 };
-const VERDICTS = { princess: ["Princess treatment", "Bare minimum", "Red flag"], redflag: ["Green flag", "Red flag", "Depende"] };
+const VERDICTS = { princess: "¿Princess treatment, bare minimum o red flag?", redflag: "¿Green flag, red flag o depende?" };
+const upper = s => s.charAt(0).toUpperCase() + s.slice(1);
 
 function cardHTML(c) {
   let tag = c.kind || MODES[c.mode].tag;
   let body;
-  if (c.mode === "prefieres") body = `<div class="or"><div class="opt">${c.a}</div><div class="vs">o</div><div class="opt">${c.b}</div></div>`;
+  if (c.mode === "prefieres") body = `<div class="or"><div class="opt">${upper(c.a)}</div><div class="vs">o</div><div class="opt">${upper(c.b)}</div></div>`;
   else if (c.mode === "hot") body = `<p class="q">«${c.text}»</p>`;
   else if (c.mode === "yonunca") body = `<p class="q">Yo nunca ${c.text}</p>`;
   else body = `<p class="q">${c.text}</p>`;
-  const v = VERDICTS[c.mode] ? `<div class="verdicts">${VERDICTS[c.mode].map(x => `<span>${x}</span>`).join("")}</div>` : "";
+  const v = VERDICTS[c.mode] ? `<p class="verdicts">${VERDICTS[c.mode]}</p>` : "";
   const how = HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
   const fav = favs().includes(cardId(c));
   const heart = `<button class="fav" type="button" aria-pressed="${fav}" aria-label="Guardar en favoritas">${icon("favoritas")}</button>`;
@@ -860,11 +903,17 @@ function render(anim) {
   const lvl = "";
   $("gtitle").textContent = lvl ? `Profundas: ${lvl.toLowerCase()}` : (MODES[state.mode].short || MODES[state.mode].name);
   $("count").textContent = `${Math.min(state.idx + 1, total)}/${total}`;
-  $("barfill").style.width = `${(Math.min(state.idx, total) / total) * 100}%`;
+  $("count").setAttribute("aria-label", `Carta ${Math.min(state.idx + 1, total)} de ${total}`);
+  $("barfill").style.width = `${(Math.min(state.idx + 1, total) / total) * 100}%`;
+  $("prev").disabled = state.idx === 0;
+  $("skip").disabled = done || state.idx >= total - 1;
+  $("next").disabled = done;
   const table = $("table");
   table.innerHTML = `<div class="ghost-card g1"></div><div class="ghost-card g2"></div>` + (done
     ? `<div class="card"><div class="end"><h2>¡Mazo terminado!</h2><p class="how">Habéis pasado las ${total} cartas.</p><button class="next" style="padding:14px 22px" type="button" id="reshuffle">Barajar otra vez</button></div></div>`
-    : `<div class="card${anim === "deal" ? " deal" : ""}">${cardHTML(c)}</div>`);
+    : `<div class="card${anim === "deal" ? " deal" : ""}" role="group" aria-roledescription="carta">${cardHTML(c)}</div>`);
+  if (anim) $("live").textContent = done ? `Mazo terminado. Habéis pasado las ${total} cartas.`
+    : `Carta ${state.idx + 1} de ${total}. ${table.querySelector(".card").innerText.replace(/\s+/g, " ")}`;
   if (done) $("reshuffle").onclick = () => { state.round++; state.idx = 0; state.deck = buildDeck(state.mode, state.level, state.round); save(); render("deal"); };
   else {
     const card = table.querySelector(".card"), fav = card.querySelector(".fav");
@@ -890,6 +939,24 @@ function throwCard(dir) {
   busy = true;
   card.classList.add("fly");
   card.style.transform = `translateX(-130%) rotate(-18deg)`;
+  card.style.opacity = "0";
+  setTimeout(after, 260);
+}
+
+// "Pasar": the card goes to the bottom of the deck without counting, so nobody has to answer it now.
+function skipCard() {
+  if (busy || state.idx >= state.deck.length - 1) return;
+  const card = $("table").querySelector(".card");
+  const after = () => {
+    busy = false;
+    state.deck.push(state.deck.splice(state.idx, 1)[0]);
+    render("deal");
+    $("live").textContent = `Carta pasada, volverá al final. ${$("live").textContent}`;
+  };
+  if (!card || reduced) { after(); return; }
+  busy = true;
+  card.classList.add("fly");
+  card.style.transform = `translateY(110%) rotate(6deg)`;
   card.style.opacity = "0";
   setTimeout(after, 260);
 }
@@ -922,6 +989,18 @@ function bindDrag(el) {
 function openMode(mode) {
   startMode(mode);
 }
+// Dialogs: the page behind goes inert so focus and screen readers stay inside, and focus
+// returns to whatever opened the dialog.
+let lastFocus = null;
+function openDialog(id, focusId) {
+  lastFocus = document.activeElement;
+  $(id).hidden = false; $("app").inert = true;
+  $(focusId).focus();
+}
+function closeDialog(id) {
+  $(id).hidden = true; $("app").inert = false;
+  if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+}
 let infoMode = null;
 function openInfo(mode) {
   infoMode = mode;
@@ -932,11 +1011,11 @@ function openInfo(mode) {
   const inGame = !$("game").hidden;
   $("infoPlay").textContent = inGame ? "Seguir jugando" : "Jugar";
   $("infoClose").hidden = inGame;
-  $("infoSheet").hidden = false;
+  openDialog("infoSheet", "infoPlay");
 }
-$("infoPlay").onclick = () => { $("infoSheet").hidden = true; if ($("game").hidden) openMode(infoMode); };
-$("infoClose").onclick = () => { $("infoSheet").hidden = true; };
-$("infoSheet").addEventListener("click", e => { if (e.target.id === "infoSheet") $("infoSheet").hidden = true; });
+$("infoPlay").onclick = () => { closeDialog("infoSheet"); if ($("game").hidden) openMode(infoMode); };
+$("infoClose").onclick = () => closeDialog("infoSheet");
+$("infoSheet").addEventListener("click", e => { if (e.target.id === "infoSheet") closeDialog("infoSheet"); });
 $("gameInfo").onclick = () => openInfo(META.includes(state.mode) ? state.deck[Math.min(state.idx, state.deck.length - 1)].mode : state.mode);
 $("decks").addEventListener("click", e => {
   const i = e.target.closest("[data-info]"); if (i) { openInfo(i.dataset.info); return; }
@@ -945,17 +1024,20 @@ $("decks").addEventListener("click", e => {
 });
 $("lvls").addEventListener("click", e => {
   const b = e.target.closest("[data-level]"); if (!b) return;
-  $("sheet").hidden = true; startMode("profundas", b.dataset.level);
+  closeDialog("sheet"); startMode("profundas", b.dataset.level);
 });
-$("cancelSheet").onclick = () => { $("sheet").hidden = true; };
-$("sheet").addEventListener("click", e => { if (e.target.id === "sheet") $("sheet").hidden = true; });
+$("cancelSheet").onclick = () => closeDialog("sheet");
+$("sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeDialog("sheet"); });
 $("back").onclick = goHome;
-$("swipeOk").onclick = () => { $("swipePop").hidden = true; store.set("sm.swipeSeen", true); };
+$("prev").onclick = () => throwCard(-1);
+$("next").onclick = () => throwCard(1);
+$("skip").onclick = skipCard;
+$("swipeOk").onclick = () => { closeDialog("swipePop"); store.set("sm.helpSeen", true); $("next").focus({ preventScroll: true }); };
 document.addEventListener("keydown", e => {
-  if (!$("swipePop").hidden) { if (e.key === "Escape" || e.key === "Enter") $("swipeOk").click(); return; }
-  if (!$("infoSheet").hidden) { if (e.key === "Escape") $("infoSheet").hidden = true; return; }
-  if (!$("sheet").hidden && e.key === "Escape") { $("sheet").hidden = true; return; }
-  if ($("game").hidden) return;
+  if (!$("swipePop").hidden) { if (e.key === "Escape") $("swipeOk").click(); return; }
+  if (!$("infoSheet").hidden) { if (e.key === "Escape") closeDialog("infoSheet"); return; }
+  if (!$("sheet").hidden) { if (e.key === "Escape") closeDialog("sheet"); return; }
+  if ($("game").hidden || (e.key === " " && e.target.closest("button"))) return;
   if (e.key === "ArrowUp" || e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); throwCard(1); }
   if (e.key === "ArrowDown" || e.key === "ArrowLeft") { e.preventDefault(); throwCard(-1); }
   if (e.key === "Escape") goHome();
