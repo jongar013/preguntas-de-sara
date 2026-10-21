@@ -787,6 +787,38 @@ const DATA = {
     "Algo que antes me importaba mucho y ahora no es…",
     "Me gustaría que me recordaran por…"
   ],
+  top3: [
+    "Tus 3 comidas favoritas",
+    "3 canciones que te definen",
+    "3 películas que verías mil veces",
+    "3 personas famosas con las que irías a cenar",
+    "3 sitios a los que te gustaría viajar",
+    "3 cosas que no pueden faltar en tu casa",
+    "3 manías que tienes",
+    "3 palabras que te describen",
+    "3 cosas que te sacan de quicio",
+    "3 planes perfectos para un domingo",
+    "3 series que recomendarías",
+    "3 cosas que harías si te tocara la lotería",
+    "3 recuerdos favoritos de tu infancia",
+    "3 cosas que te hacen feliz al instante",
+    "3 olores que te encantan",
+    "3 cosas que te llevarías a una isla desierta",
+    "3 trabajos que te gustaría probar un día",
+    "3 caprichos que te das sin culpa",
+    "3 cosas que te dan miedo",
+    "3 apps que más usas",
+    "3 cosas que admiras de la gente",
+    "3 cosas que quieres hacer antes de los 40",
+    "3 frases que dices mucho",
+    "3 cosas que aprendiste tarde",
+    "3 superpoderes que te gustaría tener",
+    "3 momentos del año que más te gustan",
+    "3 cosas que te dan vergüenza ajena",
+    "3 cosas que te relajan",
+    "3 personajes de ficción con los que te identificas",
+    "3 cosas por las que das las gracias hoy"
+  ],
   dosverdades: [
     "Tu infancia", "Viajes", "Citas desastrosas", "Comida", "El instituto", "Tu familia",
     "Cosas que te dan miedo", "Trabajos que has tenido", "Talentos ocultos", "Accidentes y heridas",
@@ -807,6 +839,7 @@ const ICONS = {
   verdad: '<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3"/><circle cx="15.5" cy="15.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/>',
   probable: '<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6M15 13l3 3 4-5"/>',
   completa: '<path d="M4 4h16v12H9l-5 4z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/>',
+  top3: '<path d="M3 20h18"/><path d="M9 20V8h6v12"/><path d="M3 20v-7h6"/><path d="M15 20v-5h6v5"/>',
   dosverdades: '<path d="M3 7l2 2 4-4M3 16l2 2 4-4M14 7h7M15 15l5 5M20 15l-5 5"/>',
   mezcla: '<path d="M3 6h4l10 12h4M3 18h4l10-12h4M18 3l3 3-3 3M18 15l3 3-3 3"/>',
   favoritas: '<path d="M12 20.5S3 15 3 8.8A4.6 4.6 0 0112 6.6a4.6 4.6 0 019 2.2C21 15 12 20.5 12 20.5z"/>',
@@ -826,6 +859,7 @@ const MODES = {
   verdad:     { name: "Verdad o reto", tag: "Verdad o reto", c: "#B5249E", fg: "#FFFFFF" },
   probable:   { name: "¿Quién es más probable?", tag: "¿Quién?", c: "#2C67E6", fg: "#FFFFFF" },
   completa:   { name: "Completa la frase", tag: "Completa", c: "#2CC8F0", fg: "#1E1633" },
+  top3:       { name: "Top 3", tag: "Top 3", c: "#22B573", fg: "#1E1633" },
   dosverdades:{ name: "Dos verdades y una mentira", tag: "Tema", c: "#FFD84A", fg: "#1E1633" },
   mezcla:     { name: "Mezcla de todo", tag: "Mezcla", c: "#FFFFFF", fg: "#1E1633", wide: true },
   favoritas:  { name: "Vuestras favoritas", tag: "Favorita", c: "#F0384F", fg: "#1E1633", wide: true }
@@ -843,6 +877,7 @@ const RULES = {
   verdad: "Una carta para cada persona, por turnos. Si una carta no os apetece, pulsad «Pasar»: se va al final y no pasa nada.",
   probable: "Señalad a la vez a quién le pega más. Si no coincidís, defended vuestra elección.",
   completa: "Terminad la frase en voz alta, por turnos, con lo primero que os salga.",
+  top3: "Cada persona dice su podio del tema, del tercero al primero, y explica por qué. Si coincidís en alguno, punto para los dos.",
   dosverdades: "Quien tiene el móvil cuenta tres cosas sobre el tema: dos verdaderas y una inventada. La otra persona adivina cuál es la mentira.",
   mezcla: "Cartas de todos los juegos. Cada carta dice a qué juego pertenece y el fondo toma su color.",
   favoritas: "Las cartas que habéis marcado con el corazón. Para quitar una, tocad otra vez el corazón."
@@ -1013,6 +1048,7 @@ const HOW = {
   verdad: "Os turnáis: una carta para cada persona. Si no te apetece, pulsa «Pasar».",
   probable: "Señalad a la vez a la persona que creéis.",
   completa: "Termina la frase en voz alta. Luego le toca a la otra persona.",
+  top3: "Decid vuestro podio, del tercero al primero. ¿Coincidís en alguno?",
   dosverdades: "Di dos verdades y una mentira sobre este tema. La otra persona adivina cuál es la mentira."
 };
 const VERDICTS = { princess: "¿Princess treatment, bare minimum o red flag?", redflag: "¿Green flag, red flag o depende?" };
@@ -1020,7 +1056,7 @@ const upper = s => s.charAt(0).toUpperCase() + s.slice(1);
 const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
 // Modes played in turns (the card says whose turn it is when you add names) and modes with the optional timer.
 const TURNS = ["profundas", "adivina", "verdad", "completa", "dosverdades"];
-const TIMED = ["completa", "dosverdades"];
+const TIMED = ["completa", "top3", "dosverdades"];
 
 function cardHTML(c) {
   let tag = c.kind || (c.level ? LEVEL_NAME[c.level] : MODES[c.mode].tag);
@@ -1254,7 +1290,7 @@ document.addEventListener("keydown", e => {
 });
 
 // Ajustes: names, the cards with chispa and your own cards. Everything stays in localStorage on this phone.
-const CUSTOM_LABEL = { yonunca: "Lo que va después de «Yo nunca…»", prefieres: "Primera opción", dosverdades: "Tema", hot: "La opinión", princess: "Lo que hace", redflag: "El rasgo o la costumbre" };
+const CUSTOM_LABEL = { yonunca: "Lo que va después de «Yo nunca…»", prefieres: "Primera opción", top3: "El tema, por ejemplo «3 comidas favoritas»", dosverdades: "Tema", hot: "La opinión", princess: "Lo que hace", redflag: "El rasgo o la costumbre" };
 function renderCustom() {
   const mode = $("cMode").value;
   $("cKindWrap").hidden = mode !== "verdad";
