@@ -291,7 +291,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
       <input type="text" id="name2" maxlength="16" autocomplete="off" placeholder="Persona 2" aria-label="Nombre de la segunda persona">
     </div>
     <hr class="sep">
-    <label class="switch" for="picante"><span><b>Mazo Picante</b><span class="hint">Preguntas atrevidas, solo para mayores de edad. Apagado mientras no lo actives.</span></span><input type="checkbox" id="picante"></label>
+    <label class="switch" for="picante"><span><b>Preguntas con chispa</b><span class="hint">Ligoteo, besos y citas, solo para mayores de edad. Salen en Preguntillas cuando lo activas.</span></span><input type="checkbox" id="picante"></label>
     <hr class="sep">
     <p class="group-title">Vuestras cartas</p>
     <p class="hint">Escribid vuestras propias cartas. Se guardan solo en este móvil.</p>
@@ -413,6 +413,33 @@ const DATA = {
       "¿Qué te gustaría que supiera de verdad sobre cómo estás ahora?",
       "¿Qué promesa te hiciste y no has cumplido?",
       "¿Qué te enorgullece de ti, aunque no lo digas?"
+    ],
+    // Only shown when "Preguntas con chispa" is switched on in Ajustes.
+    chispa: [
+      "¿Qué es lo primero en lo que te fijas de alguien que te gusta?",
+      "¿Cuál ha sido tu beso más memorable?",
+      "¿Qué te parece más atractivo: la inteligencia, el humor o la seguridad?",
+      "¿Cuál es la peor frase para ligar que te han dicho?",
+      "¿Has tenido un crush que nadie sospechaba?",
+      "¿Qué es lo más atrevido que has hecho por alguien que te gustaba?",
+      "¿Qué canción pondrías en una cita para crear ambiente?",
+      "¿Cuál es tu tipo, si es que tienes uno?",
+      "¿Qué te hace perder el interés por alguien en un segundo?",
+      "Primera cita: ¿cena tranquila o plan con adrenalina?",
+      "¿Has mandado algún mensaje para ligar del que te arrepientas?",
+      "¿Qué parte de ti te parece más atractiva?",
+      "¿Cuál es el sitio más raro donde has dado un beso?",
+      "¿Qué es lo más romántico que te han dicho?",
+      "¿Alguna vez te ha flechado alguien en una sola noche?",
+      "¿Qué piropo te encantaría recibir?",
+      "¿Cuánto tardas en contestar a alguien que te gusta, y cuánto finges tardar?",
+      "¿Cómo sería tu cita perfecta, de principio a fin?",
+      "¿Has ligado alguna vez por una app y ha salido bien?",
+      "¿Qué te da más vergüenza en una primera cita?",
+      "¿Cuál es tu escapada romántica soñada?",
+      "¿Qué opinas de besar en la primera cita?",
+      "¿Has tenido algún amor de verano? Cuéntalo.",
+      "¿Qué detalle de alguien te hace tilín sin remedio?"
     ]
   },
   princess: [
@@ -760,46 +787,12 @@ const DATA = {
     "Algo que antes me importaba mucho y ahora no es…",
     "Me gustaría que me recordaran por…"
   ],
-  termometro: [
-    "La familia", "El amor", "El trabajo o los estudios", "Las amistades", "La salud",
-    "El dinero", "La autoestima", "El descanso", "La creatividad", "La vida social",
-    "Las ganas de futuro", "La relación con tu cuerpo", "La paz mental", "La rutina", "El ocio", "La energía", "La ilusión", "El lugar donde vives", "Las redes sociales", "La relación con tu familia elegida",
-    "La paciencia", "Las ganas de viajar", "El orden en casa", "La motivación", "El sentido del humor",
-    "La independencia", "Tus aficiones", "La capacidad de decir que no"
-  ],
   dosverdades: [
     "Tu infancia", "Viajes", "Citas desastrosas", "Comida", "El instituto", "Tu familia",
     "Cosas que te dan miedo", "Trabajos que has tenido", "Talentos ocultos", "Accidentes y heridas",
     "Tus ex", "Fiestas", "Algo que rompiste", "Música", "Animales", "Cosas que has ganado", "Primeras veces", "Vacaciones de verano", "Cosas que has perdido", "Gente famosa", "Deportes", "Tu primer móvil", "Cumpleaños", "Sueños raros",
     "Tu barrio", "Profesores", "Vergüenzas en público", "Regalos", "Supersticiones", "Cosas que coleccionas",
     "Bodas y celebraciones", "Mudanzas"
-  ],
-  // Only shown when switched on in Ajustes.
-  picante: [
-    "¿Qué es lo primero en lo que te fijas de alguien que te gusta?",
-    "¿Cuál ha sido tu beso más memorable?",
-    "¿Qué te parece más atractivo: la inteligencia, el humor o la seguridad?",
-    "¿Cuál es la peor frase para ligar que te han dicho?",
-    "¿Has tenido un crush que nadie sospechaba?",
-    "¿Qué es lo más atrevido que has hecho por alguien que te gustaba?",
-    "¿Qué canción pondrías en una cita para crear ambiente?",
-    "¿Cuál es tu tipo, si es que tienes uno?",
-    "¿Qué te hace perder el interés por alguien en un segundo?",
-    "Primera cita: ¿cena tranquila o plan con adrenalina?",
-    "¿Has mandado algún mensaje para ligar del que te arrepientas?",
-    "¿Qué parte de ti te parece más atractiva?",
-    "¿Cuál es el sitio más raro donde has dado un beso?",
-    "¿Qué es lo más romántico que te han dicho?",
-    "¿Alguna vez te ha flechado alguien en una sola noche?",
-    "¿Qué piropo te encantaría recibir?",
-    "¿Cuánto tardas en contestar a alguien que te gusta, y cuánto finges tardar?",
-    "¿Cómo sería tu cita perfecta, de principio a fin?",
-    "¿Has ligado alguna vez por una app y ha salido bien?",
-    "¿Qué te da más vergüenza en una primera cita?",
-    "¿Cuál es tu escapada romántica soñada?",
-    "¿Qué opinas de besar en la primera cita?",
-    "¿Has tenido algún amor de verano? Cuéntalo.",
-    "¿Qué detalle de alguien te hace tilín sin remedio?"
   ]
 };
 
@@ -814,12 +807,10 @@ const ICONS = {
   verdad: '<rect x="3" y="3" width="18" height="18" rx="4"/><circle cx="8.5" cy="8.5" r="1.3"/><circle cx="15.5" cy="15.5" r="1.3"/><circle cx="12" cy="12" r="1.3"/>',
   probable: '<circle cx="9" cy="8" r="3.5"/><path d="M3 20c0-3.5 2.7-6 6-6M15 13l3 3 4-5"/>',
   completa: '<path d="M4 4h16v12H9l-5 4z"/><path d="M8 10h.01M12 10h.01M16 10h.01"/>',
-  termometro: '<path d="M10 14V5a2 2 0 014 0v9a4 4 0 11-4 0z"/><path d="M12 9v7"/>',
   dosverdades: '<path d="M3 7l2 2 4-4M3 16l2 2 4-4M14 7h7M15 15l5 5M20 15l-5 5"/>',
   mezcla: '<path d="M3 6h4l10 12h4M3 18h4l10-12h4M18 3l3 3-3 3M18 15l3 3-3 3"/>',
   favoritas: '<path d="M12 20.5S3 15 3 8.8A4.6 4.6 0 0112 6.6a4.6 4.6 0 019 2.2C21 15 12 20.5 12 20.5z"/>',
   reloj: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/>',
-  picante: '<path d="M12 22c4 0 7-2.7 7-6.8 0-3.6-2.4-6-4.4-8.2.1 2.3-.9 3.8-2.3 4.4C12.6 7.7 10.8 4.6 8.5 2c.3 3.8-3.5 6.6-3.5 11.2C5 19.3 8 22 12 22z"/>',
   ajustes: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/>'
 };
 const icon = (m, cls = "i") => `<svg class="${cls}" viewBox="0 0 24 24" aria-hidden="true">${ICONS[m]}</svg>`;
@@ -835,16 +826,14 @@ const MODES = {
   verdad:     { name: "Verdad o reto", tag: "Verdad o reto", c: "#B5249E", fg: "#FFFFFF" },
   probable:   { name: "¿Quién es más probable?", tag: "¿Quién?", c: "#2C67E6", fg: "#FFFFFF" },
   completa:   { name: "Completa la frase", tag: "Completa", c: "#2CC8F0", fg: "#1E1633" },
-  termometro: { name: "Termómetro", tag: "Termómetro", c: "#22B573", fg: "#1E1633" },
   dosverdades:{ name: "Dos verdades y una mentira", tag: "Tema", c: "#FFD84A", fg: "#1E1633" },
   mezcla:     { name: "Mezcla de todo", tag: "Mezcla", c: "#FFFFFF", fg: "#1E1633", wide: true },
-  favoritas:  { name: "Vuestras favoritas", tag: "Favorita", c: "#F0384F", fg: "#1E1633", wide: true },
-  picante:    { name: "Picante", tag: "Picante", c: "#7A1F4D", fg: "#FFFFFF" }
+  favoritas:  { name: "Vuestras favoritas", tag: "Favorita", c: "#F0384F", fg: "#1E1633", wide: true }
 };
 // Modes that gather cards from the other decks instead of having their own.
 const META = ["mezcla", "favoritas"];
 const RULES = {
-  profundas: "Contestad la pregunta por turnos, sin prisa. No hay respuestas buenas ni malas. Tocad el título para elegir si van todas mezcladas o de suaves a profundas.",
+  profundas: "Contestad la pregunta por turnos, sin prisa. No hay respuestas buenas ni malas. Tocad el título para elegir si van todas mezcladas o de suaves a profundas. Si activáis las preguntas con chispa en Ajustes, también salen aquí.",
   princess: "Contad 3, 2, 1 y decid a la vez: princess treatment (un detallazo), bare minimum (lo mínimo) o red flag. Si no coincidís, a debatir.",
   adivina: "Quien tiene el móvil adivina qué respondería la otra persona, y luego esta contesta de verdad. Apuntad los aciertos en el marcador de la carta.",
   prefieres: "Elegid una opción a la vez y explicad por qué. No vale decir «ninguna».",
@@ -854,20 +843,24 @@ const RULES = {
   verdad: "Una carta para cada persona, por turnos. Si una carta no os apetece, pulsad «Pasar»: se va al final y no pasa nada.",
   probable: "Señalad a la vez a quién le pega más. Si no coincidís, defended vuestra elección.",
   completa: "Terminad la frase en voz alta, por turnos, con lo primero que os salga.",
-  termometro: "Decid a la vez un número del 1 al 10 según cómo estáis con ese tema ahora mismo, y luego explicadlo.",
   dosverdades: "Quien tiene el móvil cuenta tres cosas sobre el tema: dos verdaderas y una inventada. La otra persona adivina cuál es la mentira.",
   mezcla: "Cartas de todos los juegos. Cada carta dice a qué juego pertenece y el fondo toma su color.",
-  favoritas: "Las cartas que habéis marcado con el corazón. Para quitar una, tocad otra vez el corazón.",
-  picante: "Preguntas atrevidas para cuando hay confianza. Contestad por turnos y, si una no os apetece, pulsad «Pasar». Se puede apagar en Ajustes."
+  favoritas: "Las cartas que habéis marcado con el corazón. Para quitar una, tocad otra vez el corazón."
 };
 const LEVELS = [
   ["todo", "Todo mezclado", "Cualquier nivel, al azar."],
   ["subiendo", "Ir subiendo", "Empieza suave y acaba muy profundo."],
   ["ligero", "Solo ligeras", "Para romper el hielo."],
   ["profundo", "Solo profundas", "Cosas que no se cuentan a cualquiera."],
-  ["muy", "Solo muy profundas", "Para cuando ya estáis en confianza total."]
+  ["muy", "Solo muy profundas", "Para cuando ya estáis en confianza total."],
+  ["chispa", "Solo con chispa", "Ligoteo, besos y citas."]
 ];
-const LEVEL_NAME = { ligero: "Ligera", profundo: "Profunda", muy: "Muy profunda" };
+const LEVEL_NAME = { ligero: "Ligera", profundo: "Profunda", muy: "Muy profunda", chispa: "Con chispa" };
+// "Con chispa" cards stay out of every deck until they are switched on in Ajustes.
+const chispaOn = () => store.get("sm.picante", false);
+const levels = () => LEVELS.filter(l => l[0] !== "chispa" || chispaOn());
+// Levels in the order "Ir subiendo" deals them; "todo" uses the same ones.
+const subiendo = () => ["ligero", ...(chispaOn() ? ["chispa"] : []), "profundo", "muy"];
 
 // Seeded shuffle so a deck keeps its order between visits on this phone.
 function seedFrom(str) {
@@ -892,8 +885,8 @@ function shuffle(arr, rand) {
 function cardsFor(mode, level, data = DATA) {
   const own = data === DATA ? custom().filter(c => c.mode === mode).map(c => ({ ...c, custom: true })) : [];
   if (mode === "profundas") {
-    const lv = level === "subiendo" || level === "todo" ? ["ligero", "profundo", "muy"] : [level];
-    return lv.flatMap(l => data.profundas[l].map(text => ({ mode, text, level: l })).concat(l === "profundo" ? own.map(c => ({ ...c, level: l })) : []));
+    const lv = level === "subiendo" || level === "todo" ? subiendo() : [level];
+    return lv.flatMap(l => (data.profundas[l] || []).map(text => ({ mode, text, level: l })).concat(l === "profundo" ? own.map(c => ({ ...c, level: l })) : []));
   }
   if (mode === "prefieres") return data.prefieres.map(([a, b]) => ({ mode, a, b })).concat(own);
   if (mode === "verdad") return data.verdad.map(([kind, text]) => ({ mode, kind, text })).concat(own);
@@ -901,12 +894,12 @@ function cardsFor(mode, level, data = DATA) {
   if (mode === "favoritas") { const f = new Set(favs()); return cardsFor("mezcla").filter(c => f.has(cardId(c))); }
   return (data[mode] || []).map(text => ({ mode, text })).concat(own);
 }
-// Decks with their own cards, leaving out Picante unless it is switched on.
-const playable = () => Object.keys(MODES).filter(m => !META.includes(m) && (m !== "picante" || store.get("sm.picante", false)));
+// Decks with their own cards.
+const playable = () => Object.keys(MODES).filter(m => !META.includes(m));
 function buildDeck(mode, level, round, data = DATA) {
   const base = `${state.seed}|${mode}|${level}|${round}`;
   if (mode === "profundas" && level === "subiendo") {
-    return ["ligero", "profundo", "muy"].flatMap(l => shuffle(cardsFor(mode, l, data), rng(seedFrom(base + l))));
+    return subiendo().flatMap(l => shuffle(cardsFor(mode, l, data), rng(seedFrom(base + l))));
   }
   return shuffle(cardsFor(mode, level, data), rng(seedFrom(base)));
 }
@@ -915,9 +908,9 @@ function buildDeck(mode, level, round, data = DATA) {
 // New cards were always added at the end of each list, so slicing DATA to these sizes rebuilds
 // that old shuffle exactly, and a phone halfway through a deck keeps the same cards ahead.
 const LEGACY = { profundas: { ligero: 20, profundo: 23, muy: 18 }, princess: 30, adivina: 20, prefieres: 20, hot: 20,
-  redflag: 20, yonunca: 20, verdad: 24, probable: 20, completa: 20, termometro: 14, dosverdades: 16 };
+  redflag: 20, yonunca: 20, verdad: 24, probable: 20, completa: 20, dosverdades: 16 };
 const legacyData = () => Object.fromEntries(Object.entries(DATA).map(([k, v]) => [k, Array.isArray(v) ? v.slice(0, LEGACY[k] || 0)
-  : Object.fromEntries(Object.entries(v).map(([l, list]) => [l, list.slice(0, LEGACY[k][l])]))]));
+  : Object.fromEntries(Object.entries(v).map(([l, list]) => [l, list.slice(0, LEGACY[k][l] || 0)]))]));
 
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
@@ -927,8 +920,11 @@ const store = {
 const cardId = c => [c.mode, c.text || `${c.a}|${c.b}`].join("|");
 const favs = () => store.get("sm.favs", []);
 // Cards you write yourselves, kept only on this phone: [{ mode, text } | { mode, a, b } | { mode, kind, text }].
-const custom = () => store.get("sm.custom", []);
+const custom = () => store.get("sm.custom", []).filter(c => MODES[c.mode]);
 const names = () => store.get("sm.names", ["", ""]);
+// The old Picante deck now lives inside Preguntillas, so its favourites and own cards move there too.
+store.set("sm.favs", favs().map(id => id.replace(/^picante\|/, "profundas|")));
+store.set("sm.custom", store.get("sm.custom", []).map(c => c.mode === "picante" ? { ...c, mode: "profundas" } : c));
 function toggleFav(c) {
   const id = cardId(c), list = favs(), on = !list.includes(id);
   store.set("sm.favs", on ? [...list, id] : list.filter(x => x !== id));
@@ -954,8 +950,9 @@ function renderHome() {
 }
 
 function renderLevels() {
-  const cur = store.get("sm.lvl", "todo");
-  $("lvls").innerHTML = LEVELS.map(([k, n, d]) => `<button class="lvl${k === cur ? " rec" : ""}" type="button" data-level="${k}" aria-pressed="${k === cur}"><b>${n}</b><span>${d}</span></button>`).join("");
+  let cur = store.get("sm.lvl", "todo");
+  if (!levels().some(l => l[0] === cur)) cur = "todo";
+  $("lvls").innerHTML = levels().map(([k, n, d]) => `<button class="lvl${k === cur ? " rec" : ""}" type="button" data-level="${k}" aria-pressed="${k === cur}"><b>${n}</b><span>${d}</span></button>`).join("");
 }
 
 const progressKey = () => `sm.pos|${state.mode}|${state.level}`;
@@ -988,6 +985,7 @@ function loadDeck() {
 
 function startMode(mode, level) {
   state.mode = mode; state.level = level || (mode === "profundas" ? store.get("sm.lvl", "todo") : "todo");
+  if (!levels().some(l => l[0] === state.level)) state.level = "todo";
   state.score = [0, 0]; state.lastPoint = null;
   const saved = mode === "favoritas" ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
   state.round = saved.round; state.idx = saved.idx;
@@ -1015,15 +1013,13 @@ const HOW = {
   verdad: "Os turnáis: una carta para cada persona. Si no te apetece, pulsa «Pasar».",
   probable: "Señalad a la vez a la persona que creéis.",
   completa: "Termina la frase en voz alta. Luego le toca a la otra persona.",
-  termometro: "Del 1 al 10, ¿cómo estás ahora mismo con esto? Decid el número a la vez y luego explicadlo.",
-  dosverdades: "Di dos verdades y una mentira sobre este tema. La otra persona adivina cuál es la mentira.",
-  picante: "Si no te apetece, pulsa «Pasar»."
+  dosverdades: "Di dos verdades y una mentira sobre este tema. La otra persona adivina cuál es la mentira."
 };
 const VERDICTS = { princess: "¿Princess treatment, bare minimum o red flag?", redflag: "¿Green flag, red flag o depende?" };
 const upper = s => s.charAt(0).toUpperCase() + s.slice(1);
 const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
 // Modes played in turns (the card says whose turn it is when you add names) and modes with the optional timer.
-const TURNS = ["profundas", "adivina", "verdad", "completa", "dosverdades", "picante"];
+const TURNS = ["profundas", "adivina", "verdad", "completa", "dosverdades"];
 const TIMED = ["completa", "dosverdades"];
 
 function cardHTML(c) {
@@ -1037,7 +1033,7 @@ function cardHTML(c) {
   else if (c.mode === "yonunca") body = `<p class="q">Yo nunca ${t}</p>`;
   else body = `<p class="q${c.text.length > 80 ? " long" : ""}">${t}</p>`;
   const v = VERDICTS[c.mode] ? `<p class="verdicts">${VERDICTS[c.mode]}</p>` : "";
-  const how = HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
+  const how = c.level === "chispa" ? `<p class="how">Si no te apetece, pulsa «Pasar».</p>` : HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
   const fav = favs().includes(cardId(c));
   const heart = `<button class="fav" type="button" aria-pressed="${fav}" aria-label="Guardar en favoritas">${icon("favoritas")}</button>`;
   const score = c.mode === "adivina" ? scoreHTML() : "";
@@ -1257,8 +1253,8 @@ document.addEventListener("keydown", e => {
   if (e.key === "Escape") goHome();
 });
 
-// Ajustes: names, the Picante deck and your own cards. Everything stays in localStorage on this phone.
-const CUSTOM_LABEL = { yonunca: "Lo que va después de «Yo nunca…»", prefieres: "Primera opción", termometro: "Tema", dosverdades: "Tema", hot: "La opinión", princess: "Lo que hace", redflag: "El rasgo o la costumbre" };
+// Ajustes: names, the cards with chispa and your own cards. Everything stays in localStorage on this phone.
+const CUSTOM_LABEL = { yonunca: "Lo que va después de «Yo nunca…»", prefieres: "Primera opción", dosverdades: "Tema", hot: "La opinión", princess: "Lo que hace", redflag: "El rasgo o la costumbre" };
 function renderCustom() {
   const mode = $("cMode").value;
   $("cKindWrap").hidden = mode !== "verdad";
