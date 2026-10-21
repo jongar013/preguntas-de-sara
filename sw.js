@@ -1,5 +1,5 @@
-// Keeps the game playable offline: the page and icons are cached on install, fonts on first use.
-const CACHE = "preguntas-v9";
+// Keeps the game playable offline: the page (fonts included) and icons are cached on install.
+const CACHE = "preguntas-v10";
 const CORE = ["./", "index.html", "manifest.webmanifest", "icon-192.png", "icon-512.png", "apple-touch-icon.png"];
 
 self.addEventListener("install", e => {
@@ -16,8 +16,7 @@ self.addEventListener("fetch", e => {
   const req = e.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
-  const isFont = url.hostname === "fonts.googleapis.com" || url.hostname === "fonts.gstatic.com";
-  if (url.origin !== location.origin && !isFont) return;
+  if (url.origin !== location.origin) return;
 
   // Pages: try the network first so updates arrive, fall back to the cached copy.
   if (req.mode === "navigate") {
