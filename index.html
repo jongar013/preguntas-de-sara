@@ -1543,7 +1543,7 @@ function bindSpin(card, c) {
 // The phones share one game through Firebase Realtime Database: plain REST calls plus its live
 // stream (EventSource), so nothing extra is loaded. A room lives at salas/<code>: ppl is who is
 // in it, g is the game everyone sees (written by whoever acts last).
-const FIREBASE_URL = "";
+const FIREBASE_URL = "https://preguntas-de-sara-default-rtdb.europe-west1.firebasedatabase.app";
 const net = { code: null, me: store.get("sm.me", null) || Math.random().toString(36).slice(2, 10), room: null, es: null, applying: false, sig: null, seen: null, fresh: false };
 store.set("sm.me", net.me);
 const toArr = x => Array.isArray(x) ? x : x && typeof x === "object" ? Object.values(x) : [];
