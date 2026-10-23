@@ -311,6 +311,67 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .secs button[aria-pressed="true"] { background: var(--c); color: var(--fg); }
 .countdown { font-family: var(--font-display); font-size: 2.2rem; font-variant-numeric: tabular-nums; }
 
+/* Tanda 2: código, batalla naval, 8 palabras, Stop */
+#game.board .controls, #game.board .bar, #game.board #count, #game.board .ghost-card { display: none; }
+#game.board .table { margin-bottom: 6px; }
+.opt2 small { display: block; margin-top: 2px; font-weight: 700; font-size: .85rem; color: var(--muted-ink); }
+.pad { display: grid; gap: 10px; justify-items: center; }
+.padlbl { margin: 0; font-weight: 900; font-size: .95rem; }
+.slots { display: flex; gap: 8px; }
+.slots span { width: 50px; height: 58px; border: 3px solid var(--ink); border-radius: 14px; background: var(--soft); display: grid; place-items: center; font-family: var(--font-display); font-size: 2rem; }
+.keys { display: grid; grid-template-columns: repeat(3, 74px); gap: 8px; }
+.keys button { height: 50px; border-radius: 14px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); font-weight: 900; font-size: 1.3rem; box-shadow: 0 3px 0 var(--ink); }
+.keys button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.keys .ok { background: var(--c); color: var(--fg); font-size: .95rem; padding: 0; }
+.keys .ok:disabled { opacity: .45; }
+.tries { display: grid; gap: 6px; }
+.try { display: flex; align-items: center; gap: 10px; background: var(--soft); border-radius: 12px; padding: 6px 12px; }
+.try .code { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: .15em; }
+.try small { margin-left: auto; font-weight: 800; color: var(--muted-ink); }
+.dots { display: inline-flex; gap: 4px; }
+.dots i { width: 14px; height: 14px; border-radius: 50%; border: 2.5px solid var(--ink); }
+.dots i.on { background: #22B573; }
+.grid { display: grid; grid-template-columns: repeat(8, 1fr); gap: 3px; width: 100%; max-width: 340px; justify-self: center; align-self: center; }
+.grid.small { max-width: 200px; gap: 2px; }
+.cell { aspect-ratio: 1; border-radius: 6px; background: #DCEBFF; border: 2px solid #9DBDF0; display: grid; place-items: center; font-weight: 900; font-size: 1rem; color: var(--ink); padding: 0; }
+.grid.small .cell { border-width: 1px; border-radius: 4px; font-size: .7rem; }
+button.cell:active { background: var(--c); }
+.cell.mine { background: var(--ink); border-color: var(--ink); color: #fff; }
+.cell.agua { color: #3D6FB8; }
+.cell.tocado { background: #FF5A36; border-color: var(--ink); }
+.cell.hundido { background: var(--ink); border-color: var(--ink); color: #FF5A36; }
+.turn .last { color: var(--muted-ink); }
+.row2 > button { min-height: 52px; }
+.clues { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: 900; }
+.clues b { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; }
+.clues .mini { margin-left: auto; }
+.words { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.word { min-height: 48px; padding: 8px; border: 2.5px solid var(--ink); border-radius: 14px; background: var(--soft); color: var(--ink); font-weight: 900; font-size: 1.05rem; display: grid; place-items: center; text-align: center; }
+.word.got { background: #22B573; }
+button.word:disabled { cursor: default; }
+.letter { display: grid; justify-items: center; }
+.letter small { font-weight: 800; color: var(--muted-ink); }
+.letter b { font-family: var(--font-display); font-weight: 400; font-size: 4.2rem; line-height: 1; }
+.stophead { display: flex; align-items: center; justify-content: space-around; }
+.stophead .letter b { font-size: 3rem; }
+.cats { margin: 0; padding-left: 1.4em; columns: 2; font-weight: 900; font-size: 1.1rem; line-height: 1.6; }
+.form { display: grid; gap: 8px; }
+.form label { display: grid; grid-template-columns: 82px 1fr; align-items: center; gap: 8px; font-weight: 900; font-size: .9rem; }
+.form input { font: inherit; font-weight: 800; font-size: 1rem; color: var(--ink); background: var(--soft); border: 2.5px solid var(--ink); border-radius: 12px; padding: 8px 10px; min-height: 44px; width: 100%; min-width: 0; }
+.table-wrap { overflow-x: auto; }
+.stoptable { width: 100%; border-collapse: separate; border-spacing: 4px; font-size: .9rem; }
+.stoptable th { text-align: left; font-weight: 900; padding: 2px 4px; }
+.stoptable thead th { text-align: center; }
+.stoptable td { text-align: center; font-weight: 900; }
+.ans { width: 100%; min-height: 40px; border-radius: 10px; background: var(--soft); color: var(--ink); font-weight: 800; padding: 4px 6px; display: grid; overflow-wrap: anywhere; }
+.ans small { color: #128A55; font-weight: 900; }
+.ans.bad { text-decoration: line-through; opacity: .55; }
+.stoptable .sum td { font-family: var(--font-display); font-size: 1.2rem; }
+.tally { display: grid; gap: 8px; }
+.tally > div { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--soft); border-radius: 14px; padding: 6px 6px 6px 12px; font-weight: 900; }
+.tally b { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; margin-left: 6px; }
+.tally button { min-width: 48px; min-height: 44px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); font-weight: 900; margin-left: 4px; }
+
 @media (prefers-reduced-motion: reduce) {
   .fav.pop-in svg, .pt.bump b, .toast, .q.reveal { animation: none; }
   .wheel { transition: none; }
@@ -1220,6 +1281,27 @@ const DATA = {
     ["¿Cuántos huevos pone una gallina en un año?", 300, "Unos 300 si es ponedora."],
     ["¿Cuántos kilómetros tiene el Camino de Santiago francés desde Roncesvalles?", 780, "Unos 780 km."]
   ],
+  palabras: [
+    "Playa", "Montaña", "Pizza", "Guitarra", "Avión", "Elefante", "Reloj", "Paraguas", "Bicicleta", "Castillo", "Chocolate", "Fantasma",
+    "Hospital", "Biblioteca", "Volcán", "Pirata", "Sirena", "Dragón", "Cohete", "Tiburón", "Helado", "Cine", "Boda", "Navidad",
+    "Verano", "Invierno", "Nieve", "Lluvia", "Arcoíris", "Sol", "Luna", "Estrella", "Mar", "Río", "Bosque", "Desierto",
+    "Isla", "Puente", "Tren", "Barco", "Coche", "Moto", "Autobús", "Metro", "Aeropuerto", "Hotel", "Maleta", "Pasaporte",
+    "Mapa", "Brújula", "Tesoro", "Corona", "Princesa", "Rey", "Bruja", "Mago", "Superhéroe", "Robot", "Ordenador", "Móvil",
+    "Televisión", "Radio", "Cámara", "Foto", "Espejo", "Cama", "Almohada", "Sofá", "Cocina", "Nevera", "Horno", "Microondas",
+    "Tenedor", "Cuchara", "Plato", "Vaso", "Botella", "Vino", "Cerveza", "Café", "Té", "Leche", "Pan", "Queso",
+    "Jamón", "Tortilla", "Paella", "Hamburguesa", "Patata", "Tomate", "Manzana", "Plátano", "Fresa", "Limón", "Naranja", "Sandía",
+    "Uva", "Piña", "Coco", "Perro", "Gato", "Caballo", "Vaca", "Cerdo", "Oveja", "Gallina", "Pato", "León",
+    "Tigre", "Mono", "Jirafa", "Cebra", "Oso", "Lobo", "Zorro", "Conejo", "Ratón", "Serpiente", "Rana", "Tortuga",
+    "Pez", "Ballena", "Delfín", "Pulpo", "Mariposa", "Abeja", "Hormiga", "Araña", "Mosquito", "Flor", "Rosa", "Árbol",
+    "Hoja", "Jardín", "Parque", "Colegio", "Profesor", "Médico", "Bombero", "Policía", "Cocinero", "Payaso", "Circo", "Fiesta",
+    "Cumpleaños", "Regalo", "Tarta", "Vela", "Globo", "Música", "Baile", "Canción", "Concierto", "Fútbol", "Baloncesto", "Tenis",
+    "Piscina", "Gimnasio", "Zapatilla", "Camiseta", "Pantalón", "Vestido", "Sombrero", "Gafas", "Bufanda", "Guante", "Bolso", "Dinero",
+    "Banco", "Tienda", "Mercado", "Carta", "Libro", "Periódico", "Lápiz", "Papel", "Tijeras", "Pegamento", "Llave", "Puerta",
+    "Ventana", "Escalera", "Ascensor", "Tejado", "Jaula", "Cuerda", "Fuego", "Hielo", "Viento", "Trueno", "Sueño", "Beso",
+    "Abrazo", "Risa", "Lágrima", "Miedo", "Amor", "Selfie", "Karaoke", "Pijama", "Disfraz", "Vampiro", "Zombi", "Momia",
+    "Calabaza", "Galleta", "Caramelo", "Palomitas"
+  ],
+  stop: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M", "N", "O", "P", "R", "S", "T", "V"],
   emociones: [
     "Alegría", "Vergüenza", "Nostalgia", "Celos", "Orgullo", "Alivio", "Ternura", "Rabia", "Miedo", "Aburrimiento",
     "Envidia", "Culpa", "Sorpresa", "Ilusión", "Decepción", "Asco", "Frustración", "Gratitud", "Nervios", "Euforia",
@@ -1249,6 +1331,10 @@ const ICONS = {
   trivial: '<circle cx="12" cy="12" r="9"/><path d="M12 3v9l7.8 4.5M12 12l-7.8 4.5"/>',
   cifras: '<path d="M12 3v18M8 7l4-4 4 4M8 17l4 4 4-4"/>',
   emociones: '<circle cx="12" cy="12" r="9"/><path d="M8 14.5a5 5 0 008 0M9 9.5h.01M15 9.5h.01"/>',
+  codigo: '<rect x="3" y="7" width="18" height="10" rx="3"/><path d="M7 12h.01M10.5 12h.01M14 12h.01M17.5 12h.01"/>',
+  naval: '<path d="M3 15h18l-3 5H6zM12 15V4l6 8h-6M5 15l2-4h5"/>',
+  palabras: '<path d="M4 6h16M4 12h10M4 18h13"/><circle cx="19" cy="16" r="2.5"/>',
+  stop: '<path d="M8 3h8l5 5v8l-5 5H8l-5-5V8z"/><path d="M9 12h6"/>',
   red: '<path d="M2 9a14.5 14.5 0 0120 0M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0"/><circle cx="12" cy="19.5" r="1"/>',
   mezcla: '<path d="M3 6h4l10 12h4M3 18h4l10-12h4M18 3l3 3-3 3M18 15l3 3-3 3"/>',
   favoritas: '<path d="M12 20.5S3 15 3 8.8A4.6 4.6 0 0112 6.6a4.6 4.6 0 019 2.2C21 15 12 20.5 12 20.5z"/>',
@@ -1279,6 +1365,10 @@ const MODES = {
   trivial:    { name: "Trivial", tag: "Trivial", c: "#FFC93C", fg: "#1E1633", game: true },
   cifras:     { name: "¿Cuántos?", tag: "¿Cuántos?", c: "#FF7A59", fg: "#1E1633", game: true },
   emociones:  { name: "Emociones", tag: "Emoción", c: "#F15BB5", fg: "#1E1633", game: true },
+  codigo:     { name: "Adivina el código", short: "El código", tag: "Código", c: "#2EC4B6", fg: "#1E1633", game: true, board: true, sub: "2 o más personas" },
+  palabras:   { name: "8 palabras", tag: "8 palabras", c: "#06D6A0", fg: "#1E1633", game: true },
+  stop:       { name: "Stop", tag: "Stop", c: "#EF476F", fg: "#FFFFFF", game: true, nodrag: true },
+  naval:      { name: "Batalla naval", tag: "Batalla naval", c: "#4361EE", fg: "#FFFFFF", game: true, board: true, sub: "2 personas" },
   mezcla:     { name: "Mezcla de todo", tag: "Mezcla", c: "#FFFFFF", fg: "#1E1633", wide: true },
   favoritas:  { name: "Vuestras favoritas", tag: "Favorita", c: "#F0384F", fg: "#1E1633", wide: true }
 };
@@ -1305,6 +1395,10 @@ const RULES = {
   trivial: "Por turnos, cada persona contesta una pregunta con cuatro opciones. Si acierta, se lleva un punto.",
   cifras: "Todos responden a la misma pregunta moviendo la barra de menos a más, y fijan su respuesta sin enseñarla. Luego se ve la respuesta buena y quien más se acerque se lleva un punto.",
   emociones: "A quien le toca le sale una emoción en secreto. Tiene que contar una situación, real o inventada, en la que sentiría esa emoción, sin decir la palabra. Elegid el tiempo y pulsad «Empezar». Quien la adivine se lleva un punto.",
+  codigo: "Hay un código secreto de 4 cifras. Por turnos, cada persona prueba un código y la app dice cuántas cifras están en su sitio exacto. Gana quien lo complete antes. Podéis jugar con un código que se inventa la app o poniendo cada persona el suyo.",
+  palabras: "Quien explica ve 8 palabras en secreto. Para cada una dice una sola palabra relacionada o que se la recuerde, y los demás intentan adivinarla. Tenéis 20 pistas como máximo para las 8. Cada palabra acertada es un punto para quien explica.",
+  stop: "Sale una letra. Cuando empiece el tiempo, escribid un nombre, un apellido, una ciudad, una cosa, un color, una comida y un animal que empiecen por esa letra. Quien acabe puede pulsar «¡Stop!». Respuesta única: 10 puntos. Repetida: 5. A distancia cada persona escribe en su móvil y la app suma. Con un solo móvil, escribid en papel y apuntad aquí los puntos.",
+  naval: "Para 2 personas. Cada una coloca sus 4 barcos en secreto. Por turnos, disparad a una casilla del tablero de la otra persona: agua, tocado o hundido. Gana quien hunda antes toda la flota.",
   mezcla: "Cartas de todos los juegos. Cada carta dice a qué juego pertenece y el fondo toma su color.",
   favoritas: "Las cartas que habéis marcado con el corazón. Para quitar una, tocad otra vez el corazón."
 };
@@ -1356,6 +1450,9 @@ function allCardsFor(mode, level, data) {
   if (mode === "frecuencia") return data.frecuencia.map(([text, lo, hi]) => ({ mode, text, lo, hi, n: 1 + pickOf(text, 10) }));
   if (mode === "onda") return data.onda.map(([a, b]) => ({ mode, a, b, n: 10 + pickOf(a + b, 81) }));
   if (mode === "trivial") return data.trivial.map(([cat, text, ok, ...bad]) => ({ mode, cat, text, ok, bad }));
+  if (mode === "palabras") { const w = shuffle(data.palabras, rng(seedFrom(`${state.seed}|palabras|${state.round}`)));
+    return Array.from({ length: Math.floor(w.length / 8) }, (_, i) => ({ mode, text: w.slice(i * 8, i * 8 + 8).join(" · ") })); }
+  if (mode === "codigo" || mode === "naval") return [{ mode, text: "Partida" }];
   if (mode === "cifras") return data.cifras.map(([text, ans, note]) => ({ mode, text, ans, note }));
   if (mode === "mezcla") return playable().filter(m => !MODES[m].game).flatMap(m => cardsFor(m, "todo", data));
   if (mode === "favoritas") { const f = new Set(favs()); return cardsFor("mezcla").filter(c => f.has(cardId(c))); }
@@ -1363,7 +1460,7 @@ function allCardsFor(mode, level, data) {
 }
 // Home order: neighbours on the shelf never share a similar colour.
 const HOME_ORDER = ["profundas", "princess", "adivina", "prefieres", "probable", "redflag", "yonunca", "verdad", "hot", "completa", "anecdotas", "loharia", "top3", "random", "dosverdades",
-  "frecuencia", "onda", "trivial", "cifras", "emociones"];
+  "frecuencia", "onda", "trivial", "cifras", "emociones", "codigo", "palabras", "stop", "naval"];
 // Decks with their own cards.
 const playable = () => Object.keys(MODES).filter(m => !META.includes(m));
 function buildDeck(mode, level, round, data = DATA) {
@@ -1418,7 +1515,7 @@ function renderHome() {
     if (k === "favoritas" && !n) return "";
     const info = `<button class="info" type="button" data-info="${k}" aria-label="Cómo se juega a ${m.name}">i</button>`;
     if (m.wide) return `<div class="deck-wrap wide"><button class="deck wide${k === "favoritas" ? " favs" : ""}" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${m.name}</span><span class="count">${k === "favoritas" ? `${n} ${n === 1 ? "carta guardada" : "cartas guardadas"}` : `${n} cartas de todos los juegos`}</span></span></button>${info}</div>`;
-    return `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${m.name}</span><span class="count">${n} cartas</span></button>${info}</div>`;
+    return `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${m.name}</span><span class="count">${m.sub || `${n} cartas`}</span></button>${info}</div>`;
   };
   $("decks").innerHTML = order.filter(k => !MODES[k].game).map(k => tile([k, MODES[k]])).join("");
   $("games").innerHTML = order.filter(k => MODES[k].game).map(k => tile([k, MODES[k]])).join("");
@@ -1466,6 +1563,7 @@ function startMode(mode, level) {
   state.mode = mode; state.level = level || (mode === "profundas" ? store.get("sm.lvl", "todo") : "todo");
   if (!levels().some(l => l[0] === state.level)) state.level = "todo";
   state.score = players().map(() => 0); state.lastPoint = null; state.spun = new Set(); state.plays = {}; state.team = 0;
+  state.inputs = {}; state.gid = Math.random().toString(36).slice(2, 8);
   const saved = mode === "favoritas" || net.code ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
   state.round = saved.round; state.idx = saved.idx;
   state.deck = mode === "favoritas" ? buildDeck(mode, state.level, state.round) : loadDeck();
@@ -1504,8 +1602,10 @@ const VERDICTS = { princess: "¿Princess treatment, bare minimum o red flag?", r
 const upper = s => s.charAt(0).toUpperCase() + s.slice(1);
 const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
 // Modes played in turns (the card says whose turn it is when you add names) and modes with the optional timer.
-const TURNS = ["profundas", "adivina", "verdad", "completa", "anecdotas", "dosverdades", "random", "frecuencia", "onda", "trivial", "emociones"];
-const TURN_LABEL = { onda: "Da la pista", trivial: "Contesta", emociones: "Explica" };
+const TURNS = ["profundas", "adivina", "verdad", "completa", "anecdotas", "dosverdades", "random", "frecuencia", "onda", "trivial", "emociones", "palabras"];
+const TURN_LABEL = { onda: "Da la pista", trivial: "Contesta", emociones: "Explica", palabras: "Explica" };
+// Games where everyone plays at once or the game itself says whose turn it is.
+const NOTURN = ["cifras", "stop", "codigo", "naval"];
 const TIMED = ["completa", "top3", "dosverdades"];
 
 // Ruleta for Verdad o reto: the reto card already knows its style, the wheel shows which one it is.
@@ -1582,7 +1682,11 @@ function listen() {
 function onRoom() {
   if (!net.room || !roomPeople().length) { leaveRoom(); netMsg("La partida se ha cerrado."); return; }
   renderNet();
-  const g = net.room.g;
+  const g = net.room.g, inSig = JSON.stringify(net.room.in || null);
+  if (inSig !== net.inSig) {
+    net.inSig = inSig;
+    if (!$("game").hidden && state.mode && (!g || g.v === net.seen) && !net.fresh) { net.applying = true; try { render(null); } finally { net.applying = false; } }
+  }
   if (!g || (g.v === net.seen && !net.fresh)) return;
   net.seen = g.v;
   if (g.by !== net.me || net.fresh) applyRemote(g);
@@ -1593,7 +1697,7 @@ function push() {
   if (!net.code || net.applying) return;
   const v = Math.random().toString(36).slice(2, 9), g = { by: net.me, v, mode: state.mode || null };
   if (state.mode) {
-    Object.assign(g, { level: state.level, round: state.round, idx: state.idx, score: state.score, team: state.team || 0, plays: state.plays, spun: [...(state.spun || [])] });
+    Object.assign(g, { level: state.level, round: state.round, idx: state.idx, score: state.score, team: state.team || 0, plays: state.plays, spun: [...(state.spun || [])], gid: state.gid || "" });
     const sig = `${seedFrom(state.deck.map(cardId).join("\n"))}:${state.deck.length}`;
     if (sig !== net.sig) { g.deck = state.deck; net.sig = sig; }
   }
@@ -1609,7 +1713,7 @@ function applyRemote(g) {
     net.sig = `${seedFrom(deck.map(cardId).join("\n"))}:${deck.length}`;
     const was = $("game").hidden || state.mode !== g.mode ? null : state.idx;
     Object.assign(state, { mode: g.mode, level: g.level || "todo", round: g.round || 0, idx: g.idx || 0, deck,
-      score: toArr(g.score).map(n => n || 0), team: g.team || 0, plays: g.plays || {}, spun: new Set(toArr(g.spun)) });
+      score: toArr(g.score).map(n => n || 0), team: g.team || 0, plays: g.plays || {}, spun: new Set(toArr(g.spun)), gid: g.gid || "", inputs: {} });
     if ($("game").hidden) {
       closeOpenDialogs();
       $("home").hidden = true; $("game").hidden = false;
@@ -1843,6 +1947,260 @@ const GAMES = {
     }
   }
 };
+// What each person enters at the same time as the others (a secret code, a fleet, the Stop answers)
+// goes to its own place, salas/<code>/in/<key>/p<i>, so two phones writing at once never overwrite
+// each other. With one phone it stays in state.inputs.
+const inKey = c => `k${seedFrom(`${state.gid}|${cardId(c)}|${state.round}`)}`;
+function getIn(c, i) {
+  const k = inKey(c), box = net.code ? ((net.room && net.room.in) || {})[k] : state.inputs[k];
+  return (box || {})[`p${i}`];
+}
+function setIn(c, i, v) {
+  const k = inKey(c);
+  if (net.code) {
+    net.room = setAt(net.room, `/in/${k}/p${i}`, v);
+    api(net.code, `/in/${k}/p${i}`, "PUT", v).catch(() => netMsg("No se ha podido enviar. Revisa la conexión."));
+  } else (state.inputs[k] || (state.inputs[k] = {}))[`p${i}`] = v;
+  render(null);
+}
+// A new game of a board (code, ships) starts on the same card with a clean slate.
+function newMatch(c) { delete state.plays[playKey(c)]; state.round++; render("deal"); }
+const others = (names, i) => names.filter((n, j) => j !== i);
+
+// ---------- Adivina el código ----------
+const CODE_LEN = 4;
+const codeHits = (g, code) => [...g].filter((d, i) => d === String(code)[i]).length;
+let pad = { key: null, v: "" };
+function padHTML(key, label, act, okText) {
+  if (pad.key !== key) pad = { key, v: "" };
+  return `<div class="pad"><p class="padlbl">${label}</p><div class="slots">${Array.from({ length: CODE_LEN }, (_, i) => `<span>${pad.v[i] || ""}</span>`).join("")}</div>
+    <div class="keys">${[1, 2, 3, 4, 5, 6, 7, 8, 9].map(d => `<button type="button" data-key="${d}">${d}</button>`).join("")}
+    <button type="button" data-key="del" aria-label="Borrar">⌫</button><button type="button" data-key="0">0</button>
+    <button type="button" class="ok" data-act="${act}"${pad.v.length < CODE_LEN ? " disabled" : ""}>${okText}</button></div></div>`;
+}
+function bindPad(card) {
+  card.querySelectorAll("[data-key]").forEach(b => {
+    b.addEventListener("pointerdown", e => e.stopPropagation());
+    b.onclick = () => {
+      pad.v = b.dataset.key === "del" ? pad.v.slice(0, -1) : (pad.v + b.dataset.key).slice(0, CODE_LEN);
+      card.querySelectorAll(".slots span").forEach((s, i) => { s.textContent = pad.v[i] || ""; });
+      card.querySelector(".pad .ok").disabled = pad.v.length < CODE_LEN;
+    };
+  });
+}
+const dots = h => `<span class="dots" aria-label="${h} en su sitio">${Array.from({ length: CODE_LEN }, (_, i) => `<i${i < h ? ' class="on"' : ""}></i>`).join("")}</span>`;
+
+// ---------- Batalla naval ----------
+const SIDE = 8, SHIPS = [4, 3, 3, 2];
+function randomFleet() {
+  const taken = new Set(), ships = [];
+  const near = x => { const r = Math.floor(x / SIDE), q = x % SIDE; for (let dr = -1; dr <= 1; dr++) for (let dq = -1; dq <= 1; dq++) { const rr = r + dr, qq = q + dq; if (rr >= 0 && rr < SIDE && qq >= 0 && qq < SIDE && taken.has(rr * SIDE + qq)) return true; } return false; };
+  for (const len of SHIPS) {
+    for (;;) {
+      const hor = Math.random() < .5, r = Math.floor(Math.random() * (hor ? SIDE : SIDE - len + 1)), q = Math.floor(Math.random() * (hor ? SIDE - len + 1 : SIDE));
+      const cells = Array.from({ length: len }, (_, i) => hor ? r * SIDE + q + i : (r + i) * SIDE + q);
+      if (cells.some(near)) continue;
+      cells.forEach(x => taken.add(x)); ships.push(cells.join(",")); break;
+    }
+  }
+  return ships;
+}
+const fleetOf = (c, i) => toArr(getIn(c, i)).map(s => String(s).split(",").map(Number));
+let fleetDraft = { key: null, ships: null };
+// What player s's shots did to the other player's fleet.
+function shotMap(c, s) {
+  const shots = toArr(play(c).shots).filter(x => x.p === s).map(x => x.x), fleet = fleetOf(c, 1 - s), hit = new Set(shots), out = new Map();
+  for (const x of shots) out.set(x, "agua");
+  for (const ship of fleet) { const all = ship.every(x => hit.has(x)); for (const x of ship) if (hit.has(x)) out.set(x, all ? "hundido" : "tocado"); }
+  return out;
+}
+const sunkAll = (c, s) => { const fleet = fleetOf(c, 1 - s), m = shotMap(c, s); return fleet.length > 0 && fleet.every(ship => ship.every(x => m.get(x) === "hundido")); };
+const COLS = "ABCDEFGH";
+function gridHTML(cell, fire, small) {
+  return `<div class="grid${small ? " small" : ""}" role="grid">${Array.from({ length: SIDE * SIDE }, (_, x) => {
+    const [cls, txt] = cell(x), name = `${COLS[x % SIDE]}${Math.floor(x / SIDE) + 1}`;
+    return fire && !cls ? `<button type="button" class="cell" data-act="fire" data-v="${x}" aria-label="Disparar a ${name}"></button>` : `<span class="cell ${cls}" aria-label="${name} ${txt}">${txt === "agua" ? "•" : txt === "tocado" || txt === "hundido" ? "✕" : ""}</span>`;
+  }).join("")}</div>`;
+}
+const shotCell = m => x => m.has(x) ? [m.get(x), m.get(x)] : ["", ""];
+const ownCell = (ships, theirShots) => x => { const ship = ships.some(s => s.includes(x)), shot = theirShots.has(x);
+  return ship ? [shot ? "tocado mine" : "mine", shot ? "tocado" : "barco"] : shot ? ["agua", "agua"] : ["", ""]; };
+
+// ---------- Stop ----------
+const STOP_CATS = ["Nombre", "Apellido", "Ciudad", "Cosa", "Color", "Comida", "Animal"];
+const norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
+let stopDraft = { key: null, a: [] };
+// Points of each answer: 10 if only you said it, 5 if repeated, 0 if empty, wrong letter or crossed out.
+function stopPoints(c) {
+  const names = players(), p = play(c), bad = p.bad || {}, ans = names.map((n, i) => toArr(getIn(c, i)));
+  return names.map((n, i) => STOP_CATS.map((cat, j) => {
+    const a = norm(ans[i][j]);
+    if (!a || !a.startsWith(norm(c.text)) || bad[`${i}_${j}`]) return 0;
+    return ans.some((o, k) => k !== i && norm(o[j]) === a) ? 5 : 10;
+  }));
+}
+const stopEnded = c => !!play(c).end && Date.now() >= play(c).end;
+
+Object.assign(GAMES, {
+  codigo: {
+    html: c => {
+      const p = play(c), names = players(), n = names.length, k = inKey(c);
+      if (!p.kind) return `<p class="q">¿Cómo jugáis?</p><div class="opts">
+        <button class="opt2" type="button" data-act="kind" data-v="app">La app se inventa el código<small>Os turnáis y gana quien lo complete antes.</small></button>
+        <button class="opt2" type="button" data-act="kind" data-v="duelo">Cada persona pone el suyo<small>Adivinas el código de la siguiente persona.</small></button></div>`;
+      if (p.kind === "duelo") {
+        const missing = names.map((x, i) => i).filter(i => !getIn(c, i));
+        if (missing.length) {
+          const me = net.code ? meIdx() : missing[0];
+          if (net.code && !missing.includes(me)) return `<p class="q">Código guardado</p><p class="how">Esperando a que ${missing.map(i => `<b>${names[i]}</b>`).join(" y ")} ponga su código.</p>`;
+          return `${net.code ? "" : `<p class="how">Pásale el móvil a <b>${names[me]}</b>. Que no mire nadie más.</p>`}${padHTML(`${k}|s${me}`, net.code ? "Escribe tu código secreto" : `${names[me]}, escribe tu código secreto`, "save", "Guardar")}`;
+        }
+      }
+      const tries = toArr(p.tries), t = tries.length % n, target = i => p.kind === "app" ? p.code : getIn(c, (i + 1) % n);
+      const mine = !net.code || meIdx() === t;
+      const head = p.win != null ? `<p class="result">¡${names[p.win]} ha descubierto el código!</p>`
+        : `<p class="turn">${net.code && mine ? "<b>Te toca a ti</b>" : `Le toca a <b>${names[t]}</b>`}${p.kind === "duelo" ? `: adivina el código de <b>${names[(t + 1) % n]}</b>` : ""}</p>`;
+      const list = i => tries.filter(x => p.kind === "app" || x.p === i);
+      const hist = (p.kind === "app" ? [null] : names.map((x, i) => i)).map(i => { const l = list(i); return !l.length ? "" :
+        `<div class="tries">${i == null ? "" : `<p class="padlbl">${names[i]} → código de ${names[(i + 1) % n]}</p>`}${l.slice().reverse().map(x =>
+          `<div class="try"><span class="code">${x.g}</span>${dots(x.h)}<small>${p.kind === "app" ? names[x.p] : `${x.h} en su sitio`}</small></div>`).join("")}</div>`; }).join("");
+      const solved = p.win != null ? `<p class="how">El código era <b>${esc(target(p.win))}</b>.</p><button class="act" type="button" data-act="again">Otra partida</button>` : "";
+      return `${head}${p.win == null && mine ? padHTML(`${k}|t${tries.length}`, "Prueba un código", "try", "Probar") : ""}${solved}${hist}`;
+    },
+    bind: card => bindPad(card),
+    act(c, a, b) {
+      const p = play(c), names = players(), n = names.length;
+      if (a === "kind") setPlay(c, { kind: b.dataset.v, code: b.dataset.v === "app" ? Array.from({ length: CODE_LEN }, () => Math.floor(Math.random() * 10)).join("") : null });
+      if (a === "save") { const missing = names.map((x, i) => i).filter(i => !getIn(c, i)); setIn(c, net.code ? meIdx() : missing[0], pad.v); pad.key = null; }
+      if (a === "try" && p.win == null) {
+        const tries = toArr(p.tries), t = tries.length % n, code = p.kind === "app" ? p.code : getIn(c, (t + 1) % n), h = codeHits(pad.v, code);
+        const patch = { tries: [...tries, { p: t, g: pad.v, h }] };
+        if (h === CODE_LEN) { patch.win = t; state.score[t] = (state.score[t] || 0) + 1; }
+        $("live").textContent = `${pad.v}: ${h} en su sitio.`;
+        pad.key = null; setPlay(c, patch);
+      }
+      if (a === "again") newMatch(c);
+    }
+  },
+  naval: {
+    html: c => {
+      const p = play(c), names = players().slice(0, 2), k = inKey(c);
+      if (players().length < 2) return `<p class="q">Hacen falta 2 personas</p><p class="how">Poned vuestros nombres en Ajustes o jugad a distancia.</p>`;
+      const missing = [0, 1].filter(i => !toArr(getIn(c, i)).length), me = net.code ? meIdx() : -1;
+      if (missing.length) {
+        const who = net.code ? me : missing[0];
+        if (net.code && !missing.includes(who)) return `<p class="q">Flota lista</p><p class="how">${who > 1 ? "Mirando la partida. " : ""}Esperando a que ${missing.map(i => `<b>${names[i]}</b>`).join(" y ")} coloque sus barcos.</p>`;
+        if (fleetDraft.key !== `${k}|${who}`) fleetDraft = { key: `${k}|${who}`, ships: randomFleet() };
+        const ships = fleetDraft.ships.map(s => s.split(",").map(Number));
+        return `${net.code ? "" : `<p class="how">Pásale el móvil a <b>${names[who]}</b>. Que no mire nadie más.</p>`}
+          <p class="padlbl">${net.code ? "Tus barcos" : `Barcos de ${names[who]}`}</p>${gridHTML(ownCell(ships, new Set()), false)}
+          <div class="row2"><button class="skip" type="button" data-act="shuffle">Otra colocación</button><button class="act" type="button" data-act="ready">¡Listos!</button></div>`;
+      }
+      const shots = toArr(p.shots), t = shots.length % 2, o = 1 - t;
+      const last = shots.length ? (m => `${names[shots[shots.length - 1].p]}: ${upper(m.get(shots[shots.length - 1].x))}`)(shotMap(c, shots[shots.length - 1].p)) : "";
+      if (p.win != null) return `<p class="result">¡${names[p.win]} ha hundido toda la flota!</p>
+        <p class="padlbl">Tablero de ${names[1 - p.win]}</p>${gridHTML(ownCell(fleetOf(c, 1 - p.win), new Set(shots.filter(x => x.p === p.win).map(x => x.x))), false)}
+        <button class="act" type="button" data-act="again">Otra partida</button>`;
+      const canFire = !net.code || me === t;
+      const target = net.code && me <= 1 ? 1 - me : o;
+      const top = `<p class="turn">${net.code && me === t ? "<b>Te toca disparar</b>" : `Dispara <b>${names[t]}</b>`}${last ? ` · <span class="last">${last}</span>` : ""}</p>
+        <p class="padlbl">Tablero de ${names[target]}</p>${gridHTML(shotCell(shotMap(c, 1 - target)), canFire && target === o)}`;
+      const viewer = net.code ? me : t, theirs = new Set(shots.filter(x => x.p !== viewer).map(x => x.x));
+      const own = viewer > 1 ? "" : !net.code && peeking !== `${playKey(c)}|${viewer}`
+        ? `<button class="mini" type="button" data-act="peekfleet">Ver la flota de ${names[viewer]}</button>`
+        : `<p class="padlbl">${net.code ? "Tu flota" : `Flota de ${names[viewer]}`}</p>${gridHTML(ownCell(fleetOf(c, viewer), theirs), false, true)}${net.code ? "" : `<button class="mini" type="button" data-act="hide">Ocultar</button>`}`;
+      return top + own;
+    },
+    act(c, a, b) {
+      const p = play(c);
+      if (a === "shuffle") { fleetDraft.ships = randomFleet(); render(null); }
+      if (a === "ready") { const missing = [0, 1].filter(i => !toArr(getIn(c, i)).length); const who = net.code ? meIdx() : missing[0]; fleetDraft.key = null; setIn(c, who, fleetDraft.ships); }
+      if (a === "peekfleet") { const shots = toArr(p.shots); peeking = `${playKey(c)}|${net.code ? meIdx() : shots.length % 2}`; render(null); }
+      if (a === "fire" && p.win == null) {
+        const shots = toArr(p.shots), t = shots.length % 2, x = +b.dataset.v;
+        if (shots.some(s => s.p === t && s.x === x)) return;
+        peeking = null;
+        play(c).shots = [...shots, { p: t, x }];
+        const res = shotMap(c, t).get(x);
+        $("live").textContent = upper(res);
+        try { navigator.vibrate && res !== "agua" && navigator.vibrate(res === "hundido" ? [80, 60, 160] : 80); } catch (e) {}
+        if (sunkAll(c, t)) { state.score[t] = (state.score[t] || 0) + 1; setPlay(c, { win: t }); } else render(null);
+      }
+      if (a === "again") newMatch(c);
+    }
+  },
+  palabras: {
+    score: true,
+    html: c => {
+      const p = play(c), words = c.text.split(" · "), got = new Set(toArr(p.got)), clues = p.clues || 0, show = canSee(c);
+      const over = got.size === words.length || clues >= 20;
+      const grid = `<div class="words">${words.map((w, i) => got.has(i) ? `<button type="button" class="word got" data-act="got" data-v="${i}"${show && !over ? "" : " disabled"}>${esc(w)} ✓</button>`
+        : show ? `<button type="button" class="word" data-act="got" data-v="${i}"${over ? " disabled" : ""}>${esc(w)}</button>` : `<span class="word">?</span>`).join("")}</div>`;
+      const peekBtn = net.code || p.rev ? "" : `<button class="mini" type="button" data-act="${show ? "hide" : "peek"}">${show ? "Ocultar las palabras" : "Ver las palabras"}</button>`;
+      return `<div class="clues"><span>Pistas</span><b>${clues}/20</b>${show && !over ? `<button class="mini" type="button" data-act="clue">+1 pista</button>${clues ? `<button class="undo" type="button" data-act="unclue">Quitar una</button>` : ""}` : ""}</div>
+        ${grid}${peekBtn}
+        <p class="how">${over ? `¡${got.size} de ${words.length} con ${clues} pistas! Punto por cada una para quien explica.` : show ? "Di una sola palabra relacionada y suma la pista. Toca cada palabra cuando la acierten." : "Escucha las pistas y adivina las palabras."}</p>`;
+    },
+    act(c, a, b) {
+      const p = play(c), t = turnIdx();
+      if (a === "clue") setPlay(c, { clues: Math.min(20, (p.clues || 0) + 1) });
+      if (a === "unclue") setPlay(c, { clues: Math.max(0, (p.clues || 0) - 1) });
+      if (a === "got") {
+        const got = new Set(toArr(p.got)), i = +b.dataset.v, had = got.has(i);
+        if (had) got.delete(i); else got.add(i);
+        state.score[t] = Math.max(0, (state.score[t] || 0) + (had ? -1 : 1));
+        setPlay(c, { got: [...got] });
+      }
+    }
+  },
+  stop: {
+    html: c => {
+      const p = play(c), names = players(), k = inKey(c), me = meIdx(), secs = p.secs || store.get("sm.stopsecs", 90);
+      const letter = `<div class="letter"><small>Letra</small><b>${esc(c.text)}</b></div>`;
+      if (!p.end) return `${letter}<p class="how">${STOP_CATS.join(", ")}.</p><div class="secs" role="group" aria-label="Tiempo">${[60, 90, 120].map(s =>
+        `<button type="button" data-act="secs" data-v="${s}" aria-pressed="${s === secs}">${s} s</button>`).join("")}<button class="mini" type="button" data-act="go">Empezar</button></div>`;
+      if (!stopEnded(c)) {
+        if (!net.code) return `${letter}<span class="countdown">${secs} s</span><ol class="cats">${STOP_CATS.map(x => `<li>${x}</li>`).join("")}</ol>
+          <p class="how">Escribid en papel. Quien acabe, que diga «¡Stop!».</p><button class="act" type="button" data-act="stop">¡Stop!</button>`;
+        if (stopDraft.key !== k) stopDraft = { key: k, a: STOP_CATS.map(() => "") };
+        return `<div class="stophead">${letter}<span class="countdown">${secs} s</span></div>
+          <div class="form">${STOP_CATS.map((x, j) => `<label><span>${x}</span><input type="text" data-j="${j}" maxlength="30" autocomplete="off" autocapitalize="sentences" value="${esc(stopDraft.a[j])}"></label>`).join("")}</div>
+          <button class="act" type="button" data-act="stop">¡Stop!</button>`;
+      }
+      if (!net.code) return `${letter}<p class="result">¡Tiempo!</p><p class="how">Leed las respuestas. Única: 10 puntos. Repetida: 5. Apuntadlos aquí.</p>
+        <div class="tally">${names.map((n, i) => `<div><span>${n} <b>${state.score[i] || 0}</b></span><span>${[-5, 5, 10].map(v =>
+          `<button type="button" data-act="pts" data-p="${i}" data-v="${v}">${v > 0 ? "+" : "−"}${Math.abs(v)}</button>`).join("")}</span></div>`).join("")}</div>`;
+      const pts = stopPoints(c), sent = names.map((n, i) => !!getIn(c, i)), bad = p.bad || {};
+      const total = i => state.deck.slice(0, state.idx + 1).reduce((s, card) => s + (card === c ? pts : stopPoints(card))[i].reduce((a, b) => a + b, 0), 0);
+      return `${letter}<div class="table-wrap"><table class="stoptable"><thead><tr><th></th>${names.map(n => `<th>${n}</th>`).join("")}</tr></thead><tbody>${STOP_CATS.map((cat, j) =>
+        `<tr><th>${cat}</th>${names.map((n, i) => { const a = toArr(getIn(c, i))[j]; return !sent[i] ? "<td>…</td>" : `<td><button type="button" class="ans${bad[`${i}_${j}`] ? " bad" : ""}" data-act="bad" data-v="${i}_${j}"${a ? "" : " disabled"}>${esc(a || "—")}<small>${pts[i][j]}</small></button></td>`; }).join("")}</tr>`).join("")}
+        <tr class="sum"><th>Ronda</th>${names.map((n, i) => `<td>${pts[i].reduce((a, b) => a + b, 0)}</td>`).join("")}</tr>
+        <tr class="sum"><th>Total</th>${names.map((n, i) => `<td>${total(i)}</td>`).join("")}</tr></tbody></table></div>
+        <p class="how">${sent.every(Boolean) ? "Tocad una respuesta que no valga para tacharla." : "Esperando las respuestas de todos…"}</p>`;
+    },
+    bind(card, c) {
+      card.querySelectorAll(".form input").forEach(inp => {
+        inp.addEventListener("pointerdown", e => e.stopPropagation());
+        inp.addEventListener("input", () => { stopDraft.a[+inp.dataset.j] = inp.value; });
+      });
+      // At a distance, when the time is up each phone sends what it has written.
+      if (net.code && stopEnded(c) && !getIn(c, meIdx()) && stopDraft.key === inKey(c)) {
+        const a = stopDraft.a.slice(); stopDraft.key = null;
+        setTimeout(() => setIn(c, meIdx(), a.map(x => x.trim() || "")), 0);
+      }
+      const p = play(c);
+      if (p.end && !stopEnded(c)) setTimeout(() => { if (state.deck[state.idx] === c && !$("game").hidden) render(null); }, p.end - Date.now() + 50);
+    },
+    act(c, a, b) {
+      if (a === "secs") { store.set("sm.stopsecs", +b.dataset.v); setPlay(c, { secs: +b.dataset.v }); }
+      if (a === "go") { const secs = play(c).secs || store.get("sm.stopsecs", 90); setPlay(c, { secs, end: Date.now() + secs * 1000 }); }
+      if (a === "stop") { $("live").textContent = "¡Stop!"; setPlay(c, { end: Date.now() }); }
+      if (a === "bad") { const bad = { ...(play(c).bad || {}) }; if (bad[b.dataset.v]) delete bad[b.dataset.v]; else bad[b.dataset.v] = true; setPlay(c, { bad }); }
+      if (a === "pts") { const i = +b.dataset.p; state.score[i] = (state.score[i] || 0) + +b.dataset.v; render(null); }
+    }
+  }
+});
+
 function bindGame(card, c) {
   const game = GAMES[c.mode]; if (!game) return;
   card.querySelectorAll("[data-act], .opts button, .steps button").forEach(b => b.addEventListener("pointerdown", e => e.stopPropagation()));
@@ -1853,7 +2211,7 @@ function bindGame(card, c) {
       const a = b.dataset.act;
       if (a === "peek") { peeking = playKey(c); render(null); return; }
       if (a === "hide") { peeking = null; render(null); return; }
-      if (a === "rev" && c.mode !== "cifras") { setPlay(c, { rev: true }); return; }
+      if (a === "rev" && GAMES[c.mode].score && c.mode !== "cifras") { setPlay(c, { rev: true }); return; }
       game.act && game.act(c, a, b);
     };
   });
@@ -1880,7 +2238,7 @@ function cardHTML(c) {
   const fav = favs().includes(cardId(c));
   const heart = `<button class="fav" type="button" aria-pressed="${fav}" aria-label="Guardar en favoritas">${icon("favoritas")}</button>`;
   const score = c.mode === "adivina" || (GAMES[c.mode] && GAMES[c.mode].score) ? scoreHTML() : "";
-  const ppl = net.code ? roomNames() : people(), who = ppl.length > 1 && c.mode !== "cifras" ? esc(ppl[state.idx % ppl.length]) : "";
+  const ppl = net.code ? roomNames() : people(), who = ppl.length > 1 && !NOTURN.includes(c.mode) ? esc(ppl[state.idx % ppl.length]) : "";
   const turn = !who ? "" : net.code && TURNS.includes(c.mode) && myTurn() ? `<p class="turn"><b>Te toca a ti</b></p>`
     : `<p class="turn">${TURNS.includes(c.mode) ? TURN_LABEL[c.mode] || "Le toca a" : "Empieza"} <b>${who}</b></p>`;
   const timer = TIMED.includes(c.mode) ? `<button class="timer" type="button" aria-pressed="false">${icon("reloj")}<span>30 s</span></button>` : "";
@@ -1925,6 +2283,7 @@ function render(anim) {
   $("lvlBtn").textContent = (LEVELS.find(l => l[0] === state.level) || LEVELS[0])[1];
   $("count").textContent = `${Math.min(state.idx + 1, total)}/${total}`;
   $("count").setAttribute("aria-label", `Carta ${Math.min(state.idx + 1, total)} de ${total}`);
+  $("game").classList.toggle("board", !!MODES[state.mode].board);
   $("barfill").style.width = `${(Math.min(state.idx + 1, total) / total) * 100}%`;
   $("prev").disabled = state.idx === 0;
   $("skip").disabled = done || state.idx >= total - 1;
@@ -1959,7 +2318,7 @@ function render(anim) {
     bindScore(card);
     bindSpin(card, c);
     bindTimer(card);
-    bindDrag(card);
+    if (!MODES[c.mode].board && !MODES[c.mode].nodrag) bindDrag(card);
     bindGame(card, c);
   }
   save();
@@ -2139,7 +2498,7 @@ document.addEventListener("keydown", e => {
   if (!$("sheet").hidden) { if (e.key === "Escape") closeDialog("sheet"); return; }
   if (!$("setSheet").hidden) { if (e.key === "Escape") closeSettings(); return; }
   if (!$("netSheet").hidden) { if (e.key === "Escape") closeDialog("netSheet"); return; }
-  if ($("game").hidden || (e.key === " " && e.target.closest("button"))) return;
+  if ($("game").hidden || e.target.closest("input, textarea") || (e.key === " " && e.target.closest("button"))) return;
   if (e.key === "ArrowUp" || e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); throwCard(1); }
   if (e.key === "ArrowDown" || e.key === "ArrowLeft") { e.preventDefault(); throwCard(-1); }
   if (e.key === "Escape") goHome();
