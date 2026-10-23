@@ -108,6 +108,10 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .lvlbtn::before { content: ""; position: absolute; inset: -7px -4px; }
 .lvlbtn::after { content: " ▾"; }
 .lvl[aria-pressed="true"] b::after { content: "  ✓"; }
+.paces { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.paces .lvl { text-align: center; padding: 18px 6px; }
+.paces .lvl b { font-size: 1.6rem; }
+.paces .lvl[aria-pressed="true"] b::after { content: ""; }
 .pill { background: var(--ink); color: #fff; border-radius: 999px; padding: 7px 12px; font-weight: 900; font-size: .9rem; font-variant-numeric: tabular-nums; }
 .bar { height: 10px; border-radius: 999px; background: rgba(30,22,51,.22); overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; transition: width .3s ease; }
@@ -502,8 +506,8 @@ canvas.board { display: block; align-self: center; width: min(100%, 44vh); aspec
 
 <div class="sheet-wrap" id="paceSheet" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="paceTitle">
-    <h2 id="paceTitle"></h2>
-    <div id="paces" style="display:grid;gap:10px"></div>
+    <h2 id="paceTitle" class="sr-only">Tiempo por turno</h2>
+    <div id="paces" class="paces"></div>
     <button class="cancel" id="cancelPace" type="button">Cancelar</button>
   </div>
 </div>
@@ -1906,13 +1910,11 @@ const posOf = v => Math.log10(v) / MAXEXP;
 let slide = { key: null, v: 300000 };
 const offBy = (g, a) => { const r = g / a; if (r > .95 && r < 1.05) return "¡Clavado!"; const x = r > 1 ? r : 1 / r; return `${x < 10 ? String(+x.toFixed(1)).replace(".", ",") : grp(Math.round(x))} veces ${r > 1 ? "más" : "menos"}`; };
 
-// Games with a timer: the pace (and so the seconds per turn) is chosen once, when the game opens,
+// Games with a timer: the seconds per turn are chosen once, when the game opens,
 // and can be changed from the title. The last one chosen is remembered on this phone.
 const PACES = { emociones: [90, 60, 30], dibujo: [120, 90, 60], cancion: [45, 30, 20], stop: [120, 90, 60] };
-const PACE_NAMES = [["Relajado", "Con calma, sin agobios."], ["Normal", "El ritmo de siempre."], ["Rápido", "Para ir a tope."]];
 const SECS = PACES;
 const paceSecs = mode => state.secs || store.get(`sm.pace|${mode}`, PACES[mode][1]);
-const paceName = mode => PACE_NAMES[Math.max(0, PACES[mode].indexOf(paceSecs(mode)))][0];
 function countdownHTML(c) {
   const p = play(c), secs = p.secs || paceSecs(c.mode);
   return `<div class="secs">${p.end ? `<span class="countdown" aria-live="off">${secs} s</span>` : `<button class="mini" type="button" data-act="go">Empezar · ${secs} s</button>`}</div>`;
@@ -2495,7 +2497,7 @@ function render(anim) {
   $("game").style.cssText = vars(colorMode);
   $("gtitle").textContent = MODES[state.mode].short || MODES[state.mode].name;
   $("lvlBtn").hidden = state.mode !== "profundas" && !PACES[state.mode];
-  $("lvlBtn").textContent = PACES[state.mode] ? `${paceName(state.mode)} · ${paceSecs(state.mode)} s` : (LEVELS.find(l => l[0] === state.level) || LEVELS[0])[1];
+  $("lvlBtn").textContent = PACES[state.mode] ? `${paceSecs(state.mode)} s` : (LEVELS.find(l => l[0] === state.level) || LEVELS[0])[1];
   $("count").textContent = `${Math.min(state.idx + 1, total)}/${total}`;
   $("count").setAttribute("aria-label", `Carta ${Math.min(state.idx + 1, total)} de ${total}`);
   $("game").classList.toggle("board", !!MODES[state.mode].board);
@@ -2661,8 +2663,7 @@ let paceMode = null;
 function openPace(mode, inGame) {
   paceMode = mode;
   const cur = inGame ? paceSecs(mode) : store.get(`sm.pace|${mode}`, PACES[mode][1]);
-  $("paceTitle").textContent = `${MODES[mode].name}: ¿a qué ritmo?`;
-  $("paces").innerHTML = PACES[mode].map((secs, i) => `<button class="lvl${secs === cur ? " rec" : ""}" type="button" data-secs="${secs}" aria-pressed="${secs === cur}"><b>${PACE_NAMES[i][0]} · ${secs} s</b><span>${PACE_NAMES[i][1]} ${secs} segundos por turno.</span></button>`).join("");
+  $("paces").innerHTML = [...PACES[mode]].reverse().map(secs => `<button class="lvl${secs === cur ? " rec" : ""}" type="button" data-secs="${secs}" aria-pressed="${secs === cur}" aria-label="${secs} segundos"><b>${secs} s</b></button>`).join("");
   openDialog("paceSheet", "cancelPace");
   $("paces").querySelector('[aria-pressed="true"]').focus();
 }
