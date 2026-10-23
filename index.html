@@ -249,6 +249,68 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
 .swipehint { text-align: center; font-weight: 800; font-size: .82rem; opacity: .8; margin: -4px 0 0; }
 
+/* Jugar a distancia */
+.netbtn { display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 16px; border-radius: 18px; background: var(--table-2); color: #fff;
+  border: 2px solid rgba(255,255,255,.22); font-weight: 900; font-size: 1rem; text-align: left; }
+.netbtn svg.i { width: 24px; height: 24px; flex: none; }
+.netbtn.on { background: #22B573; color: var(--ink); border-color: transparent; }
+.netbox { display: grid; gap: 12px; }
+.code { margin: 0; font-family: var(--font-display); font-size: 3rem; letter-spacing: .2em; text-align: center; background: var(--soft); border-radius: 18px; padding: 6px 0 6px .2em; }
+#netCode { text-transform: uppercase; letter-spacing: .2em; font-size: 1.3rem; }
+.sheet button:disabled { opacity: .45; cursor: default; }
+#games { margin-top: -4px; }
+/* Juegos con puntos */
+.big { font-family: var(--font-display); font-size: clamp(4rem, 22vw, 5.6rem); line-height: 1; }
+.big.word { font-size: clamp(2.1rem, 10vw, 3rem); text-align: center; line-height: 1.05; }
+.secret { display: grid; justify-items: center; gap: 10px; padding: 16px; border: 3px dashed var(--ink); border-radius: 20px; background: var(--soft); text-align: center; font-weight: 800; }
+.secret.on { border-style: solid; }
+.secret p { margin: 0; color: var(--muted-ink); }
+.secret p b { color: var(--ink); }
+.mini { justify-self: center; min-height: 44px; padding: 0 18px; border-radius: 14px; background: var(--ink); color: #fff; font-weight: 900; }
+.act { min-height: 52px; flex: none; border-radius: 16px; border: 3px solid var(--ink); background: var(--c); color: var(--fg); font-family: var(--font-display); font-size: 1.2rem; box-shadow: 0 4px 0 var(--ink); }
+.act:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.scale { display: flex; justify-content: space-between; gap: 12px; margin: -8px 0 0; font-weight: 800; font-size: .9rem; color: var(--muted-ink); }
+.scale span:last-child { text-align: right; }
+.result { margin: 0; font-family: var(--font-display); font-size: 1.6rem; text-align: center; }
+.team { margin: 0; font-weight: 800; color: var(--muted-ink); text-align: center; }
+.team b { color: var(--ink); }
+.opts { display: grid; gap: 10px; }
+.opt2 { text-align: left; min-height: 52px; padding: 10px 14px; border: 3px solid var(--ink); border-radius: 16px; background: var(--soft); color: var(--ink); font-weight: 900; font-size: 1.05rem; box-shadow: 0 3px 0 var(--ink); }
+.opt2:not(:disabled):active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
+.opt2:disabled { cursor: default; }
+.opt2.ok { background: #22B573; }
+.opt2.ko { background: #FF5A36; }
+.dialwrap { display: grid; gap: 6px; margin: auto 0; }
+.dial { width: 100%; max-width: 380px; justify-self: center; display: block; touch-action: none; }
+.ends { display: flex; justify-content: space-between; gap: 12px; font-weight: 900; font-size: 1.05rem; }
+.ends span:last-child { text-align: right; }
+.cifra { display: grid; grid-template-columns: 1fr 64px; gap: 14px; min-height: 240px; }
+.cifra .val { display: grid; align-content: center; gap: 12px; min-width: 0; }
+.cifra .val small { font-weight: 800; color: var(--muted-ink); font-size: .9rem; }
+.cifra .val b.cval { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.7rem, 8vw, 2.3rem); line-height: 1.05; overflow-wrap: anywhere; }
+.cifra .mini { justify-self: start; }
+.steps { display: flex; gap: 8px; }
+.steps button { width: 56px; height: 48px; border-radius: 14px; border: 3px solid var(--ink); background: var(--soft); color: var(--ink); font-size: 1.6rem; font-weight: 900; line-height: 1; }
+.col { position: relative; border: 3px solid var(--ink); border-radius: 999px; background: linear-gradient(to top, var(--soft), var(--c)); touch-action: none; cursor: ns-resize; }
+.col .thumb { position: absolute; left: 50%; width: 56px; height: 30px; border-radius: 12px; background: var(--ink); border: 3px solid #fff; transform: translate(-50%, 50%); }
+.col .lbl { position: absolute; left: 0; right: 0; text-align: center; font-weight: 900; font-size: .72rem; }
+.col .top { top: 10px; } .col .bot { bottom: 10px; }
+.locks { display: flex; flex-wrap: wrap; gap: 8px; }
+.lock { padding: 6px 12px; border-radius: 999px; background: var(--soft); font-weight: 900; font-size: .9rem; }
+.lock.done { background: #22B573; }
+.answer { display: grid; gap: 2px; text-align: center; background: var(--soft); border-radius: 18px; padding: 12px; }
+.answer small, .answer span { font-weight: 800; color: var(--muted-ink); }
+.answer b { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.9rem, 9vw, 2.6rem); line-height: 1.1; }
+.guesses { list-style: none; margin: 0; padding: 0; display: grid; gap: 8px; }
+.guesses li { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: var(--soft); border-radius: 14px; padding: 8px 12px; font-weight: 900; }
+.guesses li > span:last-child { display: grid; text-align: right; }
+.guesses small { font-weight: 800; color: var(--muted-ink); }
+.guesses li.win { background: #FFD84A; }
+.secs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; }
+.secs button:not(.mini) { min-height: 44px; padding: 0 14px; border-radius: 999px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); font-weight: 900; }
+.secs button[aria-pressed="true"] { background: var(--c); color: var(--fg); }
+.countdown { font-family: var(--font-display); font-size: 2.2rem; font-variant-numeric: tabular-nums; }
+
 @media (prefers-reduced-motion: reduce) {
   .fav.pop-in svg, .pt.bump b, .toast, .q.reveal { animation: none; }
   .wheel { transition: none; }
@@ -265,8 +327,11 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
       <h1>Preguntas de Sara</h1>
       <img class="cover" src="data:image/jpeg;base64,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" alt="Sara">
     </header>
+    <button class="netbtn" id="openNet" type="button" aria-haspopup="dialog"></button>
     <div class="shelf"><h2 class="shelf-title">Modos de juego</h2><button class="settings-btn" id="openSet" type="button" aria-haspopup="dialog"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"></svg>Ajustes</button></div>
     <div class="decks" id="decks"></div>
+    <h2 class="shelf-title">Juegos con puntos</h2>
+    <div class="decks" id="games"></div>
   </section>
 
   <section id="game" hidden>
@@ -331,6 +396,32 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
     <button class="add" id="hCopy" type="button" hidden>Copiar la lista</button>
     <p class="hint" id="hMsg" aria-live="polite"></p>
     <button class="play" id="setDone" type="button">Hecho</button>
+  </div>
+</div>
+
+<div class="sheet-wrap" id="netSheet" hidden>
+  <div class="sheet tall" role="dialog" aria-modal="true" aria-labelledby="netTitle">
+    <h2 id="netTitle" tabindex="-1">Jugar a distancia</h2>
+    <div class="netbox" id="netOut">
+      <p class="hint">Cada persona con su móvil. Una crea la partida y las demás se unen con el código. Cuando alguien abre un juego, se abre en todos los móviles.</p>
+      <p class="hint" id="netOff" hidden>Todavía falta conectar el servicio que une los móviles. En cuanto esté listo, podréis crear partidas desde aquí.</p>
+      <div class="field"><label for="netName">Tu nombre</label><input type="text" id="netName" maxlength="16" autocomplete="off"></div>
+      <button class="add" id="netCreate" type="button">Crear partida</button>
+      <hr class="sep">
+      <div class="field"><label for="netCode">¿Te han pasado un código?</label><input type="text" id="netCode" maxlength="4" autocomplete="off" autocapitalize="characters" spellcheck="false" placeholder="ABCD"></div>
+      <button class="add" id="netJoin" type="button">Unirme</button>
+    </div>
+    <div class="netbox" id="netIn" hidden>
+      <p class="hint">Código de la partida. Pásaselo a quien quieras que se una:</p>
+      <p class="code" id="netShowCode"></p>
+      <button class="more" id="netShare" type="button">Compartir el código</button>
+      <p class="group-title">En la partida</p>
+      <ul class="mine" id="netPeople"></ul>
+      <p class="hint">Los botones de pasar carta funcionan en cualquier móvil. Lo secreto (el número, la emoción, el objetivo) solo sale en el móvil de quien le toca.</p>
+      <button class="cancel" id="netLeave" type="button">Salir de la partida</button>
+    </div>
+    <p class="hint" id="netMsg" aria-live="polite"></p>
+    <button class="play" id="netDone" type="button">Hecho</button>
   </div>
 </div>
 
@@ -926,6 +1017,214 @@ const DATA = {
     "Tus ex", "Fiestas", "Algo que rompiste", "Música", "Animales", "Cosas que has ganado", "Primeras veces", "Vacaciones de verano", "Cosas que has perdido", "Gente famosa", "Deportes", "Tu primer móvil", "Cumpleaños", "Sueños raros",
     "Tu barrio", "Profesores", "Vergüenzas en público", "Regalos", "Supersticiones", "Cosas que coleccionas",
     "Bodas y celebraciones", "Mudanzas"
+  ],
+  random: [
+    "Si fueras un electrodoméstico, ¿cuál serías y por qué?",
+    "¿Qué harías si un día te despertaras invisible?",
+    "¿Qué comida podrías comer todos los días sin cansarte?",
+    "¿Cuál es el mote más raro que te han puesto?",
+    "Si tu vida fuera una serie, ¿cómo se llamaría?",
+    "¿Qué animal crees que te ganaría en una pelea, y cuál no?",
+    "¿Qué canción cantarías en un karaoke ahora mismo?",
+    "¿Qué superpoder inútil te gustaría tener?",
+    "¿Cuál es la peor moda que has seguido?",
+    "¿Qué harías con un millón de euros en 24 horas?",
+    "¿Qué emoji usas más y qué dice de ti?",
+    "¿Cuál es tu snack de madrugada?",
+    "Si pudieras cambiarte el nombre, ¿cuál elegirías?",
+    "¿Qué personaje de dibujos animados se parece más a ti?",
+    "¿Cuál es la cosa más rara que has comido?",
+    "¿Qué olimpiada ganarías sin entrenar?",
+    "¿Qué objeto te llevarías a una isla desierta?",
+    "¿Qué palabra te parece graciosa sin motivo?",
+    "¿Cuál es tu bostezo de película favorito? Imítalo.",
+    "¿Pizza con piña: sí o no? Defiéndelo.",
+    "¿Qué harías si fueras alcalde o alcaldesa por un día?",
+    "¿Qué famoso te invitarías a cenar a casa?",
+    "¿Cuál ha sido tu peor corte de pelo?",
+    "¿Qué app borrarías del mundo?",
+    "¿Qué te compras siempre en el súper aunque no lo necesites?",
+    "Si fueras un helado, ¿de qué sabor serías?",
+    "¿Cuál es la excusa más mala que has puesto?",
+    "¿Qué serie verías otra vez desde cero?",
+    "¿Qué animal te gustaría tener aunque sea imposible?",
+    "¿Cuál es tu plan perfecto para un día de lluvia?",
+    "¿En qué época de la historia serías un desastre?",
+    "¿Qué cosa haces de forma distinta a todo el mundo?",
+    "¿Cuál es tu canción para ducharte?",
+    "¿Qué videojuego o juego de mesa te pone de mal humor?",
+    "Si pudieras hablar con un animal, ¿con cuál?",
+    "¿Qué nombre le pondrías a un perro?",
+    "¿Cuál es tu frase de película favorita?",
+    "¿Qué comida odiabas de peque y ahora te encanta?",
+    "¿Qué harías si te quedaras encerrado o encerrada en un centro comercial por la noche?",
+    "¿Qué te da más pereza del mundo?",
+    "¿Qué invento te parece que falta en el mundo?",
+    "¿Qué personaje histórico te caería mal?",
+    "¿Cuál es tu dulce favorito de la infancia?",
+    "¿Qué tienes en la galería del móvil que no debería estar?",
+    "¿Qué trabajo harías solo por el uniforme?",
+    "¿Playa o montaña, y por qué la otra no?",
+    "¿Qué harías si pudieras parar el tiempo una hora?",
+    "¿Qué te hace sentir mayor de golpe?",
+    "¿Qué te pedirías en un restaurante si no lo pagaras tú?",
+    "¿Qué te gustaría saber hacer en 5 minutos sin aprenderlo?"
+  ],
+  // [tema, qué es un 1, qué es un 10]
+  frecuencia: [
+    ["Una comida", "la odias", "te encanta"],
+    ["Una película", "horrible", "obra maestra"],
+    ["Un plan de sábado", "aburridísimo", "el mejor"],
+    ["Una canción", "no la soportas", "la pondrías en bucle"],
+    ["Un animal como mascota", "nunca", "lo tendrías ya"],
+    ["Una ciudad para vivir", "ni de broma", "te mudarías mañana"],
+    ["Algo que da miedo", "nada de miedo", "terror"],
+    ["Una serie", "insufrible", "la mejor"],
+    ["Una persona famosa", "no la soportas", "te encanta"],
+    ["Un trabajo", "una pesadilla", "el trabajo soñado"],
+    ["Un deporte", "lo odias", "te flipa"],
+    ["Un regalo", "decepcionante", "perfecto"],
+    ["Una costumbre en pareja", "red flag", "green flag"],
+    ["Algo que da vergüenza", "nada", "muchísima"],
+    ["Una bebida", "asquerosa", "la mejor"],
+    ["Una app del móvil", "inútil", "imprescindible"],
+    ["Un superpoder", "inútil", "el mejor"],
+    ["Un sitio para una primera cita", "fatal", "perfecto"],
+    ["Una tarea de casa", "la odias", "te relaja"],
+    ["Un olor", "asqueroso", "delicioso"],
+    ["Una comida picante", "nada picante", "fuego"],
+    ["Una prenda de ropa", "horrible", "te encanta"],
+    ["Una palabra", "fea", "preciosa"],
+    ["Un dulce", "no lo comerías", "te lo comerías entero"],
+    ["Un videojuego o juego de mesa", "aburrido", "adictivo"],
+    ["Algo caro", "un poco caro", "carísimo"],
+    ["Algo que te pone de mal humor", "un poco", "te saca de quicio"],
+    ["Un dibujo animado de tu infancia", "lo odiabas", "lo adorabas"],
+    ["Un nombre para un perro", "horrible", "perfecto"],
+    ["Un viaje", "un desastre", "inolvidable"],
+    ["Algo que da asco", "un poco", "muchísimo"],
+    ["Una fruta", "la odias", "tu favorita"],
+    ["Algo romántico", "nada romántico", "romanticísimo"],
+    ["Una excusa para no quedar", "muy mala", "perfecta"],
+    ["Un plan para un día de lluvia", "aburrido", "el mejor"],
+    ["Una habilidad", "inútil", "superútil"]
+  ],
+  // [un extremo, el otro extremo]
+  onda: [
+    ["Frío", "Caliente"], ["Malo", "Bueno"], ["Sobrevalorado", "Infravalorado"], ["Feo", "Bonito"], ["Aburrido", "Divertido"],
+    ["Barato", "Caro"], ["Fácil", "Difícil"], ["Normal", "Raro"], ["Nada romántico", "Muy romántico"], ["Inútil", "Útil"],
+    ["Mala película", "Buena película"], ["Asqueroso", "Delicioso"], ["Pasado de moda", "Moderno"], ["Sano", "Poco sano"], ["Triste", "Alegre"],
+    ["Débil", "Fuerte"], ["Tranquilo", "Caótico"], ["Para peques", "Para adultos"], ["Mal regalo", "Buen regalo"], ["Mala cita", "Cita perfecta"],
+    ["Hortera", "Elegante"], ["Lento", "Rápido"], ["Silencioso", "Ruidoso"], ["Poco famoso", "Muy famoso"], ["Red flag", "Green flag"],
+    ["Plan de casa", "Plan de fiesta"], ["Prescindible", "Imprescindible"], ["Peor canción", "Mejor canción"], ["Fácil de dibujar", "Difícil de dibujar"], ["Para el verano", "Para el invierno"],
+    ["Da miedo", "Da ternura"], ["Mal superpoder", "Buen superpoder"], ["Mala mascota", "Buena mascota"], ["Cutre", "De lujo"], ["Ético", "Poco ético"],
+    ["Nadie lo sabe", "Todo el mundo lo sabe"], ["Ligero", "Bomba calórica"], ["Olvidable", "Inolvidable"], ["Mal trabajo", "Trabajo soñado"], ["Fácil de perdonar", "Imperdonable"]
+  ],
+  // [tema, pregunta, respuesta buena, tres respuestas falsas]
+  trivial: [
+    ["Geografía", "¿Cuál es la capital de Australia?", "Canberra", "Sídney", "Melbourne", "Perth"],
+    ["Geografía", "¿Qué río pasa por Sevilla?", "Guadalquivir", "Guadiana", "Tajo", "Ebro"],
+    ["Geografía", "¿En qué país está Machu Picchu?", "Perú", "Bolivia", "Chile", "México"],
+    ["Geografía", "¿Cuál es el océano más grande?", "Pacífico", "Atlántico", "Índico", "Ártico"],
+    ["Geografía", "¿Cuál es la capital de Canadá?", "Ottawa", "Toronto", "Vancouver", "Montreal"],
+    ["Geografía", "¿Cuántas comunidades autónomas tiene España?", "17", "15", "19", "21"],
+    ["Geografía", "¿Qué país tiene más habitantes del mundo?", "India", "China", "Estados Unidos", "Indonesia"],
+    ["Geografía", "¿Cuál es la montaña más alta de España?", "El Teide", "El Mulhacén", "El Aneto", "El Veleta"],
+    ["Geografía", "¿Cuál es el desierto cálido más grande del mundo?", "El Sáhara", "El Gobi", "El Kalahari", "El de Atacama"],
+    ["Geografía", "¿Cuál es la capital de Portugal?", "Lisboa", "Oporto", "Coímbra", "Faro"],
+    ["Historia", "¿En qué año llegó Colón a América?", "1492", "1489", "1502", "1512"],
+    ["Historia", "¿Quién pintó la Mona Lisa?", "Leonardo da Vinci", "Miguel Ángel", "Rafael", "Botticelli"],
+    ["Historia", "¿En qué año cayó el Muro de Berlín?", "1989", "1979", "1991", "1985"],
+    ["Historia", "¿Quién fue la primera persona en pisar la Luna?", "Neil Armstrong", "Buzz Aldrin", "Yuri Gagarin", "Michael Collins"],
+    ["Historia", "¿Qué civilización construyó Machu Picchu?", "Los incas", "Los mayas", "Los aztecas", "Los olmecas"],
+    ["Historia", "¿En qué año se hundió el Titanic?", "1912", "1905", "1915", "1921"],
+    ["Historia", "¿Quién pintó el Guernica?", "Picasso", "Dalí", "Miró", "Goya"],
+    ["Historia", "¿Quién perdió la batalla de Waterloo?", "Napoleón", "Luis XIV", "Carlomagno", "Julio César"],
+    ["Ciencia", "¿Cuál es el planeta más grande del sistema solar?", "Júpiter", "Saturno", "Neptuno", "La Tierra"],
+    ["Ciencia", "¿Cuál es el símbolo químico del oro?", "Au", "Ag", "Or", "Go"],
+    ["Ciencia", "¿Cuántos huesos tiene una persona adulta?", "206", "186", "226", "306"],
+    ["Ciencia", "¿Qué gas toman las plantas para hacer la fotosíntesis?", "Dióxido de carbono", "Oxígeno", "Nitrógeno", "Helio"],
+    ["Ciencia", "¿Cuál es el órgano más grande del cuerpo humano?", "La piel", "El hígado", "El cerebro", "Los pulmones"],
+    ["Ciencia", "¿Cuántas patas tiene una araña?", "8", "6", "10", "12"],
+    ["Ciencia", "¿Qué planeta es conocido como el planeta rojo?", "Marte", "Venus", "Mercurio", "Júpiter"],
+    ["Ciencia", "¿A qué temperatura hierve el agua al nivel del mar?", "100 °C", "90 °C", "110 °C", "120 °C"],
+    ["Ciencia", "¿Cuál es el animal terrestre más rápido?", "El guepardo", "El león", "El antílope", "El caballo"],
+    ["Ciencia", "¿Cuántos corazones tiene un pulpo?", "3", "1", "2", "8"],
+    ["Cine y series", "¿Cómo se llama el vaquero de Toy Story?", "Woody", "Buzz", "Andy", "Jessie"],
+    ["Cine y series", "En La casa de papel, ¿qué nombres usan los atracadores?", "De ciudades", "De planetas", "De colores", "De animales"],
+    ["Cine y series", "¿Cómo se llama el reino de Frozen?", "Arendelle", "Corona", "Agrabah", "Narnia"],
+    ["Cine y series", "¿Quién hace de Jack en Titanic?", "Leonardo DiCaprio", "Brad Pitt", "Johnny Depp", "Matt Damon"],
+    ["Cine y series", "¿En qué serie aparece el pueblo de Hawkins?", "Stranger Things", "Dark", "The Walking Dead", "Riverdale"],
+    ["Cine y series", "¿Cómo se llama el protagonista de El rey león?", "Simba", "Mufasa", "Scar", "Timón"],
+    ["Cine y series", "¿En qué número de Privet Drive vive Harry Potter?", "4", "7", "9", "12"],
+    ["Cine y series", "¿Qué villano de Batman se ríe todo el rato?", "El Joker", "El Pingüino", "Dos Caras", "Bane"],
+    ["Cine y series", "En Friends, ¿cómo se llama la cafetería?", "Central Perk", "Monk's", "Luke's", "Starbucks"],
+    ["Música", "¿A qué cantante se conoce como «la Motomami»?", "Rosalía", "Aitana", "Karol G", "Shakira"],
+    ["Música", "¿De qué país es Shakira?", "Colombia", "México", "Venezuela", "Argentina"],
+    ["Música", "¿Cuántas cuerdas tiene una guitarra española?", "6", "4", "5", "7"],
+    ["Música", "¿Qué grupo cantaba «Bohemian Rhapsody»?", "Queen", "The Beatles", "ABBA", "The Rolling Stones"],
+    ["Música", "¿Qué grupo de K-pop canta «Dynamite»?", "BTS", "Blackpink", "EXO", "Twice"],
+    ["Música", "¿Quién cantó «Despacito» con Daddy Yankee?", "Luis Fonsi", "Bad Bunny", "J Balvin", "Ricky Martin"],
+    ["Deportes", "¿Cuántos jugadores tiene en el campo un equipo de fútbol?", "11", "10", "9", "12"],
+    ["Deportes", "¿Cada cuántos años hay Juegos Olímpicos de verano?", "4", "2", "3", "5"],
+    ["Deportes", "¿A qué deporte jugaba Rafa Nadal?", "Tenis", "Pádel", "Golf", "Bádminton"],
+    ["Deportes", "¿Cuántos puntos vale un triple en baloncesto?", "3", "2", "4", "1"],
+    ["Deportes", "¿Qué selección ganó el Mundial de fútbol de 2010?", "España", "Países Bajos", "Alemania", "Brasil"],
+    ["Deportes", "¿Cuántos aros tiene la bandera olímpica?", "5", "4", "6", "7"],
+    ["Comida", "¿De qué país es originaria la pizza?", "Italia", "Grecia", "Francia", "Estados Unidos"],
+    ["Comida", "¿Cuál es el ingrediente principal del guacamole?", "El aguacate", "El tomate", "El pimiento", "El pepino"],
+    ["Comida", "¿De qué región es típica la paella?", "Valencia", "Andalucía", "Galicia", "Murcia"],
+    ["Comida", "¿Con qué fruto seco se hace el mazapán?", "La almendra", "La nuez", "La avellana", "El pistacho"],
+    ["Comida", "¿De qué país es típico el sushi?", "Japón", "China", "Corea del Sur", "Tailandia"],
+    ["Random", "¿Cuántos días tiene un año bisiesto?", "366", "365", "364", "367"],
+    ["Random", "¿Cuántos colores tiene el arcoíris?", "7", "6", "5", "8"],
+    ["Random", "¿Qué animal sale en el logo de WWF?", "Un oso panda", "Un koala", "Un tigre", "Un elefante"],
+    ["Random", "¿Cuántos minutos tiene un día?", "1.440", "1.240", "1.640", "1.000"],
+    ["Random", "¿Qué red social tenía un pájaro azul de logo?", "Twitter", "Facebook", "Snapchat", "Tinder"],
+    ["Random", "¿Con cuántas piezas empieza cada jugador al ajedrez?", "16", "12", "18", "20"]
+  ],
+  // [pregunta, respuesta, aclaración]
+  cifras: [
+    ["¿Cuántas personas sobrevivieron al hundimiento del Titanic?", 706, "Unas 700, según las cifras más citadas."],
+    ["¿Cuántas copias se han vendido del GTA V?", 200000000, "Más de 200 millones."],
+    ["¿Cuántos metros mide el Everest?", 8849, "8.849 metros."],
+    ["¿Cuántos huesos tiene una persona adulta?", 206, "206 huesos."],
+    ["¿Cuántas personas viven en España?", 48000000, "Unos 48 millones."],
+    ["¿Cuántas personas viven en el mundo?", 8000000000, "Unos 8.000 millones."],
+    ["¿A cuántos kilómetros está la Luna de la Tierra?", 384400, "Unos 384.400 km de media."],
+    ["¿Cuántas veces late el corazón en un día?", 100000, "Unas 100.000 veces."],
+    ["¿Cuántas teclas tiene un piano?", 88, "88 teclas."],
+    ["¿Cuántos metros mide la Torre Eiffel?", 330, "Unos 330 metros con la antena."],
+    ["¿Cuántos países hay en la ONU?", 193, "193 países."],
+    ["¿Cuántos kilómetros mide la Gran Muralla china?", 21196, "Unos 21.000 km contando todos sus tramos."],
+    ["¿Cuántas personas viven en la ciudad de Madrid?", 3400000, "Unos 3,4 millones."],
+    ["¿Cuántos kilómetros recorre la luz en un segundo?", 300000, "Casi 300.000 km."],
+    ["¿Cuántos años tiene la gran pirámide de Guiza?", 4500, "Unos 4.500 años."],
+    ["¿Cuántos años tiene el universo?", 13800000000, "Unos 13.800 millones de años."],
+    ["¿Cuántos litros de agua caben en una piscina olímpica?", 2500000, "Unos 2,5 millones de litros."],
+    ["¿Cuántos metros de profundidad tiene la fosa de las Marianas?", 10900, "Casi 11.000 metros."],
+    ["¿Cuántos minutos dura la película Titanic?", 194, "194 minutos."],
+    ["¿Cuántos kilos puede pesar una ballena azul?", 150000, "Hasta unos 150.000 kilos."],
+    ["¿Cuántos dientes tiene una persona adulta?", 32, "32, con las muelas del juicio."],
+    ["¿Cuántos kilómetros hay de Madrid a Barcelona por carretera?", 620, "Unos 620 km."],
+    ["¿Cuántos litros de sangre tiene una persona adulta?", 5, "Unos 5 litros."],
+    ["¿Cuántos Pokémon distintos existen?", 1025, "1.025 contando hasta la novena generación."],
+    ["¿Cuántos metros mide el Burj Khalifa?", 828, "828 metros."],
+    ["¿Cuántas veces se ha visto «Despacito» en YouTube?", 8000000000, "Más de 8.000 millones."],
+    ["¿Cuántas copias se han vendido de Minecraft?", 300000000, "Más de 300 millones."],
+    ["¿Cuántas personas viven en China?", 1400000000, "Unos 1.400 millones."],
+    ["¿Cuántos kilómetros mide la vuelta a la Tierra por el ecuador?", 40075, "40.075 km."],
+    ["¿Cuántos segundos tiene un día?", 86400, "86.400 segundos."],
+    ["¿Cuántos libros de Harry Potter se han vendido?", 600000000, "Más de 600 millones."],
+    ["¿Cuántos años tiene la Tierra?", 4540000000, "Unos 4.540 millones de años."],
+    ["¿Cuántos huevos pone una gallina en un año?", 300, "Unos 300 si es ponedora."],
+    ["¿Cuántos kilómetros tiene el Camino de Santiago francés desde Roncesvalles?", 780, "Unos 780 km."]
+  ],
+  emociones: [
+    "Alegría", "Vergüenza", "Nostalgia", "Celos", "Orgullo", "Alivio", "Ternura", "Rabia", "Miedo", "Aburrimiento",
+    "Envidia", "Culpa", "Sorpresa", "Ilusión", "Decepción", "Asco", "Frustración", "Gratitud", "Nervios", "Euforia",
+    "Soledad", "Calma", "Curiosidad", "Tristeza", "Impaciencia", "Confusión", "Admiración", "Desconfianza", "Esperanza", "Satisfacción",
+    "Vergüenza ajena", "Melancolía", "Indignación", "Agobio", "Pereza", "Timidez", "Amor", "Paz", "Inseguridad", "Ridículo"
   ]
 };
 
@@ -944,6 +1243,13 @@ const ICONS = {
   loharia: '<circle cx="12" cy="8" r="4"/><path d="M4 21c1-4 4-6 8-6s7 2 8 6"/><path d="M17 4l2-2M19 7h2"/>',
   top3: '<path d="M3 20h18"/><path d="M9 20V8h6v12"/><path d="M3 20v-7h6"/><path d="M15 20v-5h6v5"/>',
   dosverdades: '<path d="M3 7l2 2 4-4M3 16l2 2 4-4M14 7h7M15 15l5 5M20 15l-5 5"/>',
+  random: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 015 0c0 1.7-2.5 2-2.5 4M12 17h.01"/>',
+  frecuencia: '<path d="M4 20v-4M9 20v-8M14 20V8M19 20V4"/>',
+  onda: '<path d="M3 17a9 9 0 0118 0"/><path d="M12 17l4-6"/><circle cx="12" cy="17" r="1.3"/>',
+  trivial: '<circle cx="12" cy="12" r="9"/><path d="M12 3v9l7.8 4.5M12 12l-7.8 4.5"/>',
+  cifras: '<path d="M12 3v18M8 7l4-4 4 4M8 17l4 4 4-4"/>',
+  emociones: '<circle cx="12" cy="12" r="9"/><path d="M8 14.5a5 5 0 008 0M9 9.5h.01M15 9.5h.01"/>',
+  red: '<path d="M2 9a14.5 14.5 0 0120 0M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0"/><circle cx="12" cy="19.5" r="1"/>',
   mezcla: '<path d="M3 6h4l10 12h4M3 18h4l10-12h4M18 3l3 3-3 3M18 15l3 3-3 3"/>',
   favoritas: '<path d="M12 20.5S3 15 3 8.8A4.6 4.6 0 0112 6.6a4.6 4.6 0 019 2.2C21 15 12 20.5 12 20.5z"/>',
   reloj: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/>',
@@ -967,6 +1273,12 @@ const MODES = {
   loharia:    { name: "Lo haría yo", tag: "Situación", c: "#14808A", fg: "#FFFFFF" },
   top3:       { name: "Top 3", tag: "Top 3", c: "#22B573", fg: "#1E1633" },
   dosverdades:{ name: "Dos verdades y una mentira", tag: "Tema", c: "#FFD84A", fg: "#1E1633" },
+  random:     { name: "Preguntas random", short: "Random", tag: "Random", c: "#FF9E7A", fg: "#1E1633" },
+  frecuencia: { name: "Frecuencia", tag: "Frecuencia", c: "#3D9BFF", fg: "#1E1633", game: true },
+  onda:       { name: "Wavelength", tag: "Wavelength", c: "#9B5DE5", fg: "#FFFFFF", game: true },
+  trivial:    { name: "Trivial", tag: "Trivial", c: "#FFC93C", fg: "#1E1633", game: true },
+  cifras:     { name: "¿Cuántos?", tag: "¿Cuántos?", c: "#FF7A59", fg: "#1E1633", game: true },
+  emociones:  { name: "Emociones", tag: "Emoción", c: "#F15BB5", fg: "#1E1633", game: true },
   mezcla:     { name: "Mezcla de todo", tag: "Mezcla", c: "#FFFFFF", fg: "#1E1633", wide: true },
   favoritas:  { name: "Vuestras favoritas", tag: "Favorita", c: "#F0384F", fg: "#1E1633", wide: true }
 };
@@ -987,6 +1299,12 @@ const RULES = {
   loharia: "Cada persona dice qué haría de verdad en esa situación. Luego la otra dice si se lo cree o si en realidad haría otra cosa.",
   top3: "Cada persona dice su podio del tema, del tercero al primero, y explica por qué. Si coincidís en alguno, punto para los dos.",
   dosverdades: "Quien tiene el móvil cuenta tres cosas sobre el tema: dos verdaderas y una inventada. La otra persona adivina cuál es la mentira.",
+  random: "Preguntas para pasar el rato, sin nada profundo. Contestad por turnos y sin pensarlo mucho.",
+  frecuencia: "A quien le toca le sale en secreto un número del 1 al 10. Tiene que decir algo del tema que para su gusto sea justo ese número, sin decir el número. Los demás adivinan cuál era, y quien acierte se lleva un punto.",
+  onda: "Quien da la pista mira en secreto dónde está la zona de colores entre los dos extremos y dice una sola cosa que caiga ahí. Por ejemplo, entre frío y caliente, «un café con leche». Los demás mueven la aguja y pulsan «Revelar». Cuanto más cerca del centro, más puntos para el equipo.",
+  trivial: "Por turnos, cada persona contesta una pregunta con cuatro opciones. Si acierta, se lleva un punto.",
+  cifras: "Todos responden a la misma pregunta moviendo la barra de menos a más, y fijan su respuesta sin enseñarla. Luego se ve la respuesta buena y quien más se acerque se lleva un punto.",
+  emociones: "A quien le toca le sale una emoción en secreto. Tiene que contar una situación, real o inventada, en la que sentiría esa emoción, sin decir la palabra. Elegid el tiempo y pulsad «Empezar». Quien la adivine se lleva un punto.",
   mezcla: "Cartas de todos los juegos. Cada carta dice a qué juego pertenece y el fondo toma su color.",
   favoritas: "Las cartas que habéis marcado con el corazón. Para quitar una, tocad otra vez el corazón."
 };
@@ -1035,12 +1353,17 @@ function allCardsFor(mode, level, data) {
   }
   if (mode === "prefieres") return data.prefieres.map(([a, b]) => ({ mode, a, b })).concat(own);
   if (mode === "verdad") return data.verdad.map(([kind, text, style]) => ({ mode, kind, text, style })).concat(own);
-  if (mode === "mezcla") return playable().flatMap(m => cardsFor(m, "todo", data));
+  if (mode === "frecuencia") return data.frecuencia.map(([text, lo, hi]) => ({ mode, text, lo, hi, n: 1 + pickOf(text, 10) }));
+  if (mode === "onda") return data.onda.map(([a, b]) => ({ mode, a, b, n: 10 + pickOf(a + b, 81) }));
+  if (mode === "trivial") return data.trivial.map(([cat, text, ok, ...bad]) => ({ mode, cat, text, ok, bad }));
+  if (mode === "cifras") return data.cifras.map(([text, ans, note]) => ({ mode, text, ans, note }));
+  if (mode === "mezcla") return playable().filter(m => !MODES[m].game).flatMap(m => cardsFor(m, "todo", data));
   if (mode === "favoritas") { const f = new Set(favs()); return cardsFor("mezcla").filter(c => f.has(cardId(c))); }
   return (data[mode] || []).map(text => ({ mode, text })).concat(own);
 }
 // Home order: neighbours on the shelf never share a similar colour.
-const HOME_ORDER = ["profundas", "princess", "adivina", "prefieres", "probable", "redflag", "yonunca", "verdad", "hot", "completa", "anecdotas", "loharia", "top3", "dosverdades"];
+const HOME_ORDER = ["profundas", "princess", "adivina", "prefieres", "probable", "redflag", "yonunca", "verdad", "hot", "completa", "anecdotas", "loharia", "top3", "random", "dosverdades",
+  "frecuencia", "onda", "trivial", "cifras", "emociones"];
 // Decks with their own cards.
 const playable = () => Object.keys(MODES).filter(m => !META.includes(m));
 function buildDeck(mode, level, round, data = DATA) {
@@ -1090,13 +1413,16 @@ const vars = m => `--c:${MODES[m].c};--fg:${MODES[m].fg};`;
 
 function renderHome() {
   const order = [...META, ...HOME_ORDER.filter(m => playable().includes(m))];
-  $("decks").innerHTML = order.map(k => [k, MODES[k]]).map(([k, m]) => {
+  const tile = ([k, m]) => {
     const n = cardsFor(k, "todo").length;
     if (k === "favoritas" && !n) return "";
     const info = `<button class="info" type="button" data-info="${k}" aria-label="Cómo se juega a ${m.name}">i</button>`;
     if (m.wide) return `<div class="deck-wrap wide"><button class="deck wide${k === "favoritas" ? " favs" : ""}" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${m.name}</span><span class="count">${k === "favoritas" ? `${n} ${n === 1 ? "carta guardada" : "cartas guardadas"}` : `${n} cartas de todos los juegos`}</span></span></button>${info}</div>`;
     return `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${m.name}</span><span class="count">${n} cartas</span></button>${info}</div>`;
-  }).join("");
+  };
+  $("decks").innerHTML = order.filter(k => !MODES[k].game).map(k => tile([k, MODES[k]])).join("");
+  $("games").innerHTML = order.filter(k => MODES[k].game).map(k => tile([k, MODES[k]])).join("");
+  renderNet();
   renderLevels();
 }
 
@@ -1109,7 +1435,8 @@ function renderLevels() {
 const progressKey = () => `sm.pos|${state.mode}|${state.level}`;
 const orderKey = () => `sm.order|${state.mode}|${state.level}`;
 function save() {
-  if (state.mode === "favoritas") return;
+  push();
+  if (state.mode === "favoritas" || net.code) return;
   store.set(progressKey(), { idx: state.idx, round: state.round });
   store.set(orderKey(), state.deck.map(cardId));
 }
@@ -1138,8 +1465,8 @@ function loadDeck() {
 function startMode(mode, level) {
   state.mode = mode; state.level = level || (mode === "profundas" ? store.get("sm.lvl", "todo") : "todo");
   if (!levels().some(l => l[0] === state.level)) state.level = "todo";
-  state.score = players().map(() => 0); state.lastPoint = null; state.spun = new Set();
-  const saved = mode === "favoritas" ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
+  state.score = players().map(() => 0); state.lastPoint = null; state.spun = new Set(); state.plays = {}; state.team = 0;
+  const saved = mode === "favoritas" || net.code ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
   state.round = saved.round; state.idx = saved.idx;
   state.deck = mode === "favoritas" ? buildDeck(mode, state.level, state.round) : loadDeck();
   if (state.idx > state.deck.length || state.idx < 0) state.idx = 0;
@@ -1153,6 +1480,7 @@ function goHome() {
   $("toast").hidden = true; lastHidden = null;
   $("game").hidden = true; $("home").hidden = false;
   document.body.style.backgroundColor = "";
+  state.mode = null; push();
   renderHome();
 }
 
@@ -1169,13 +1497,15 @@ const HOW = {
   anecdotas: "Cuenta la historia. La otra persona puede hacerte tres preguntas.",
   loharia: "Di qué harías de verdad. ¿La otra persona se lo cree?",
   top3: "Decid vuestro podio, del tercero al primero. ¿Coincidís en alguno?",
-  dosverdades: "Di dos verdades y una mentira sobre este tema. La otra persona adivina cuál es la mentira."
+  dosverdades: "Di dos verdades y una mentira sobre este tema. La otra persona adivina cuál es la mentira.",
+  random: "Contesta sin pensarlo mucho. Luego le toca a la otra persona."
 };
 const VERDICTS = { princess: "¿Princess treatment, bare minimum o red flag?", redflag: "¿Green flag, red flag o depende?" };
 const upper = s => s.charAt(0).toUpperCase() + s.slice(1);
 const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
 // Modes played in turns (the card says whose turn it is when you add names) and modes with the optional timer.
-const TURNS = ["profundas", "adivina", "verdad", "completa", "anecdotas", "dosverdades"];
+const TURNS = ["profundas", "adivina", "verdad", "completa", "anecdotas", "dosverdades", "random", "frecuencia", "onda", "trivial", "emociones"];
+const TURN_LABEL = { onda: "Da la pista", trivial: "Contesta", emociones: "Explica" };
 const TIMED = ["completa", "top3", "dosverdades"];
 
 // Ruleta for Verdad o reto: the reto card already knows its style, the wheel shows which one it is.
@@ -1209,14 +1539,337 @@ function bindSpin(card, c) {
   };
 }
 
+// ---------- Jugar a distancia ----------
+// The phones share one game through Firebase Realtime Database: plain REST calls plus its live
+// stream (EventSource), so nothing extra is loaded. A room lives at salas/<code>: ppl is who is
+// in it, g is the game everyone sees (written by whoever acts last).
+const FIREBASE_URL = "";
+const net = { code: null, me: store.get("sm.me", null) || Math.random().toString(36).slice(2, 10), room: null, es: null, applying: false, sig: null, seen: null, fresh: false };
+store.set("sm.me", net.me);
+const toArr = x => Array.isArray(x) ? x : x && typeof x === "object" ? Object.values(x) : [];
+const roomPeople = () => toArr(net.room && net.room.ppl).filter(p => p && p.id);
+const roomNames = () => roomPeople().map(p => p.name || "Alguien");
+const dbUrl = (code, path = "") => `${FIREBASE_URL}/salas/${code}${path}.json`;
+async function api(code, path, method, body) {
+  const r = await fetch(dbUrl(code, path), method ? { method, body: JSON.stringify(body) } : {});
+  if (!r.ok) throw new Error(`HTTP ${r.status}`);
+  return r.json();
+}
+// Firebase streams changes as { path, data }: put replaces what is at path, patch merges its children.
+function setAt(obj, path, val) {
+  const keys = path.split("/").filter(Boolean);
+  if (!keys.length) return val;
+  const root = obj && typeof obj === "object" ? obj : {};
+  let o = root;
+  for (const k of keys.slice(0, -1)) { if (!o[k] || typeof o[k] !== "object") o[k] = {}; o = o[k]; }
+  if (val == null) delete o[keys[keys.length - 1]]; else o[keys[keys.length - 1]] = val;
+  return root;
+}
+function listen() {
+  if (net.es) net.es.close();
+  const es = net.es = new EventSource(dbUrl(net.code));
+  const on = (e, patch) => {
+    const { path, data } = JSON.parse(e.data);
+    if (patch) for (const [k, v] of Object.entries(data || {})) net.room = setAt(net.room, `${path}/${k}`, v);
+    else net.room = setAt(net.room, path, data);
+    onRoom();
+  };
+  es.addEventListener("put", e => on(e, false));
+  es.addEventListener("patch", e => on(e, true));
+  es.onopen = () => { net.offline = false; renderNet(); };
+  es.onerror = () => { net.offline = true; renderNet(); };
+}
+function onRoom() {
+  if (!net.room || !roomPeople().length) { leaveRoom(); netMsg("La partida se ha cerrado."); return; }
+  renderNet();
+  const g = net.room.g;
+  if (!g || (g.v === net.seen && !net.fresh)) return;
+  net.seen = g.v;
+  if (g.by !== net.me || net.fresh) applyRemote(g);
+  net.fresh = false;
+}
+// Sends the game as this phone has it. The deck only travels when it changes.
+function push() {
+  if (!net.code || net.applying) return;
+  const v = Math.random().toString(36).slice(2, 9), g = { by: net.me, v, mode: state.mode || null };
+  if (state.mode) {
+    Object.assign(g, { level: state.level, round: state.round, idx: state.idx, score: state.score, team: state.team || 0, plays: state.plays, spun: [...(state.spun || [])] });
+    const sig = `${seedFrom(state.deck.map(cardId).join("\n"))}:${state.deck.length}`;
+    if (sig !== net.sig) { g.deck = state.deck; net.sig = sig; }
+  }
+  net.seen = v;
+  api(net.code, "/g", "PATCH", JSON.parse(JSON.stringify(g))).catch(() => netMsg("No se ha podido enviar la jugada. Revisa la conexión."));
+}
+function applyRemote(g) {
+  net.applying = true;
+  try {
+    if (!g.mode || !MODES[g.mode]) { if (!$("game").hidden) goHome(); return; }
+    const deck = toArr(g.deck);
+    if (!deck.length) return;
+    net.sig = `${seedFrom(deck.map(cardId).join("\n"))}:${deck.length}`;
+    const was = $("game").hidden || state.mode !== g.mode ? null : state.idx;
+    Object.assign(state, { mode: g.mode, level: g.level || "todo", round: g.round || 0, idx: g.idx || 0, deck,
+      score: toArr(g.score).map(n => n || 0), team: g.team || 0, plays: g.plays || {}, spun: new Set(toArr(g.spun)) });
+    if ($("game").hidden) {
+      closeOpenDialogs();
+      $("home").hidden = true; $("game").hidden = false;
+      $("game").classList.remove("enter"); void $("game").offsetWidth; $("game").classList.add("enter");
+    }
+    render(was == null || state.idx > was ? "deal" : state.idx < was ? "back" : null);
+  } finally { net.applying = false; }
+}
+const newCode = () => Array.from({ length: 4 }, () => "ABCDEFGHJKLMNPQRSTUVWXYZ"[Math.floor(Math.random() * 24)]).join("");
+async function enterRoom(create) {
+  const name = $("netName").value.trim() || "Alguien";
+  store.set("sm.myname", name);
+  let code = $("netCode").value.trim().toUpperCase();
+  if (!create && !/^[A-Z]{4}$/.test(code)) { netMsg("Escribe el código de 4 letras."); $("netCode").focus(); return; }
+  netMsg(create ? "Creando la partida…" : "Buscando la partida…");
+  try {
+    if (create) {
+      for (let i = 0; i < 6; i++) { code = newCode(); if (!(await api(code, "/ppl"))) break; }
+      await api(code, "", "PUT", { ppl: [{ id: net.me, name }], t: Date.now() });
+    } else {
+      const ppl = toArr(await api(code, "/ppl")).filter(p => p && p.id);
+      if (!ppl.length) { netMsg("No hay ninguna partida con ese código."); return; }
+      const mine = ppl.find(p => p.id === net.me);
+      if (mine) mine.name = name; else ppl.push({ id: net.me, name });
+      await api(code, "/ppl", "PUT", ppl);
+    }
+    connect(code);
+    netMsg(create ? "Partida creada. Pasa el código." : "¡Dentro!");
+  } catch (e) { netMsg("No se ha podido conectar. Revisa que tengas internet."); }
+}
+function connect(code) {
+  Object.assign(net, { code, room: null, sig: null, seen: null, fresh: true, offline: false });
+  store.set("sm.room", code);
+  listen(); renderNet();
+}
+async function leaveRoom() {
+  const code = net.code; if (!code) return;
+  if (net.es) net.es.close();
+  Object.assign(net, { es: null, code: null, room: null });
+  store.set("sm.room", null);
+  renderNet();
+  try {
+    const ppl = toArr(await api(code, "/ppl")).filter(p => p && p.id && p.id !== net.me);
+    await (ppl.length ? api(code, "/ppl", "PUT", ppl) : api(code, "", "DELETE"));
+  } catch (e) {}
+}
+const netMsg = t => { $("netMsg").textContent = t; };
+function renderNet() {
+  const on = !!net.code, n = roomPeople().length;
+  $("openNet").classList.toggle("on", on);
+  $("openNet").innerHTML = `${icon("red")}<span>${on ? `A distancia · <b>${net.code}</b> · ${net.offline ? "reconectando…" : `${n} ${n === 1 ? "persona" : "personas"}`}` : "Jugar a distancia"}</span>`;
+  $("netOut").hidden = on; $("netIn").hidden = !on;
+  const ready = !!FIREBASE_URL;
+  $("netCreate").disabled = $("netJoin").disabled = !ready;
+  $("netOff").hidden = ready;
+  if (!on) return;
+  $("netShowCode").textContent = net.code;
+  $("netPeople").innerHTML = roomPeople().map(p => `<li><span>${esc(p.name || "Alguien")}${p.id === net.me ? " <small>(tú)</small>" : ""}</span></li>`).join("");
+}
+function closeOpenDialogs() {
+  for (const id of ["netSheet", "setSheet", "infoSheet", "sheet", "swipePop"]) if (!$(id).hidden) closeDialog(id);
+}
+
+// ---------- Juegos con puntos ----------
+// What happened on each card (the answer chosen, the guesses, whether it was revealed) lives in
+// state.plays, so going back shows it as it was and phones playing at a distance share it.
+const playKey = c => `k${seedFrom(cardId(c))}`;
+const play = c => state.plays[playKey(c)] || (state.plays[playKey(c)] = {});
+function setPlay(c, patch) { Object.assign(play(c), patch); render(null); }
+const turnIdx = () => state.idx % players().length;
+const meIdx = () => net.code ? roomPeople().findIndex(p => p.id === net.me) : -1;
+const myTurn = () => !net.code || turnIdx() === meIdx();
+// A secret is for the person whose turn it is: at a distance only their phone shows it; with one
+// phone they tap to look while the others look away.
+let peeking = null;
+const canSee = c => !!play(c).rev || (net.code ? myTurn() : peeking === playKey(c));
+function secretHTML(c, inner, what) {
+  if (canSee(c)) return `<div class="secret on">${inner}${!net.code && !play(c).rev ? `<button class="mini" type="button" data-act="hide">Ocultar</button>` : ""}</div>`;
+  if (net.code) return `<div class="secret"><p>Solo lo ve <b>${players()[turnIdx()]}</b>.</p></div>`;
+  return `<div class="secret"><button class="mini" type="button" data-act="peek">Ver ${what}</button><p>Solo quien tiene el turno. Que no mire nadie más.</p></div>`;
+}
+const pickOf = (c, k) => seedFrom(`${state.seed}|${c}|${state.round}`) % k;
+const grp = x => String(x).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
+function fmtNum(n) {
+  if (n >= 1e6) { const m = n / 1e6; return `${m >= 100 ? grp(Math.round(m)) : String(+m.toFixed(m < 10 ? 1 : 0)).replace(".", ",")} ${m === 1 ? "millón" : "millones"}`; }
+  return grp(Math.round(n));
+}
+
+// Wavelength: a half dial from one extreme (0) to the other (100).
+const ZONES = [[13, 2, "#FFD84A"], [8, 3, "#FF9E7A"], [3, 4, "#F15BB5"]];
+const dialPt = (v, r) => { const a = Math.PI * (1 - v / 100); return [100 + r * Math.cos(a), 100 - r * Math.sin(a)]; };
+function dialSVG(t, g, show) {
+  const wedge = (from, to, col) => { const [x1, y1] = dialPt(Math.max(0, from), 90), [x2, y2] = dialPt(Math.min(100, to), 90);
+    return `<path d="M100 100L${x1.toFixed(1)} ${y1.toFixed(1)}A90 90 0 0 1 ${x2.toFixed(1)} ${y2.toFixed(1)}Z" fill="${col}"/>`; };
+  const [nx, ny] = dialPt(g, 84);
+  return `<svg class="dial" viewBox="0 0 200 106" aria-hidden="true"><path d="M10 100A90 90 0 0 1 190 100Z" fill="#F1EEF8" stroke="#1E1633" stroke-width="3"/>
+    ${show ? ZONES.map(([w, , col]) => wedge(t - w, t + w, col)).join("") : ""}
+    <line class="needle" x1="100" y1="100" x2="${nx.toFixed(1)}" y2="${ny.toFixed(1)}" stroke="#1E1633" stroke-width="5" stroke-linecap="round"/><circle cx="100" cy="100" r="8" fill="#1E1633"/></svg>`;
+}
+const ondaPts = (t, g) => { const d = Math.abs(t - g); const z = ZONES.slice().reverse().find(([w]) => d <= w); return z ? z[1] : 0; };
+
+// ¿Cuántos?: a column from 1 to 100.000 millones on a log scale.
+const MAXEXP = 11;
+const snapNum = v => v < 10 ? Math.max(1, Math.round(v)) : (u => Math.round(v / u) * u)(10 ** (Math.floor(Math.log10(v)) - 1));
+const stepNum = (v, up) => { if (up) return v < 10 ? v + 1 : v + 10 ** (Math.floor(Math.log10(v)) - 1); return v <= 10 ? Math.max(1, v - 1) : v - 10 ** (Math.floor(Math.log10(v - 1)) - 1); };
+const posOf = v => Math.log10(v) / MAXEXP;
+let slide = { key: null, v: 300000 };
+const offBy = (g, a) => { const r = g / a; if (r > .95 && r < 1.05) return "¡Clavado!"; const x = r > 1 ? r : 1 / r; return `${x < 10 ? String(+x.toFixed(1)).replace(".", ",") : grp(Math.round(x))} veces ${r > 1 ? "más" : "menos"}`; };
+
+const SECS = [30, 60, 90];
+function countdownHTML(c) {
+  const p = play(c), secs = p.secs || store.get("sm.secs", 60);
+  return `<div class="secs" role="group" aria-label="Tiempo">${p.end ? `<span class="countdown" aria-live="off">${secs} s</span>` : SECS.map(s =>
+    `<button type="button" data-act="secs" data-v="${s}" aria-pressed="${s === secs}">${s} s</button>`).join("") + `<button class="mini" type="button" data-act="go">Empezar</button>`}</div>`;
+}
+function runCountdown(card, c) {
+  const p = play(c), el = card.querySelector(".countdown"); if (!el || !p.end) return;
+  const tick = () => {
+    const left = Math.ceil((p.end - Date.now()) / 1000);
+    el.textContent = left > 0 ? `${left} s` : "¡Tiempo!";
+    if (left > 0) return;
+    clearInterval(timerId);
+    if (Date.now() - p.end < 1500) { $("live").textContent = "Se acabó el tiempo."; try { navigator.vibrate && navigator.vibrate(200); } catch (e) {} }
+  };
+  tick(); timerId = setInterval(tick, 250);
+}
+
+const GAMES = {
+  frecuencia: {
+    score: true,
+    html: c => { const rev = play(c).rev;
+      return `<p class="q">${esc(c.text)}</p><p class="scale"><span>1 = ${esc(c.lo)}</span><span>10 = ${esc(c.hi)}</span></p>
+        ${secretHTML(c, `<span class="big">${c.n}</span>`, "tu número")}
+        <p class="how">${rev ? `Era un ${c.n}. Tocad el nombre de quien lo haya acertado.` : "Di algo del tema que para ti sea justo ese número. Los demás adivinan cuál es."}</p>
+        ${rev ? "" : `<button class="act" type="button" data-act="rev">Descubrir el número</button>`}`; }
+  },
+  onda: {
+    html: c => { const p = play(c), g = p.guess == null ? 50 : p.guess, show = canSee(c);
+      const secret = p.rev ? `<p class="result">${p.pts ? `¡${p.pts} puntos!` : "¡Fuera! 0 puntos"}</p>`
+        : net.code ? (myTurn() ? `<p class="how">Tú das la pista: di una cosa que caiga en la zona de colores.</p>` : `<p class="how">Escucha la pista de <b>${players()[turnIdx()]}</b> y mueve la aguja.</p>`)
+        : `<button class="mini" type="button" data-act="${show ? "hide" : "peek"}">${show ? "Ocultar el objetivo" : "Ver el objetivo"}</button>`;
+      return `<div class="dialwrap">${dialSVG(c.n, g, show)}<div class="ends"><span>${esc(c.a)}</span><span>${esc(c.b)}</span></div></div>
+        ${secret}${p.rev ? "" : `<button class="act" type="button" data-act="reveal">Revelar</button>`}
+        <p class="team">Lleváis <b>${state.team || 0}</b> puntos entre todos</p>`; },
+    bind(card, c) {
+      const svg = card.querySelector(".dial"), p = play(c);
+      if (p.rev || (net.code && myTurn())) return;
+      const at = e => { const r = svg.getBoundingClientRect(), x = (e.clientX - r.left) / r.width * 200, y = (e.clientY - r.top) / r.height * 106;
+        let a = Math.atan2(100 - y, x - 100); if (a < 0) a = x < 100 ? Math.PI : 0;
+        return Math.max(0, Math.min(100, Math.round(100 * (1 - a / Math.PI)))); };
+      let v = null;
+      const move = e => { v = at(e); const [nx, ny] = dialPt(v, 84), n = svg.querySelector(".needle"); n.setAttribute("x2", nx); n.setAttribute("y2", ny); };
+      svg.addEventListener("pointerdown", e => { e.stopPropagation(); svg.setPointerCapture(e.pointerId); move(e); svg.onpointermove = move; });
+      const end = () => { svg.onpointermove = null; if (v != null) setPlay(c, { guess: v }); };
+      svg.addEventListener("pointerup", end); svg.addEventListener("pointercancel", end);
+    },
+    act(c, a) {
+      if (a !== "reveal") return;
+      const p = play(c), pts = ondaPts(c.n, p.guess == null ? 50 : p.guess);
+      state.team = (state.team || 0) + pts;
+      setPlay(c, { rev: true, pts });
+    }
+  },
+  trivial: {
+    score: true,
+    html: c => { const p = play(c), opts = shuffle([c.ok, ...c.bad], rng(seedFrom(cardId(c)))), can = !p.pick && myTurn();
+      return `<p class="q long">${esc(c.text)}</p><div class="opts">${opts.map(o => `<button class="opt2${p.pick ? (o === c.ok ? " ok" : o === p.pick ? " ko" : "") : ""}" type="button" data-act="pick" data-v="${esc(o)}"${can ? "" : " disabled"}>${esc(o)}</button>`).join("")}</div>
+        ${p.pick ? `<p class="result">${p.pick === c.ok ? "¡Correcto!" : `Era «${esc(c.ok)}»`}</p>` : myTurn() ? "" : `<p class="how">Contesta <b>${players()[turnIdx()]}</b>.</p>`}`; },
+    act(c, a, b) {
+      if (a !== "pick" || play(c).pick) return;
+      if (b.dataset.v === c.ok) { const i = turnIdx(); state.score[i] = (state.score[i] || 0) + 1; }
+      setPlay(c, { pick: b.dataset.v });
+    }
+  },
+  cifras: {
+    score: true,
+    html: c => { const p = play(c), g = p.g || {}, names = players(), k = playKey(c);
+      if (p.rev) {
+        const win = new Set(p.win || []);
+        return `<p class="q long">${esc(c.text)}</p><div class="answer"><small>Respuesta</small><b>${fmtNum(c.ans)}</b><span>${esc(c.note)}</span></div>
+          <ul class="guesses">${names.map((n, i) => g[`p${i}`] == null ? "" : `<li${win.has(i) ? ' class="win"' : ""}><span>${win.has(i) ? "🏆 " : ""}${n}</span><span><b>${fmtNum(g[`p${i}`])}</b><small>${offBy(g[`p${i}`], c.ans)}</small></span></li>`).join("")}</ul>`;
+      }
+      const who = net.code ? meIdx() : names.findIndex((n, i) => g[`p${i}`] == null);
+      const mine = who >= 0 && g[`p${who}`] == null;
+      if (slide.key !== k) slide = { key: k, v: 300000 };
+      const locks = `<div class="locks">${names.map((n, i) => `<span class="lock${g[`p${i}`] != null ? " done" : ""}">${n}${g[`p${i}`] != null ? " ✓" : ""}</span>`).join("")}</div>`;
+      const any = Object.keys(g).length;
+      return `<p class="q long">${esc(c.text)}</p>
+        ${mine ? `<div class="cifra"><div class="val"><small>${net.code ? "Tu respuesta" : `Responde <b>${names[who]}</b> sin que miren`}</small><b class="cval">${fmtNum(slide.v)}</b>
+          <div class="steps"><button type="button" data-act="down" aria-label="Menos">−</button><button type="button" data-act="up" aria-label="Más">+</button></div>
+          <button class="mini" type="button" data-act="lock">Fijar mi respuesta</button></div>
+          <div class="col" role="slider" tabindex="0" aria-label="Cantidad" aria-valuetext="${fmtNum(slide.v)}"><span class="lbl top">Más</span><span class="lbl bot">Menos</span><span class="thumb" style="bottom:${(posOf(slide.v) * 100).toFixed(1)}%"></span></div></div>`
+          : `<p class="how">${net.code ? "Esperando a que respondan los demás." : "Ya habéis respondido todos."}</p>`}
+        ${locks}${any ? `<button class="act" type="button" data-act="rev">Ver la respuesta</button>` : ""}`; },
+    bind(card, c) {
+      const col = card.querySelector(".col"); if (!col) return;
+      const show = () => { card.querySelector(".cval").textContent = fmtNum(slide.v); col.querySelector(".thumb").style.bottom = `${(posOf(slide.v) * 100).toFixed(1)}%`; col.setAttribute("aria-valuetext", fmtNum(slide.v)); };
+      const move = e => { const r = col.getBoundingClientRect(), f = Math.max(0, Math.min(1, 1 - (e.clientY - r.top) / r.height)); slide.v = snapNum(10 ** (f * MAXEXP)); show(); };
+      col.addEventListener("pointerdown", e => { e.stopPropagation(); col.setPointerCapture(e.pointerId); move(e); col.onpointermove = move; });
+      col.addEventListener("pointerup", () => { col.onpointermove = null; });
+      col.addEventListener("keydown", e => { if (e.key === "ArrowUp" || e.key === "ArrowDown") { e.preventDefault(); e.stopPropagation(); slide.v = stepNum(slide.v, e.key === "ArrowUp"); show(); } });
+      card.querySelectorAll('[data-act="up"], [data-act="down"]').forEach(b => { b.onclick = () => { slide.v = Math.min(10 ** MAXEXP, stepNum(slide.v, b.dataset.act === "up")); show(); }; });
+    },
+    act(c, a) {
+      const p = play(c), names = players();
+      if (a === "lock") {
+        const who = net.code ? meIdx() : names.findIndex((n, i) => (p.g || {})[`p${i}`] == null);
+        if (who < 0) return;
+        slide.key = null;
+        setPlay(c, { g: { ...(p.g || {}), [`p${who}`]: slide.v } });
+        $("live").textContent = "Respuesta fijada.";
+      }
+      if (a === "rev" && !p.rev) {
+        const g = p.g || {}, d = Object.entries(g).map(([k, v]) => [+k.slice(1), Math.abs(Math.log(v / c.ans))]);
+        const best = Math.min(...d.map(x => x[1])), win = d.filter(x => x[1] - best < 1e-9).map(x => x[0]);
+        win.forEach(i => { state.score[i] = (state.score[i] || 0) + 1; });
+        setPlay(c, { rev: true, win });
+      }
+    }
+  },
+  emociones: {
+    score: true,
+    html: c => { const rev = play(c).rev;
+      return `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "tu emoción")}
+        <p class="how">${rev ? "Tocad el nombre de quien la haya adivinado." : "Cuenta una situación, real o inventada, en la que sentirías esa emoción, sin decir la palabra."}</p>
+        ${countdownHTML(c)}
+        ${rev ? "" : `<button class="act" type="button" data-act="rev">Revelar la emoción</button>`}`; },
+    act(c, a, b) {
+      if (a === "secs") { store.set("sm.secs", +b.dataset.v); setPlay(c, { secs: +b.dataset.v }); }
+      if (a === "go") { const secs = play(c).secs || store.get("sm.secs", 60); setPlay(c, { secs, end: Date.now() + secs * 1000 }); }
+    }
+  }
+};
+function bindGame(card, c) {
+  const game = GAMES[c.mode]; if (!game) return;
+  card.querySelectorAll("[data-act], .opts button, .steps button").forEach(b => b.addEventListener("pointerdown", e => e.stopPropagation()));
+  card.querySelectorAll("[data-act]").forEach(b => {
+    if (b.onclick) return;
+    b.onclick = () => {
+      if (busy) return;
+      const a = b.dataset.act;
+      if (a === "peek") { peeking = playKey(c); render(null); return; }
+      if (a === "hide") { peeking = null; render(null); return; }
+      if (a === "rev" && c.mode !== "cifras") { setPlay(c, { rev: true }); return; }
+      game.act && game.act(c, a, b);
+    };
+  });
+  if (game.bind) game.bind(card, c);
+  runCountdown(card, c);
+}
+
 function cardHTML(c) {
-  let tag = c.kind || (c.level ? LEVEL_NAME[c.level] : MODES[c.mode].tag);
+  let tag = c.kind || c.cat || (c.level ? LEVEL_NAME[c.level] : MODES[c.mode].tag);
   if (c.kind === "Reto" && c.style && !needsSpin(c)) tag = `Reto de ${c.style.toLowerCase()}`;
   if (META.includes(state.mode) && !c.kind) tag = MODES[c.mode].short || MODES[c.mode].name;
   if (c.custom) tag += " (vuestra)";
   let body;
   const t = c.text && esc(c.text);
-  if (c.mode === "prefieres") body = `<div class="or"><div class="opt">${esc(upper(c.a))}</div><div class="vs">o</div><div class="opt">${esc(upper(c.b))}</div></div>`;
+  if (GAMES[c.mode]) body = GAMES[c.mode].html(c);
+  else if (c.mode === "prefieres") body = `<div class="or"><div class="opt">${esc(upper(c.a))}</div><div class="vs">o</div><div class="opt">${esc(upper(c.b))}</div></div>`;
   else if (c.mode === "hot") body = `<p class="q">«${t}»</p>`;
   else if (c.mode === "yonunca") body = `<p class="q">Yo nunca ${t}</p>`;
   else if (c.mode === "anecdotas") body = `<p class="q">Cuéntame una vez que ${t}.</p>`;
@@ -1226,18 +1879,19 @@ function cardHTML(c) {
   const how = c.level === "chispa" ? `<p class="how">Si no te apetece, pulsa «Pasar».</p>` : HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
   const fav = favs().includes(cardId(c));
   const heart = `<button class="fav" type="button" aria-pressed="${fav}" aria-label="Guardar en favoritas">${icon("favoritas")}</button>`;
-  const score = c.mode === "adivina" ? scoreHTML() : "";
-  const ppl = people(), who = ppl.length > 1 ? esc(ppl[state.idx % ppl.length]) : "";
-  const turn = who ? `<p class="turn">${TURNS.includes(c.mode) ? "Le toca a" : "Empieza"} <b>${who}</b></p>` : "";
+  const score = c.mode === "adivina" || (GAMES[c.mode] && GAMES[c.mode].score) ? scoreHTML() : "";
+  const ppl = net.code ? roomNames() : people(), who = ppl.length > 1 && c.mode !== "cifras" ? esc(ppl[state.idx % ppl.length]) : "";
+  const turn = !who ? "" : net.code && TURNS.includes(c.mode) && myTurn() ? `<p class="turn"><b>Te toca a ti</b></p>`
+    : `<p class="turn">${TURNS.includes(c.mode) ? TURN_LABEL[c.mode] || "Le toca a" : "Empieza"} <b>${who}</b></p>`;
   const timer = TIMED.includes(c.mode) ? `<button class="timer" type="button" aria-pressed="false">${icon("reloj")}<span>30 s</span></button>` : "";
   const bin = `<button class="hide" type="button" aria-label="Quitar esta carta">${icon("quitar")}</button>`;
-  return `<div class="cardtop"><span class="tag">${icon(c.mode)}${tag}</span><span class="tools">${bin}${heart}</span></div>${turn}${body}${how}${score}${timer}`;
+  return `<div class="cardtop"><span class="tag">${icon(c.mode)}${tag}</span><span class="tools">${bin}${MODES[c.mode].game ? "" : heart}</span></div>${turn}${body}${how}${score}${timer}`;
 }
 
 // Score for "Adivina mi respuesta": only lives while you play, back to 0 when you leave the deck.
-const players = () => people().length > 1 ? people().map(esc) : ["Persona 1", "Persona 2"];
+const players = () => (net.code ? roomNames() : people().length > 1 ? people() : ["Persona 1", "Persona 2"]).map(esc);
 function scoreHTML() {
-  return `<div class="score" role="group" aria-label="Aciertos">${state.score.map((n, i) =>
+  return `<div class="score" role="group" aria-label="Aciertos">${players().map((p, i) => state.score[i] || 0).map((n, i) =>
     `<button class="pt" type="button" data-p="${i}" aria-label="Sumar un acierto a ${players()[i]}, lleva ${n}"><span>${players()[i]}</span><b>${n}</b></button>`).join("")}${
     state.lastPoint != null ? `<button class="undo" type="button">Deshacer</button>` : ""}</div>`;
 }
@@ -1247,7 +1901,8 @@ function bindScore(card) {
     b.onclick = () => {
       const undo = b.classList.contains("undo");
       if (undo) { state.score[state.lastPoint]--; state.lastPoint = null; }
-      else { state.lastPoint = +b.dataset.p; state.score[state.lastPoint]++; }
+      else { state.lastPoint = +b.dataset.p; state.score[state.lastPoint] = (state.score[state.lastPoint] || 0) + 1; }
+      save();
       card.querySelector(".score").outerHTML = scoreHTML();
       bindScore(card);
       const again = card.querySelector(undo ? ".pt" : `.pt[data-p="${b.dataset.p}"]`);
@@ -1260,6 +1915,7 @@ function bindScore(card) {
 
 function render(anim) {
   const total = state.deck.length, done = state.idx >= total, c = state.deck[state.idx];
+  if (anim) peeking = null;
   const colorMode = done ? (META.includes(state.mode) ? "profundas" : state.mode) : c.mode;
   const m = MODES[colorMode];
   document.body.style.backgroundColor = m.c;
@@ -1284,7 +1940,7 @@ function render(anim) {
   if (done) {
     $("otherGame").onclick = goHome;
     $("reshuffle").onclick = () => {
-      state.round++; state.idx = 0; state.deck = buildDeck(state.mode, state.level, state.round); save();
+      state.round++; state.idx = 0; state.plays = {}; state.deck = buildDeck(state.mode, state.level, state.round); save();
       if (reduced) { render("deal"); return; }
       table.classList.add("shuffling");
       table.querySelector(".card").classList.add("gather");
@@ -1292,8 +1948,8 @@ function render(anim) {
     };
   } else {
     const card = table.querySelector(".card"), fav = card.querySelector(".fav");
-    fav.addEventListener("pointerdown", e => e.stopPropagation());
-    fav.onclick = () => {
+    if (fav) fav.addEventListener("pointerdown", e => e.stopPropagation());
+    if (fav) fav.onclick = () => {
       fav.setAttribute("aria-pressed", toggleFav(c));
       fav.classList.remove("pop-in"); void fav.offsetWidth; fav.classList.add("pop-in");
     };
@@ -1304,6 +1960,7 @@ function render(anim) {
     bindSpin(card, c);
     bindTimer(card);
     bindDrag(card);
+    bindGame(card, c);
   }
   save();
 }
@@ -1456,11 +2113,13 @@ $("infoPlay").onclick = () => { closeDialog("infoSheet"); if ($("game").hidden) 
 $("infoClose").onclick = () => closeDialog("infoSheet");
 $("infoSheet").addEventListener("click", e => { if (e.target.id === "infoSheet") closeDialog("infoSheet"); });
 $("gameInfo").onclick = () => openInfo(META.includes(state.mode) ? state.deck[Math.min(state.idx, state.deck.length - 1)].mode : state.mode);
-$("decks").addEventListener("click", e => {
+const onShelf = e => {
   const i = e.target.closest("[data-info]"); if (i) { openInfo(i.dataset.info); return; }
   const b = e.target.closest("[data-mode]"); if (!b) return;
   openMode(b.dataset.mode);
-});
+};
+$("decks").addEventListener("click", onShelf);
+$("games").addEventListener("click", onShelf);
 $("lvls").addEventListener("click", e => {
   const b = e.target.closest("[data-level]"); if (!b) return;
   store.set("sm.lvl", b.dataset.level); renderLevels();
@@ -1479,6 +2138,7 @@ document.addEventListener("keydown", e => {
   if (!$("infoSheet").hidden) { if (e.key === "Escape") closeDialog("infoSheet"); return; }
   if (!$("sheet").hidden) { if (e.key === "Escape") closeDialog("sheet"); return; }
   if (!$("setSheet").hidden) { if (e.key === "Escape") closeSettings(); return; }
+  if (!$("netSheet").hidden) { if (e.key === "Escape") closeDialog("netSheet"); return; }
   if ($("game").hidden || (e.key === " " && e.target.closest("button"))) return;
   if (e.key === "ArrowUp" || e.key === "ArrowRight" || e.key === " ") { e.preventDefault(); throwCard(1); }
   if (e.key === "ArrowDown" || e.key === "ArrowLeft") { e.preventDefault(); throwCard(-1); }
@@ -1497,7 +2157,7 @@ function renderCustom() {
     <button type="button" data-del="${i}" aria-label="Borrar la carta ${esc(c.text || c.a)}">Borrar</button></li>`).join("");
 }
 $("openSet").querySelector("svg").innerHTML = ICONS.ajustes;
-$("cMode").innerHTML = Object.keys(MODES).filter(m => !META.includes(m)).map(m => `<option value="${m}">${esc(MODES[m].short || MODES[m].name)}</option>`).join("");
+$("cMode").innerHTML = Object.keys(MODES).filter(m => !META.includes(m) && !MODES[m].game).map(m => `<option value="${m}">${esc(MODES[m].short || MODES[m].name)}</option>`).join("");
 $("openSet").onclick = () => {
   renderNames();
   $("cMsg").textContent = ""; $("hMsg").textContent = ""; renderCustom(); renderHidden();
@@ -1562,7 +2222,31 @@ const closeSettings = () => { closeDialog("setSheet"); renderHome(); };
 $("setDone").onclick = closeSettings;
 $("setSheet").addEventListener("click", e => { if (e.target.id === "setSheet") closeSettings(); });
 
+$("openNet").onclick = () => {
+  $("netName").value = store.get("sm.myname", "") || people()[0] || "";
+  netMsg(""); renderNet();
+  openDialog("netSheet", "netTitle");
+};
+$("netCreate").onclick = () => enterRoom(true);
+$("netJoin").onclick = () => enterRoom(false);
+$("netCode").addEventListener("keydown", e => { if (e.key === "Enter") enterRoom(false); });
+$("netLeave").onclick = () => { leaveRoom(); netMsg("Has salido de la partida."); };
+$("netDone").onclick = () => closeDialog("netSheet");
+$("netSheet").addEventListener("click", e => { if (e.target.id === "netSheet") closeDialog("netSheet"); });
+$("netShare").onclick = () => {
+  const url = `${location.origin}${location.pathname}?sala=${net.code}`, text = `Únete a mi partida de Preguntas de Sara con el código ${net.code}`;
+  if (navigator.share) { navigator.share({ title: "Preguntas de Sara", text, url }).catch(() => {}); return; }
+  try { navigator.clipboard.writeText(`${text}: ${url}`).then(() => netMsg("Enlace copiado. Pégalo en el chat."), () => netMsg(url)); } catch (e) { netMsg(url); }
+};
+
 renderHome();
+// Opened from a shared link (?sala=ABCD): the join form comes ready with the code.
+const invite = new URLSearchParams(location.search).get("sala");
+if (store.get("sm.room", null) && FIREBASE_URL) connect(store.get("sm.room", null));
+if (invite && !net.code) {
+  history.replaceState(null, "", location.pathname);
+  $("openNet").click(); $("netCode").value = invite.toUpperCase().slice(0, 4);
+}
 if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
 
