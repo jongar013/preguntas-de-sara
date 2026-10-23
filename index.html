@@ -169,6 +169,10 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .or .opt { font-weight: 900; font-size: clamp(1.35rem, 5.8vw, 1.85rem); line-height: 1.18; text-wrap: balance; background: var(--soft); border-radius: 16px; padding: 12px 14px; }
 .or .vs { justify-self: center; font-family: var(--font-display); font-size: 1.4rem; background: var(--c); color: var(--fg); border: 2.5px solid var(--ink); border-radius: 12px; padding: 2px 12px; transform: rotate(-4deg); }
 .how { font-weight: 700; font-size: .95rem; color: var(--muted-ink); line-height: 1.4; margin: 0; }
+.reveal summary { display: inline-flex; align-items: center; min-height: 44px; padding: 0 16px; border-radius: 14px; background: var(--ink); color: #fff; font-weight: 900; cursor: pointer; list-style: none; }
+.reveal summary::-webkit-details-marker { display: none; }
+.reveal[open] summary { display: none; }
+.reveal p { margin: 0; font-weight: 900; font-size: 1.3rem; line-height: 1.3; background: var(--soft); border-radius: 16px; padding: 12px 14px; }
 .verdicts { font-weight: 900; font-size: 1.05rem; line-height: 1.3; color: var(--ink); margin: 0 0 4px; }
 
 .end { margin: auto 0; display: grid; gap: 16px; justify-items: start; }
@@ -1139,7 +1143,44 @@ const DATA = {
     "¿Qué harías si pudieras parar el tiempo una hora?",
     "¿Qué te hace sentir mayor de golpe?",
     "¿Qué te pedirías en un restaurante si no lo pagaras tú?",
-    "¿Qué te gustaría saber hacer en 5 minutos sin aprenderlo?"
+    "¿Qué te gustaría saber hacer en 5 minutos sin aprenderlo?",
+    // Datos curiosos: [pregunta, respuesta]
+    ["¿Qué cantante tiene el récord de más premios Grammy?", "Beyoncé, con más de 30."],
+    ["¿Cuál fue el primer vídeo de YouTube en llegar a 1.000 millones de visitas?", "«Gangnam Style», de PSY, en 2012."],
+    ["¿Qué canción española fue número 1 en Estados Unidos en 1996 con un baile famoso?", "«Macarena», de Los del Río."],
+    ["¿Cómo se llama de verdad Bad Bunny?", "Benito Antonio Martínez Ocasio."],
+    ["¿Cuál es el grupo que más discos ha vendido de la historia?", "The Beatles."],
+    ["¿Cuántos años tenía Justin Bieber cuando sacó «Baby»?", "15 años."],
+    ["¿Qué cantante se llama en realidad Stefani Germanotta?", "Lady Gaga."],
+    ["¿En qué año ganó España Eurovisión por última vez?", "En 1969, con Salomé y «Vivo cantando»."],
+    ["¿De qué país es el grupo ABBA?", "De Suecia."],
+    ["¿En qué canción hizo Michael Jackson el moonwalk por primera vez en la tele?", "En «Billie Jean», en 1983."],
+    ["¿Qué instrumento tocaba Freddie Mercury además de cantar?", "El piano."],
+    ["¿Qué animal tiene unas huellas dactilares casi iguales a las nuestras?", "El koala."],
+    ["¿Qué es una baya de verdad: la fresa o el plátano?", "El plátano. La fresa, técnicamente, no lo es."],
+    ["¿De qué color es la sangre de un pulpo?", "Azul."],
+    ["¿Qué dura más en Venus: un día o un año?", "Un día. Venus tarda más en girar sobre sí mismo que en dar la vuelta al Sol."],
+    ["¿Cuál es el único mamífero que puede volar de verdad?", "El murciélago."],
+    ["¿Qué parte del cuerpo no tiene vasos sanguíneos?", "La córnea del ojo."],
+    ["¿Los flamencos nacen rosas?", "No, nacen grisáceos. El rosa les viene de lo que comen."],
+    ["¿Cuántas veces por minuto puede latir el corazón de un colibrí?", "Más de 1.000."],
+    ["¿Qué país tiene más islas del mundo?", "Suecia, con más de 200.000."],
+    ["¿Cuál es una de las palabras más largas del diccionario español?", "«Electroencefalografista», con 23 letras."],
+    ["¿La miel se pone mala con los años?", "Casi nunca. Se ha encontrado miel comestible en tumbas egipcias."],
+    ["¿Cuántas vértebras tiene en el cuello una jirafa?", "7, las mismas que una persona."],
+    ["¿Cuánto mide la lengua de una jirafa?", "Unos 50 centímetros."],
+    ["¿Qué animal tiene los ojos más grandes del mundo?", "El calamar colosal: como un balón de fútbol."],
+    ["¿Cuál es el país más pequeño del mundo?", "La Ciudad del Vaticano."],
+    ["¿De qué color eran las zanahorias antes de ser naranjas?", "Moradas o amarillas. Las naranjas se hicieron populares en los Países Bajos."],
+    ["¿Qué metal es líquido a temperatura ambiente?", "El mercurio."],
+    ["¿Cuánto tarda la luz del Sol en llegar a la Tierra?", "Unos 8 minutos."],
+    ["¿Qué hacen las nutrias marinas para no separarse mientras duermen?", "Se dan la mano."],
+    ["¿Qué animal hace la caca en forma de cubo?", "El wombat."],
+    ["¿En qué país se inventó el Chupa Chups?", "En España, en 1958."],
+    ["¿Quién dibujó el logo de Chupa Chups?", "Salvador Dalí."],
+    ["¿Qué invento español sirve para limpiar el suelo?", "La fregona."],
+    ["¿Cuántas horas al día puede dormir un koala?", "Hasta 20."],
+    ["¿Qué animal no puede saltar?", "El elefante."]
   ],
   // [tema, qué es un 1, qué es un 10]
   frecuencia: [
@@ -1485,7 +1526,7 @@ function allCardsFor(mode, level, data) {
   if (mode === "cifras") return data.cifras.map(([text, ans, note]) => ({ mode, text, ans, note }));
   if (mode === "mezcla") return playable().filter(m => !MODES[m].game).flatMap(m => cardsFor(m, "todo", data));
   if (mode === "favoritas") { const f = new Set(favs()); return cardsFor("mezcla").filter(c => f.has(cardId(c))); }
-  return (data[mode] || []).map(text => ({ mode, text })).concat(own);
+  return (data[mode] || []).map(x => Array.isArray(x) ? { mode, text: x[0], ans: x[1] } : { mode, text: x }).concat(own);
 }
 // Home order: neighbours on the shelf never share a similar colour.
 const HOME_ORDER = ["profundas", "princess", "adivina", "prefieres", "probable", "redflag", "yonunca", "verdad", "hot", "completa", "anecdotas", "loharia", "top3", "random", "dosverdades",
@@ -2384,7 +2425,7 @@ function bindGame(card, c) {
 }
 
 function cardHTML(c) {
-  let tag = c.kind || c.cat || (c.level ? LEVEL_NAME[c.level] : MODES[c.mode].tag);
+  let tag = c.kind || c.cat || (c.ans ? "Dato curioso" : c.level ? LEVEL_NAME[c.level] : MODES[c.mode].tag);
   if (c.kind === "Reto" && c.style && !needsSpin(c)) tag = `Reto de ${c.style.toLowerCase()}`;
   if (META.includes(state.mode) && !c.kind) tag = MODES[c.mode].short || MODES[c.mode].name;
   if (c.custom) tag += " (vuestra)";
@@ -2395,10 +2436,11 @@ function cardHTML(c) {
   else if (c.mode === "hot") body = `<p class="q">«${t}»</p>`;
   else if (c.mode === "yonunca") body = `<p class="q">Yo nunca ${t}</p>`;
   else if (c.mode === "anecdotas") body = `<p class="q">Cuéntame una vez que ${t}.</p>`;
+  else if (c.ans) body = `<p class="q${c.text.length > 80 ? " long" : ""}">${t}</p><details class="reveal"><summary>Ver la respuesta</summary><p>${esc(c.ans)}</p></details>`;
   else if (needsSpin(c)) body = wheelHTML();
   else body = `<p class="q${c.text.length > 80 ? " long" : ""}">${t}</p>`;
   const v = VERDICTS[c.mode] ? `<p class="verdicts">${VERDICTS[c.mode]}</p>` : "";
-  const how = c.level === "chispa" ? `<p class="how">Si no te apetece, pulsa «Pasar».</p>` : HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
+  const how = c.ans ? `<p class="how">Dato curioso: decid vuestra respuesta antes de mirarla.</p>` : c.level === "chispa" ? `<p class="how">Si no te apetece, pulsa «Pasar».</p>` : HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
   const fav = favs().includes(cardId(c));
   const heart = `<button class="fav" type="button" aria-pressed="${fav}" aria-label="Guardar en favoritas">${icon("favoritas")}</button>`;
   const score = c.mode === "adivina" || (GAMES[c.mode] && GAMES[c.mode].score) ? scoreHTML() : "";
@@ -2582,7 +2624,7 @@ function skipCard() {
 
 function bindDrag(el) {
   let x0 = null, dx = 0;
-  el.addEventListener("pointerdown", e => { if (busy) return; x0 = e.clientX; dx = 0; el.setPointerCapture(e.pointerId); el.classList.remove("deal"); });
+  el.addEventListener("pointerdown", e => { if (busy || e.target.closest("summary")) return; x0 = e.clientX; dx = 0; el.setPointerCapture(e.pointerId); el.classList.remove("deal"); });
   el.addEventListener("pointermove", e => {
     if (x0 == null) return;
     dx = e.clientX - x0;
