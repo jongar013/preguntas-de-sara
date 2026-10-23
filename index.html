@@ -108,6 +108,10 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .lvlbtn::before { content: ""; position: absolute; inset: -7px -4px; }
 .lvlbtn::after { content: " ▾"; }
 .lvl[aria-pressed="true"] b::after { content: "  ✓"; }
+.paces { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.paces .lvl { text-align: center; padding: 18px 6px; }
+.paces .lvl b { font-size: 1.6rem; }
+.paces .lvl[aria-pressed="true"] b::after { content: ""; }
 .pill { background: var(--ink); color: #fff; border-radius: 999px; padding: 7px 12px; font-weight: 900; font-size: .9rem; font-variant-numeric: tabular-nums; }
 .bar { height: 10px; border-radius: 999px; background: rgba(30,22,51,.22); overflow: hidden; }
 .bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; transition: width .3s ease; }
@@ -497,6 +501,14 @@ canvas.board { display: block; align-self: center; width: min(100%, 44vh); aspec
     </div>
     <p class="hint" id="netMsg" aria-live="polite"></p>
     <button class="play" id="netDone" type="button">Hecho</button>
+  </div>
+</div>
+
+<div class="sheet-wrap" id="paceSheet" hidden>
+  <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="paceTitle">
+    <h2 id="paceTitle" class="sr-only">Tiempo por turno</h2>
+    <div id="paces" class="paces"></div>
+    <button class="cancel" id="cancelPace" type="button">Cancelar</button>
   </div>
 </div>
 
@@ -1633,6 +1645,7 @@ function startMode(mode, level) {
   state.mode = mode; state.level = level || (mode === "profundas" ? store.get("sm.lvl", "todo") : "todo");
   if (!levels().some(l => l[0] === state.level)) state.level = "todo";
   state.score = players().map(() => 0); state.lastPoint = null; state.spun = new Set(); state.plays = {}; state.team = 0;
+  state.secs = PACES[mode] ? store.get(`sm.pace|${mode}`, PACES[mode][1]) : 0;
   state.inputs = {}; state.gid = Math.random().toString(36).slice(2, 8);
   const saved = mode === "favoritas" || net.code ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
   state.round = saved.round; state.idx = saved.idx;
@@ -1771,7 +1784,7 @@ function push() {
   if (!net.code || net.applying) return;
   const v = Math.random().toString(36).slice(2, 9), g = { by: net.me, v, mode: state.mode || null };
   if (state.mode) {
-    Object.assign(g, { level: state.level, round: state.round, idx: state.idx, score: state.score, team: state.team || 0, plays: state.plays, spun: [...(state.spun || [])], gid: state.gid || "" });
+    Object.assign(g, { level: state.level, round: state.round, idx: state.idx, score: state.score, team: state.team || 0, plays: state.plays, spun: [...(state.spun || [])], gid: state.gid || "", secs: state.secs || 0 });
     const sig = `${seedFrom(state.deck.map(cardId).join("\n"))}:${state.deck.length}`;
     if (sig !== net.sig) { g.deck = state.deck; net.sig = sig; }
   }
@@ -1787,7 +1800,7 @@ function applyRemote(g) {
     net.sig = `${seedFrom(deck.map(cardId).join("\n"))}:${deck.length}`;
     const was = $("game").hidden || state.mode !== g.mode ? null : state.idx;
     Object.assign(state, { mode: g.mode, level: g.level || "todo", round: g.round || 0, idx: g.idx || 0, deck,
-      score: toArr(g.score).map(n => n || 0), team: g.team || 0, plays: g.plays || {}, spun: new Set(toArr(g.spun)), gid: g.gid || "", inputs: {} });
+      score: toArr(g.score).map(n => n || 0), team: g.team || 0, plays: g.plays || {}, spun: new Set(toArr(g.spun)), gid: g.gid || "", inputs: {}, secs: g.secs || 0 });
     if ($("game").hidden) {
       closeOpenDialogs();
       $("home").hidden = true; $("game").hidden = false;
@@ -1848,7 +1861,7 @@ function renderNet() {
   $("netPeople").innerHTML = roomPeople().map(p => `<li><span>${esc(p.name || "Alguien")}${p.id === net.me ? " <small>(tú)</small>" : ""}</span></li>`).join("");
 }
 function closeOpenDialogs() {
-  for (const id of ["netSheet", "setSheet", "infoSheet", "sheet", "swipePop"]) if (!$(id).hidden) closeDialog(id);
+  for (const id of ["netSheet", "setSheet", "infoSheet", "sheet", "paceSheet", "swipePop"]) if (!$(id).hidden) closeDialog(id);
 }
 
 // ---------- Juegos con puntos ----------
@@ -1897,13 +1910,14 @@ const posOf = v => Math.log10(v) / MAXEXP;
 let slide = { key: null, v: 300000 };
 const offBy = (g, a) => { const r = g / a; if (r > .95 && r < 1.05) return "¡Clavado!"; const x = r > 1 ? r : 1 / r; return `${x < 10 ? String(+x.toFixed(1)).replace(".", ",") : grp(Math.round(x))} veces ${r > 1 ? "más" : "menos"}`; };
 
-// Timer choices per game; the last one chosen is remembered on this phone.
-const SECS = { emociones: [30, 60, 90], dibujo: [60, 90, 120], cancion: [20, 30, 45] };
-const defSecs = c => store.get(`sm.secs|${c.mode}`, SECS[c.mode][1]);
+// Games with a timer: the seconds per turn are chosen once, when the game opens,
+// and can be changed from the title. The last one chosen is remembered on this phone.
+const PACES = { emociones: [90, 60, 30], dibujo: [120, 90, 60], cancion: [45, 30, 20], stop: [120, 90, 60] };
+const SECS = PACES;
+const paceSecs = mode => state.secs || store.get(`sm.pace|${mode}`, PACES[mode][1]);
 function countdownHTML(c) {
-  const p = play(c), secs = p.secs || defSecs(c);
-  return `<div class="secs" role="group" aria-label="Tiempo">${p.end ? `<span class="countdown" aria-live="off">${secs} s</span>` : SECS[c.mode].map(s =>
-    `<button type="button" data-act="secs" data-v="${s}" aria-pressed="${s === secs}">${s} s</button>`).join("") + `<button class="mini" type="button" data-act="go">Empezar</button>`}</div>`;
+  const p = play(c), secs = p.secs || paceSecs(c.mode);
+  return `<div class="secs">${p.end ? `<span class="countdown" aria-live="off">${secs} s</span>` : `<button class="mini" type="button" data-act="go">Empezar · ${secs} s</button>`}</div>`;
 }
 function runCountdown(card, c) {
   const p = play(c), el = card.querySelector(".countdown"); if (!el || !p.end) return;
@@ -2227,10 +2241,9 @@ Object.assign(GAMES, {
   },
   stop: {
     html: c => {
-      const p = play(c), names = players(), k = inKey(c), me = meIdx(), secs = p.secs || store.get("sm.stopsecs", 90);
+      const p = play(c), names = players(), k = inKey(c), me = meIdx(), secs = p.secs || paceSecs("stop");
       const letter = `<div class="letter"><small>Letra</small><b>${esc(c.text)}</b></div>`;
-      if (!p.end) return `${letter}<p class="how">${STOP_CATS.join(", ")}.</p><div class="secs" role="group" aria-label="Tiempo">${[60, 90, 120].map(s =>
-        `<button type="button" data-act="secs" data-v="${s}" aria-pressed="${s === secs}">${s} s</button>`).join("")}<button class="mini" type="button" data-act="go">Empezar</button></div>`;
+      if (!p.end) return `${letter}<p class="how">${STOP_CATS.join(", ")}.</p><div class="secs"><button class="mini" type="button" data-act="go">Empezar · ${secs} s</button></div>`;
       if (!stopEnded(c)) {
         if (!net.code) return `${letter}<span class="countdown">${secs} s</span><ol class="cats">${STOP_CATS.map(x => `<li>${x}</li>`).join("")}</ol>
           <p class="how">Escribid en papel. Quien acabe, que diga «¡Stop!».</p><button class="act" type="button" data-act="stop">¡Stop!</button>`;
@@ -2264,8 +2277,7 @@ Object.assign(GAMES, {
       if (p.end && !stopEnded(c)) setTimeout(() => { if (state.deck[state.idx] === c && !$("game").hidden) render(null); }, p.end - Date.now() + 50);
     },
     act(c, a, b) {
-      if (a === "secs") { store.set("sm.stopsecs", +b.dataset.v); setPlay(c, { secs: +b.dataset.v }); }
-      if (a === "go") { const secs = play(c).secs || store.get("sm.stopsecs", 90); setPlay(c, { secs, end: Date.now() + secs * 1000 }); }
+      if (a === "go") { const secs = paceSecs("stop"); setPlay(c, { secs, end: Date.now() + secs * 1000 }); }
       if (a === "stop") { $("live").textContent = "¡Stop!"; setPlay(c, { end: Date.now() }); }
       if (a === "bad") { const bad = { ...(play(c).bad || {}) }; if (bad[b.dataset.v]) delete bad[b.dataset.v]; else bad[b.dataset.v] = true; setPlay(c, { bad }); }
       if (a === "pts") { const i = +b.dataset.p; state.score[i] = (state.score[i] || 0) + +b.dataset.v; render(null); }
@@ -2413,8 +2425,7 @@ function bindGame(card, c) {
       if (busy) return;
       const a = b.dataset.act;
       if (a === "peek") { peeking = playKey(c); render(null); return; }
-      if (SECS[c.mode] && a === "secs") { store.set(`sm.secs|${c.mode}`, +b.dataset.v); setPlay(c, { secs: +b.dataset.v }); return; }
-      if (SECS[c.mode] && a === "go") { const secs = play(c).secs || defSecs(c); setPlay(c, { secs, end: Date.now() + secs * 1000 }); return; }
+      if (SECS[c.mode] && c.mode !== "stop" && a === "go") { const secs = paceSecs(c.mode); setPlay(c, { secs, end: Date.now() + secs * 1000 }); return; }
       if (a === "hide") { peeking = null; render(null); return; }
       if (a === "rev" && GAMES[c.mode].score && c.mode !== "cifras") { setPlay(c, { rev: true }); return; }
       game.act && game.act(c, a, b);
@@ -2485,8 +2496,8 @@ function render(anim) {
   document.body.style.backgroundColor = m.c;
   $("game").style.cssText = vars(colorMode);
   $("gtitle").textContent = MODES[state.mode].short || MODES[state.mode].name;
-  $("lvlBtn").hidden = state.mode !== "profundas";
-  $("lvlBtn").textContent = (LEVELS.find(l => l[0] === state.level) || LEVELS[0])[1];
+  $("lvlBtn").hidden = state.mode !== "profundas" && !PACES[state.mode];
+  $("lvlBtn").textContent = PACES[state.mode] ? `${paceSecs(state.mode)} s` : (LEVELS.find(l => l[0] === state.level) || LEVELS[0])[1];
   $("count").textContent = `${Math.min(state.idx + 1, total)}/${total}`;
   $("count").setAttribute("aria-label", `Carta ${Math.min(state.idx + 1, total)} de ${total}`);
   $("game").classList.toggle("board", !!MODES[state.mode].board);
@@ -2647,8 +2658,17 @@ function bindDrag(el) {
   el.addEventListener("pointercancel", end);
 }
 
+// Timed games ask for the pace first; the rest start straight away.
+let paceMode = null;
+function openPace(mode, inGame) {
+  paceMode = mode;
+  const cur = inGame ? paceSecs(mode) : store.get(`sm.pace|${mode}`, PACES[mode][1]);
+  $("paces").innerHTML = [...PACES[mode]].reverse().map(secs => `<button class="lvl${secs === cur ? " rec" : ""}" type="button" data-secs="${secs}" aria-pressed="${secs === cur}" aria-label="${secs} segundos"><b>${secs} s</b></button>`).join("");
+  openDialog("paceSheet", "cancelPace");
+  $("paces").querySelector('[aria-pressed="true"]').focus();
+}
 function openMode(mode) {
-  startMode(mode);
+  if (PACES[mode]) openPace(mode, false); else startMode(mode);
 }
 // Dialogs: the page behind goes inert so focus and screen readers stay inside, and focus
 // returns to whatever opened the dialog.
@@ -2693,7 +2713,18 @@ $("lvls").addEventListener("click", e => {
 $("cancelSheet").onclick = () => closeDialog("sheet");
 $("sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeDialog("sheet"); });
 $("back").onclick = goHome;
-$("lvlBtn").onclick = () => { openDialog("sheet", "cancelSheet"); $("lvls").querySelector('[aria-pressed="true"]').focus(); };
+$("lvlBtn").onclick = () => {
+  if (PACES[state.mode]) { openPace(state.mode, true); return; }
+  openDialog("sheet", "cancelSheet"); $("lvls").querySelector('[aria-pressed="true"]').focus();
+};
+$("paces").addEventListener("click", e => {
+  const b = e.target.closest("[data-secs]"); if (!b) return;
+  const secs = +b.dataset.secs; store.set(`sm.pace|${paceMode}`, secs);
+  closeDialog("paceSheet");
+  if ($("game").hidden) startMode(paceMode); else { state.secs = secs; render(null); }
+});
+$("cancelPace").onclick = () => closeDialog("paceSheet");
+$("paceSheet").addEventListener("click", e => { if (e.target.id === "paceSheet") closeDialog("paceSheet"); });
 $("prev").onclick = () => throwCard(-1);
 $("next").onclick = () => throwCard(1);
 $("skip").onclick = skipCard;
@@ -2702,6 +2733,7 @@ document.addEventListener("keydown", e => {
   if (!$("swipePop").hidden) { if (e.key === "Escape") $("swipeOk").click(); return; }
   if (!$("infoSheet").hidden) { if (e.key === "Escape") closeDialog("infoSheet"); return; }
   if (!$("sheet").hidden) { if (e.key === "Escape") closeDialog("sheet"); return; }
+  if (!$("paceSheet").hidden) { if (e.key === "Escape") closeDialog("paceSheet"); return; }
   if (!$("setSheet").hidden) { if (e.key === "Escape") closeSettings(); return; }
   if (!$("netSheet").hidden) { if (e.key === "Escape") closeDialog("netSheet"); return; }
   if ($("game").hidden || e.target.closest("input, textarea") || (e.key === " " && e.target.closest("button"))) return;
