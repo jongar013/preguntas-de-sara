@@ -346,9 +346,9 @@ button.cell:active { background: var(--c); }
 .clues b { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; }
 .clues .mini { margin-left: auto; }
 .words { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
-.word { min-height: 48px; padding: 8px; border: 2.5px solid var(--ink); border-radius: 14px; background: var(--soft); color: var(--ink); font-weight: 900; font-size: 1.05rem; display: grid; place-items: center; text-align: center; }
-.word.got { background: #22B573; }
-button.word:disabled { cursor: default; }
+.pword { min-height: 48px; padding: 8px; border: 2.5px solid var(--ink); border-radius: 14px; background: var(--soft); color: var(--ink); font-weight: 900; font-size: 1.05rem; display: grid; place-items: center; text-align: center; }
+.pword.got { background: #22B573; }
+button.pword:disabled { cursor: default; }
 .letter { display: grid; justify-items: center; }
 .letter small { font-weight: 800; color: var(--muted-ink); }
 .letter b { font-family: var(--font-display); font-weight: 400; font-size: 4.2rem; line-height: 1; }
@@ -371,6 +371,16 @@ button.word:disabled { cursor: default; }
 .tally > div { display: flex; align-items: center; justify-content: space-between; gap: 8px; background: var(--soft); border-radius: 14px; padding: 6px 6px 6px 12px; font-weight: 900; }
 .tally b { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; margin-left: 6px; }
 .tally button { min-width: 48px; min-height: 44px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); font-weight: 900; margin-left: 4px; }
+
+/* Tanda 3: Pictionary, Palabras al revés, Canta una canción */
+canvas.board { display: block; align-self: center; width: min(100%, 44vh); aspect-ratio: 1; flex: none; background: #fff; border: 3px solid var(--ink); border-radius: 18px; touch-action: none; cursor: crosshair; }
+.inks { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
+.ink { width: 36px; height: 36px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--ink); }
+.ink[aria-pressed="true"] { box-shadow: 0 0 0 4px var(--ink); }
+.steps2 { display: grid; gap: 10px; justify-items: center; background: var(--soft); border-radius: 18px; padding: 12px; }
+.act.rec { width: 100%; }
+.act.rec.on { background: #F0384F; color: #fff; animation: pulse 1s ease-in-out infinite; }
+@keyframes pulse { 50% { transform: scale(1.03); } }
 
 @media (prefers-reduced-motion: reduce) {
   .fav.pop-in svg, .pt.bump b, .toast, .q.reveal { animation: none; }
@@ -1302,6 +1312,15 @@ const DATA = {
     "Calabaza", "Galleta", "Caramelo", "Palomitas"
   ],
   stop: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M", "N", "O", "P", "R", "S", "T", "V"],
+  cancion: [
+    "Amor", "Corazón", "Noche", "Fuego", "Bailar", "Luna", "Sol", "Mar", "Cielo", "Beso", "Loco", "Fiesta",
+    "Verano", "Lluvia", "Calle", "Ciudad", "Tiempo", "Vida", "Sueño", "Dinero", "Coche", "Playa", "Música", "Ojos",
+    "Boca", "Manos", "Mañana", "Siempre", "Nunca", "Hoy", "Mentira", "Verdad", "Libre", "Volver", "Mirar", "Cantar",
+    "Llorar", "Mamá", "Bebé", "Reina", "Estrella", "Agua", "Flor", "Rosa", "Azul", "Negro", "Rojo", "Blanco",
+    "Oro", "Tequila", "Teléfono", "Radio", "Discoteca", "Viento", "Invierno", "Primavera", "Tren", "Avión", "Camino", "Casa",
+    "Puerta", "Ventana", "Gato", "Perro", "Caballo", "Madrid", "Barcelona", "Guapa", "Morena", "Chica", "Chico", "Feliz",
+    "Triste", "Solo", "Juntos", "Perdón", "Adiós", "Hola", "Domingo", "Sábado"
+  ],
   emociones: [
     "Alegría", "Vergüenza", "Nostalgia", "Celos", "Orgullo", "Alivio", "Ternura", "Rabia", "Miedo", "Aburrimiento",
     "Envidia", "Culpa", "Sorpresa", "Ilusión", "Decepción", "Asco", "Frustración", "Gratitud", "Nervios", "Euforia",
@@ -1335,6 +1354,9 @@ const ICONS = {
   naval: '<path d="M3 15h18l-3 5H6zM12 15V4l6 8h-6M5 15l2-4h5"/>',
   palabras: '<path d="M4 6h16M4 12h10M4 18h13"/><circle cx="19" cy="16" r="2.5"/>',
   stop: '<path d="M8 3h8l5 5v8l-5 5H8l-5-5V8z"/><path d="M9 12h6"/>',
+  dibujo: '<path d="M4 20l4-1 11-11-3-3L5 16z"/><path d="M14 7l3 3"/>',
+  reves: '<path d="M4 9h12a4 4 0 010 8H9"/><path d="M8 5L4 9l4 4"/>',
+  cancion: '<path d="M9 18V5l11-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="17" cy="16" r="3"/>',
   red: '<path d="M2 9a14.5 14.5 0 0120 0M5 12.5a10 10 0 0114 0M8.5 16a5 5 0 017 0"/><circle cx="12" cy="19.5" r="1"/>',
   mezcla: '<path d="M3 6h4l10 12h4M3 18h4l10-12h4M18 3l3 3-3 3M18 15l3 3-3 3"/>',
   favoritas: '<path d="M12 20.5S3 15 3 8.8A4.6 4.6 0 0112 6.6a4.6 4.6 0 019 2.2C21 15 12 20.5 12 20.5z"/>',
@@ -1369,6 +1391,9 @@ const MODES = {
   palabras:   { name: "8 palabras", tag: "8 palabras", c: "#06D6A0", fg: "#1E1633", game: true },
   stop:       { name: "Stop", tag: "Stop", c: "#EF476F", fg: "#FFFFFF", game: true, nodrag: true },
   naval:      { name: "Batalla naval", tag: "Batalla naval", c: "#4361EE", fg: "#FFFFFF", game: true, board: true, sub: "2 personas" },
+  dibujo:     { name: "Pictionary", tag: "Dibuja", c: "#FFB627", fg: "#1E1633", game: true, nodrag: true },
+  reves:      { name: "Palabras al revés", short: "Al revés", tag: "Al revés", c: "#7B2CBF", fg: "#FFFFFF", game: true },
+  cancion:    { name: "Furor", tag: "Furor", c: "#FF6B9A", fg: "#1E1633", game: true },
   mezcla:     { name: "Mezcla de todo", tag: "Mezcla", c: "#FFFFFF", fg: "#1E1633", wide: true },
   favoritas:  { name: "Vuestras favoritas", tag: "Favorita", c: "#F0384F", fg: "#1E1633", wide: true }
 };
@@ -1399,6 +1424,9 @@ const RULES = {
   palabras: "Quien explica ve 8 palabras en secreto. Para cada una dice una sola palabra relacionada o que se la recuerde, y los demás intentan adivinarla. Tenéis 20 pistas como máximo para las 8. Cada palabra acertada es un punto para quien explica.",
   stop: "Sale una letra. Cuando empiece el tiempo, escribid un nombre, un apellido, una ciudad, una cosa, un color, una comida y un animal que empiecen por esa letra. Quien acabe puede pulsar «¡Stop!». Respuesta única: 10 puntos. Repetida: 5. A distancia cada persona escribe en su móvil y la app suma. Con un solo móvil, escribid en papel y apuntad aquí los puntos.",
   naval: "Para 2 personas. Cada una coloca sus 4 barcos en secreto. Por turnos, disparad a una casilla del tablero de la otra persona: agua, tocado o hundido. Gana quien hunda antes toda la flota.",
+  dibujo: "Quien dibuja mira la palabra en secreto y la dibuja sin letras ni números. Los demás intentan adivinarla antes de que acabe el tiempo. A distancia, el dibujo sale en directo en todos los móviles. Quien la adivine se lleva un punto.",
+  reves: "Quien tiene el turno mira su palabra en secreto y la graba en voz alta. La app la pone al revés. Los demás escuchan ese sonido raro, lo imitan grabándose, y la app da la vuelta a su imitación: si lo han hecho bien, se oirá la palabra. Quien la adivine se lleva un punto.",
+  cancion: "Sale una palabra y quien tiene el turno tiene que cantar un trozo de una canción que la diga antes de que acabe el tiempo. Si se queda en blanco, la siguiente persona puede robar el punto.",
   mezcla: "Cartas de todos los juegos. Cada carta dice a qué juego pertenece y el fondo toma su color.",
   favoritas: "Las cartas que habéis marcado con el corazón. Para quitar una, tocad otra vez el corazón."
 };
@@ -1452,6 +1480,7 @@ function allCardsFor(mode, level, data) {
   if (mode === "trivial") return data.trivial.map(([cat, text, ok, ...bad]) => ({ mode, cat, text, ok, bad }));
   if (mode === "palabras") { const w = shuffle(data.palabras, rng(seedFrom(`${state.seed}|palabras|${state.round}`)));
     return Array.from({ length: Math.floor(w.length / 8) }, (_, i) => ({ mode, text: w.slice(i * 8, i * 8 + 8).join(" · ") })); }
+  if (mode === "dibujo" || mode === "reves") return data.palabras.map(text => ({ mode, text }));
   if (mode === "codigo" || mode === "naval") return [{ mode, text: "Partida" }];
   if (mode === "cifras") return data.cifras.map(([text, ans, note]) => ({ mode, text, ans, note }));
   if (mode === "mezcla") return playable().filter(m => !MODES[m].game).flatMap(m => cardsFor(m, "todo", data));
@@ -1460,7 +1489,7 @@ function allCardsFor(mode, level, data) {
 }
 // Home order: neighbours on the shelf never share a similar colour.
 const HOME_ORDER = ["profundas", "princess", "adivina", "prefieres", "probable", "redflag", "yonunca", "verdad", "hot", "completa", "anecdotas", "loharia", "top3", "random", "dosverdades",
-  "frecuencia", "onda", "trivial", "cifras", "emociones", "codigo", "palabras", "stop", "naval"];
+  "frecuencia", "onda", "trivial", "cifras", "emociones", "codigo", "palabras", "stop", "naval", "dibujo", "reves", "cancion"];
 // Decks with their own cards.
 const playable = () => Object.keys(MODES).filter(m => !META.includes(m));
 function buildDeck(mode, level, round, data = DATA) {
@@ -1602,8 +1631,8 @@ const VERDICTS = { princess: "¿Princess treatment, bare minimum o red flag?", r
 const upper = s => s.charAt(0).toUpperCase() + s.slice(1);
 const esc = s => String(s).replace(/[&<>"]/g, ch => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" })[ch]);
 // Modes played in turns (the card says whose turn it is when you add names) and modes with the optional timer.
-const TURNS = ["profundas", "adivina", "verdad", "completa", "anecdotas", "dosverdades", "random", "frecuencia", "onda", "trivial", "emociones", "palabras"];
-const TURN_LABEL = { onda: "Da la pista", trivial: "Contesta", emociones: "Explica", palabras: "Explica" };
+const TURNS = ["profundas", "adivina", "verdad", "completa", "anecdotas", "dosverdades", "random", "frecuencia", "onda", "trivial", "emociones", "palabras", "dibujo", "reves", "cancion"];
+const TURN_LABEL = { onda: "Da la pista", trivial: "Contesta", emociones: "Explica", palabras: "Explica", dibujo: "Dibuja", cancion: "Canta" };
 // Games where everyone plays at once or the game itself says whose turn it is.
 const NOTURN = ["cifras", "stop", "codigo", "naval"];
 const TIMED = ["completa", "top3", "dosverdades"];
@@ -1685,7 +1714,11 @@ function onRoom() {
   const g = net.room.g, inSig = JSON.stringify(net.room.in || null);
   if (inSig !== net.inSig) {
     net.inSig = inSig;
-    if (!$("game").hidden && state.mode && (!g || g.v === net.seen) && !net.fresh) { net.applying = true; try { render(null); } finally { net.applying = false; } }
+    const c = state.mode && state.deck[state.idx], game = c && GAMES[c.mode], card = $("table").querySelector(".card");
+    if (!$("game").hidden && c && (!g || g.v === net.seen) && !net.fresh) {
+      if (game && game.onIn && card) game.onIn(card, c);
+      else { net.applying = true; try { render(null); } finally { net.applying = false; } }
+    }
   }
   if (!g || (g.v === net.seen && !net.fresh)) return;
   net.seen = g.v;
@@ -1823,10 +1856,12 @@ const posOf = v => Math.log10(v) / MAXEXP;
 let slide = { key: null, v: 300000 };
 const offBy = (g, a) => { const r = g / a; if (r > .95 && r < 1.05) return "¡Clavado!"; const x = r > 1 ? r : 1 / r; return `${x < 10 ? String(+x.toFixed(1)).replace(".", ",") : grp(Math.round(x))} veces ${r > 1 ? "más" : "menos"}`; };
 
-const SECS = [30, 60, 90];
+// Timer choices per game; the last one chosen is remembered on this phone.
+const SECS = { emociones: [30, 60, 90], dibujo: [60, 90, 120], cancion: [20, 30, 45] };
+const defSecs = c => store.get(`sm.secs|${c.mode}`, SECS[c.mode][1]);
 function countdownHTML(c) {
-  const p = play(c), secs = p.secs || store.get("sm.secs", 60);
-  return `<div class="secs" role="group" aria-label="Tiempo">${p.end ? `<span class="countdown" aria-live="off">${secs} s</span>` : SECS.map(s =>
+  const p = play(c), secs = p.secs || defSecs(c);
+  return `<div class="secs" role="group" aria-label="Tiempo">${p.end ? `<span class="countdown" aria-live="off">${secs} s</span>` : SECS[c.mode].map(s =>
     `<button type="button" data-act="secs" data-v="${s}" aria-pressed="${s === secs}">${s} s</button>`).join("") + `<button class="mini" type="button" data-act="go">Empezar</button>`}</div>`;
 }
 function runCountdown(card, c) {
@@ -1940,11 +1975,7 @@ const GAMES = {
       return `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "tu emoción")}
         <p class="how">${rev ? "Tocad el nombre de quien la haya adivinado." : "Cuenta una situación, real o inventada, en la que sentirías esa emoción, sin decir la palabra."}</p>
         ${countdownHTML(c)}
-        ${rev ? "" : `<button class="act" type="button" data-act="rev">Revelar la emoción</button>`}`; },
-    act(c, a, b) {
-      if (a === "secs") { store.set("sm.secs", +b.dataset.v); setPlay(c, { secs: +b.dataset.v }); }
-      if (a === "go") { const secs = play(c).secs || store.get("sm.secs", 60); setPlay(c, { secs, end: Date.now() + secs * 1000 }); }
-    }
+        ${rev ? "" : `<button class="act" type="button" data-act="rev">Revelar la emoción</button>`}`; }
   }
 };
 // What each person enters at the same time as the others (a secret code, a fleet, the Stop answers)
@@ -1955,13 +1986,13 @@ function getIn(c, i) {
   const k = inKey(c), box = net.code ? ((net.room && net.room.in) || {})[k] : state.inputs[k];
   return (box || {})[`p${i}`];
 }
-function setIn(c, i, v) {
+function setIn(c, i, v, quiet) {
   const k = inKey(c);
   if (net.code) {
     net.room = setAt(net.room, `/in/${k}/p${i}`, v);
     api(net.code, `/in/${k}/p${i}`, "PUT", v).catch(() => netMsg("No se ha podido enviar. Revisa la conexión."));
   } else (state.inputs[k] || (state.inputs[k] = {}))[`p${i}`] = v;
-  render(null);
+  if (!quiet) render(null);
 }
 // A new game of a board (code, ships) starts on the same card with a clean slate.
 function newMatch(c) { delete state.plays[playKey(c)]; state.round++; render("deal"); }
@@ -2134,8 +2165,8 @@ Object.assign(GAMES, {
     html: c => {
       const p = play(c), words = c.text.split(" · "), got = new Set(toArr(p.got)), clues = p.clues || 0, show = canSee(c);
       const over = got.size === words.length || clues >= 20;
-      const grid = `<div class="words">${words.map((w, i) => got.has(i) ? `<button type="button" class="word got" data-act="got" data-v="${i}"${show && !over ? "" : " disabled"}>${esc(w)} ✓</button>`
-        : show ? `<button type="button" class="word" data-act="got" data-v="${i}"${over ? " disabled" : ""}>${esc(w)}</button>` : `<span class="word">?</span>`).join("")}</div>`;
+      const grid = `<div class="words">${words.map((w, i) => got.has(i) ? `<button type="button" class="pword got" data-act="got" data-v="${i}"${show && !over ? "" : " disabled"}>${esc(w)} ✓</button>`
+        : show ? `<button type="button" class="pword" data-act="got" data-v="${i}"${over ? " disabled" : ""}>${esc(w)}</button>` : `<span class="pword">?</span>`).join("")}</div>`;
       const peekBtn = net.code || p.rev ? "" : `<button class="mini" type="button" data-act="${show ? "hide" : "peek"}">${show ? "Ocultar las palabras" : "Ver las palabras"}</button>`;
       return `<div class="clues"><span>Pistas</span><b>${clues}/20</b>${show && !over ? `<button class="mini" type="button" data-act="clue">+1 pista</button>${clues ? `<button class="undo" type="button" data-act="unclue">Quitar una</button>` : ""}` : ""}</div>
         ${grid}${peekBtn}
@@ -2201,6 +2232,137 @@ Object.assign(GAMES, {
   }
 });
 
+// ---------- Pictionary ----------
+// Each stroke is "color|x,y,x,y…" on a 1000×1000 board and goes to in/<key>/ps<n> when the finger
+// lifts, so the other phones see the drawing grow. "pclr" hides every stroke before it.
+const INK = ["#1E1633", "#F0384F", "#2C67E6", "#22B573"];
+let inkColor = INK[0];
+function inBox(c) { const k = inKey(c); return (net.code ? ((net.room && net.room.in) || {})[k] : state.inputs[k]) || {}; }
+function strokesOf(c) {
+  const box = inBox(c), from = +box.pclr || 0;
+  return Object.keys(box).filter(k => /^ps\d+$/.test(k) && box[k]).map(k => [+k.slice(2), box[k]]).filter(([n]) => n >= from).sort((a, b) => a[0] - b[0]);
+}
+const nextStroke = c => Object.keys(inBox(c)).filter(k => /^ps\d+$/.test(k)).reduce((m, k) => Math.max(m, +k.slice(2) + 1), +inBox(c).pclr || 0);
+function paint(canvas, c) {
+  const ctx = canvas.getContext("2d");
+  ctx.clearRect(0, 0, 1000, 1000);
+  ctx.lineCap = ctx.lineJoin = "round"; ctx.lineWidth = 9;
+  for (const [, s] of strokesOf(c)) {
+    const [col, pts] = String(s).split("|"), v = pts.split(",").map(Number);
+    ctx.strokeStyle = col; ctx.beginPath(); ctx.moveTo(v[0], v[1]);
+    if (v.length === 2) ctx.lineTo(v[0] + .1, v[1]);
+    for (let i = 2; i < v.length; i += 2) ctx.lineTo(v[i], v[i + 1]);
+    ctx.stroke();
+  }
+}
+const drawer = c => !net.code || myTurn();
+
+// ---------- Palabras al revés ----------
+// Your voice is recorded, then played backwards. The other person imitates that backwards sound,
+// and their imitation played backwards should sound like the word again.
+let rec = null, recErr = "", actx = null;
+async function startRec(c, slot) {
+  recErr = "";
+  try {
+    const stream = await navigator.mediaDevices.getUserMedia({ audio: true });
+    const mr = new MediaRecorder(stream), chunks = [];
+    mr.ondataavailable = e => { if (e.data.size) chunks.push(e.data); };
+    mr.onstop = () => {
+      stream.getTracks().forEach(t => t.stop());
+      const fr = new FileReader();
+      fr.onload = () => { rec = null; setIn(c, slot, fr.result); };
+      fr.readAsDataURL(new Blob(chunks, { type: mr.mimeType || "audio/webm" }));
+    };
+    rec = { slot, mr, t: setTimeout(() => { if (mr.state === "recording") mr.stop(); }, 5000) };
+    mr.start(); render(null);
+  } catch (e) { rec = null; recErr = "No se ha podido usar el micrófono. Revisa que la app tenga permiso."; render(null); }
+}
+function stopRec() { if (rec && rec.mr.state === "recording") { clearTimeout(rec.t); rec.mr.stop(); } }
+async function playAudio(url, backwards) {
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    await actx.resume();
+    const buf = await actx.decodeAudioData(await (await fetch(url)).arrayBuffer());
+    if (backwards) for (let ch = 0; ch < buf.numberOfChannels; ch++) buf.getChannelData(ch).reverse();
+    const src = actx.createBufferSource(); src.buffer = buf; src.connect(actx.destination); src.start();
+  } catch (e) { $("live").textContent = "No se ha podido reproducir la grabación."; }
+}
+function recBtn(slot, label) {
+  const on = rec && rec.slot === slot;
+  return `<button class="act rec${on ? " on" : ""}" type="button" data-act="${on ? "stoprec" : "rec"}" data-v="${slot}">${on ? "● Parar" : label}</button>`;
+}
+const playBtn = (slot, label, back = true) => `<button class="mini" type="button" data-act="play" data-v="${slot}" data-back="${back ? 1 : 0}">▶ ${label}</button>`;
+
+Object.assign(GAMES, {
+  dibujo: {
+    score: true,
+    html: c => {
+      const rev = play(c).rev, can = drawer(c) && !rev;
+      return `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "la palabra")}
+        <canvas class="board" width="1000" height="1000" aria-label="Dibujo"></canvas>
+        ${can ? `<div class="inks">${INK.map(col => `<button type="button" class="ink" data-act="ink" data-v="${col}" style="background:${col}" aria-label="Color" aria-pressed="${col === inkColor}"></button>`).join("")}
+          <button class="undo" type="button" data-act="undoline">Deshacer</button><button class="undo" type="button" data-act="clear">Borrar todo</button></div>` : ""}
+        ${countdownHTML(c)}
+        ${rev ? `<p class="how">Era «${esc(c.text)}». Tocad el nombre de quien lo haya adivinado.</p>` : `<button class="act" type="button" data-act="rev">¡Adivinado! Ver la palabra</button>`}`;
+    },
+    bind(card, c) {
+      const cv = card.querySelector(".board"); paint(cv, c);
+      if (!drawer(c) || play(c).rev) return;
+      let pts = null;
+      const at = e => { const r = cv.getBoundingClientRect(); return [Math.round((e.clientX - r.left) / r.width * 1000), Math.round((e.clientY - r.top) / r.height * 1000)]; };
+      const ctx = cv.getContext("2d");
+      cv.addEventListener("pointerdown", e => {
+        e.stopPropagation(); cv.setPointerCapture(e.pointerId); pts = at(e);
+        ctx.strokeStyle = inkColor; ctx.lineWidth = 9; ctx.lineCap = ctx.lineJoin = "round"; ctx.beginPath(); ctx.moveTo(pts[0], pts[1]); ctx.lineTo(pts[0] + .1, pts[1]); ctx.stroke();
+      });
+      cv.addEventListener("pointermove", e => {
+        if (!pts) return;
+        const [x, y] = at(e), lx = pts[pts.length - 2], ly = pts[pts.length - 1];
+        if (Math.abs(x - lx) + Math.abs(y - ly) < 6) return;
+        ctx.beginPath(); ctx.moveTo(lx, ly); ctx.lineTo(x, y); ctx.stroke(); pts.push(x, y);
+      });
+      const end = () => { if (!pts) return; const s = `${inkColor}|${pts.join(",")}`; pts = null; setIn(c, `s${nextStroke(c)}`, s, true); };
+      cv.addEventListener("pointerup", end); cv.addEventListener("pointercancel", end);
+    },
+    // New strokes from the other phone only repaint the board, so nothing else on the card jumps.
+    onIn(card, c) { const cv = card.querySelector(".board"); if (cv) paint(cv, c); },
+    act(c, a, b) {
+      if (a === "ink") { inkColor = b.dataset.v; b.parentNode.querySelectorAll(".ink").forEach(x => x.setAttribute("aria-pressed", x === b)); }
+      if (a === "undoline") { const s = strokesOf(c); if (s.length) setIn(c, `s${s[s.length - 1][0]}`, null); }
+      if (a === "clear") setIn(c, "clr", nextStroke(c));
+    }
+  },
+  reves: {
+    score: true,
+    html: c => {
+      const p = play(c), a = getIn(c, "a"), b = getIn(c, "b"), names = players(), t = turnIdx(), mine = !net.code || myTurn();
+      const err = recErr ? `<p class="how">${recErr}</p>` : "";
+      const step1 = mine
+        ? `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "tu palabra")}
+          ${canSee(c) && !p.rev ? `<p class="how">Graba la palabra en voz alta, normal.</p>${recBtn("a", a ? "Grabar otra vez" : "🎤 Grabar")}${a ? playBtn("a", "Escuchar al revés") : ""}` : ""}`
+        : `<p class="how">${a ? "" : `Esperando a que <b>${names[t]}</b> grabe su palabra.`}</p>`;
+      const step2 = !a ? "" : net.code && mine ? (b ? `<div class="steps2">${playBtn("b", "Escuchar su imitación al revés")}</div>` : "") : `<div class="steps2"><p class="padlbl">${net.code && !mine ? "Tu turno de imitar" : `Los demás: imitad el sonido`}</p>
+        ${playBtn("a", "1. Escuchar al revés")}
+        ${!net.code || !mine ? recBtn("b", b ? "2. Grabar otra vez" : "🎤 2. Grabar la imitación") : ""}
+        ${b ? playBtn("b", "3. Escuchar la imitación al revés") : ""}</div>`;
+      const end = p.rev ? `<p class="how">Era «${esc(c.text)}». Tocad el nombre de quien la haya adivinado.</p>${a ? playBtn("a", "Escuchar la original", false) : ""}`
+        : a ? `<button class="act" type="button" data-act="rev">Ver la palabra</button>` : "";
+      return `${step1}${step2}${err}${end}`;
+    },
+    act(c, a, b) {
+      if (a === "rec") startRec(c, b.dataset.v);
+      if (a === "stoprec") stopRec();
+      if (a === "play") { const u = getIn(c, b.dataset.v); if (u) playAudio(u, b.dataset.back === "1"); }
+    }
+  },
+  cancion: {
+    score: true,
+    html: c => `<p class="padlbl">Canta una canción que diga…</p><span class="big word">${esc(c.text)}</span>
+      <p class="how">Vale cualquier canción que tenga esa palabra. Si te quedas en blanco antes de que acabe el tiempo, punto para quien la cante.</p>
+      ${countdownHTML(c)}`
+  }
+});
+
 function bindGame(card, c) {
   const game = GAMES[c.mode]; if (!game) return;
   card.querySelectorAll("[data-act], .opts button, .steps button").forEach(b => b.addEventListener("pointerdown", e => e.stopPropagation()));
@@ -2210,6 +2372,8 @@ function bindGame(card, c) {
       if (busy) return;
       const a = b.dataset.act;
       if (a === "peek") { peeking = playKey(c); render(null); return; }
+      if (SECS[c.mode] && a === "secs") { store.set(`sm.secs|${c.mode}`, +b.dataset.v); setPlay(c, { secs: +b.dataset.v }); return; }
+      if (SECS[c.mode] && a === "go") { const secs = play(c).secs || defSecs(c); setPlay(c, { secs, end: Date.now() + secs * 1000 }); return; }
       if (a === "hide") { peeking = null; render(null); return; }
       if (a === "rev" && GAMES[c.mode].score && c.mode !== "cifras") { setPlay(c, { rev: true }); return; }
       game.act && game.act(c, a, b);
@@ -2273,7 +2437,7 @@ function bindScore(card) {
 
 function render(anim) {
   const total = state.deck.length, done = state.idx >= total, c = state.deck[state.idx];
-  if (anim) peeking = null;
+  if (anim) { peeking = null; recErr = ""; if (typeof stopRec === "function") stopRec(); }
   const colorMode = done ? (META.includes(state.mode) ? "profundas" : state.mode) : c.mode;
   const m = MODES[colorMode];
   document.body.style.backgroundColor = m.c;
