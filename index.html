@@ -1522,8 +1522,7 @@ function cardsFor(mode, level, data = DATA) {
   return h && h.size ? out.filter(c => !h.has(cardId(c))) : out;
 }
 function allCardsFor(mode, level, data) {
-  // Your own cards stay on this phone: they are left out when playing at a distance.
-  const own = data === DATA && !net.code ? custom().filter(c => c.mode === mode).map(c => ({ ...c, custom: true })) : [];
+  const own = data === DATA ? custom().filter(c => c.mode === mode).map(c => ({ ...c, custom: true })) : [];
   if (mode === "profundas") {
     const lv = level === "subiendo" || level === "todo" ? subiendo() : [level];
     return lv.flatMap(l => (data.profundas[l] || []).map(text => ({ mode, text, level: l })).concat(l === "profundo" ? own.map(c => ({ ...c, level: l })) : []));
@@ -1564,9 +1563,14 @@ const LEGACY = { profundas: { ligero: 20, profundo: 23, muy: 18 }, princess: 30,
 const legacyData = () => Object.fromEntries(Object.entries(DATA).map(([k, v]) => [k, Array.isArray(v) ? v.slice(0, LEGACY[k] || 0)
   : Object.fromEntries(Object.entries(v).map(([l, list]) => [l, list.slice(0, LEGACY[k][l] || 0)]))]));
 
+// Lists that the people in a room at a distance share (see shareLists).
+const SHARED = ["sm.favs", "sm.custom", "sm.hidden"];
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  set(k, v) {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+    if (SHARED.includes(k)) setTimeout(() => shareLists(), 0);
+  }
 };
 
 const cardId = c => [c.mode, c.text || `${c.a}|${c.b}`].join("|");
@@ -1654,7 +1658,7 @@ function renderHome() {
   const order = [...META, ...HOME_ORDER.filter(m => playable().includes(m))];
   const tile = ([k, m]) => {
     const n = cardsFor(k, "todo").length;
-    if (k === "favoritas" && (!n || net.code)) return "";
+    if (k === "favoritas" && !n) return "";
     const info = `<button class="info" type="button" data-info="${k}" aria-label="Cómo se juega a ${m.name}">i</button>`;
     if (m.wide) return `<div class="deck-wrap wide"><button class="deck wide${k === "favoritas" ? " favs" : ""}" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${m.name}</span><span class="count">${k === "favoritas" ? `${n} ${n === 1 ? "carta guardada" : "cartas guardadas"}` : `${n} cartas de todos los juegos`}</span></span></button>${info}</div>`;
     return `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${m.name}</span><span class="count">${m.sub || `${n} cartas`}</span></button>${info}</div>`;
@@ -1702,7 +1706,6 @@ function loadDeck() {
 }
 
 function startMode(mode, level) {
-  if (mode === "favoritas" && net.code) return;
   state.mode = mode; state.level = level || (mode === "profundas" ? store.get("sm.lvl", "todo") : "todo");
   if (!levels().some(l => l[0] === state.level)) state.level = "todo";
   state.score = players().map(() => 0); state.lastPoint = null; state.spun = new Set(); state.plays = {}; state.team = 0;
@@ -1825,6 +1828,37 @@ async function sweepRooms() {
     }
   } catch (e) {}
 }
+// Favourites, own cards and removed cards are shared by everyone in the room: each phone puts its
+// lists at salas/<code>/mis/<id> and copies in what the others add or take away, so every phone
+// keeps them after the game. They leave the room with their phone, or when the room is deleted.
+const LIST_KEY = { "sm.favs": "favs", "sm.custom": "custom", "sm.hidden": "hidden" };
+const itemKey = x => typeof x === "string" ? x : [x.mode, x.kind, x.text, x.a, x.b].map(v => v || "").join("|");
+function shareLists() {
+  if (!net.code || !net.room) return;
+  const mine = Object.fromEntries(SHARED.map(k => [LIST_KEY[k], store.get(k, [])]));
+  const sig = JSON.stringify(mine);
+  if (sig === net.listSig) return;
+  net.listSig = sig;
+  api(net.code, `/mis/${net.me}`, "PUT", mine).catch(() => { net.listSig = null; });
+}
+function mergeLists() {
+  const seen = net.lastMis || (net.lastMis = {});
+  let changed = false;
+  for (const [id, lists] of Object.entries((net.room && net.room.mis) || {})) {
+    if (id === net.me || !lists) continue;
+    for (const k of SHARED) {
+      const now = toArr(lists[LIST_KEY[k]]), was = seen[id] && toArr(seen[id][LIST_KEY[k]]);
+      const nowK = new Set(now.map(itemKey)), wasK = was ? new Set(was.map(itemKey)) : null;
+      // The first time, everything they have is new; after that, only what changed since.
+      const add = now.filter(x => !wasK || !wasK.has(itemKey(x))), gone = was ? was.filter(x => !nowK.has(itemKey(x))).map(itemKey) : [];
+      const list = store.get(k, []), have = new Set(list.map(itemKey));
+      const next = list.filter(x => !gone.includes(itemKey(x))).concat(add.filter(x => !have.has(itemKey(x))));
+      if (next.length !== list.length || next.some((x, i) => itemKey(x) !== itemKey(list[i]))) { store.set(k, next); changed = true; }
+    }
+    seen[id] = JSON.parse(JSON.stringify(lists));
+  }
+  if (changed && !$("home").hidden) renderHome();
+}
 // Voice recordings of Palabras al revés only stay in the room while their card is on the table.
 let recKey = null;
 function dropRecordings(next) {
@@ -1864,7 +1898,7 @@ function listen() {
 }
 function onRoom() {
   if (!net.room || !roomPeople().length) { leaveRoom(); netMsg("La partida se ha cerrado."); return; }
-  renderNet();
+  renderNet(); mergeLists(); shareLists();
   const g = net.room.g, inSig = JSON.stringify(net.room.in || null);
   if (inSig !== net.inSig) {
     net.inSig = inSig;
@@ -1932,13 +1966,15 @@ async function enterRoom(create) {
   } catch (e) { netMsg("No se ha podido conectar. Revisa que tengas internet."); }
 }
 function connect(code) {
-  Object.assign(net, { code, room: null, sig: null, seen: null, fresh: true, offline: false });
+  Object.assign(net, { code, room: null, sig: null, seen: null, fresh: true, offline: false, listSig: null, lastMis: {} });
   store.set("sm.room", code);
   listen(); touchRoom(true); renderHome();
 }
 async function leaveRoom() {
   const code = net.code; if (!code) return;
   dropRecordings(null);
+  api(code, `/mis/${net.me}`, "DELETE").catch(() => {});
+  Object.assign(net, { listSig: null, lastMis: {} });
   if (net.es) net.es.close();
   Object.assign(net, { es: null, code: null, room: null });
   store.set("sm.room", null);
