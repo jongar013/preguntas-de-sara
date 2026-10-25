@@ -295,6 +295,11 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .actrow .act { flex: 1 1 auto; min-width: 0; padding: 0 12px; white-space: nowrap; }
 .actrow .mini { flex: none; }
 .card.game { gap: 10px; }
+.guess { display: flex; gap: 8px; margin: 0; }
+.guess input { flex: 1 1 auto; min-width: 0; min-height: 48px; border: 3px solid var(--ink); border-radius: 14px; padding: 0 12px; font: inherit; font-weight: 800; font-size: 1.05rem; background: #fff; color: var(--ink); appearance: none; box-shadow: none; outline: none; }
+.guess input:focus { box-shadow: 0 0 0 3px var(--c); }
+.guess .act { flex: none; width: auto; padding: 0 16px; }
+.how.miss { margin: 0; text-align: center; font-weight: 800; }
 .secret.slim { grid-template-columns: minmax(0, auto) auto; justify-content: center; align-items: center; gap: 12px; padding: 8px 12px; }
 .secret.slim .big.word { font-size: clamp(1.4rem, 6.5vw, 2.2rem); overflow-wrap: break-word; }
 @media (max-width: 320px) { .secret.slim { grid-template-columns: 1fr; gap: 6px; } }
@@ -1481,7 +1486,7 @@ const MODES = {
 // Modes that gather cards from the other decks instead of having their own.
 const META = ["mezcla", "favoritas"];
 const RULES = {
-  profundas: "Contestad la pregunta por turnos, sin prisa. No hay respuestas buenas ni malas. Tocad el título para elegir si van todas mezcladas o de suaves a profundas.",
+  profundas: "Contestad la pregunta por turnos, sin prisa. No hay respuestas buenas ni malas.",
   princess: "Contad 3, 2, 1 y decid a la vez: princess treatment (un detallazo), bare minimum (lo mínimo) o red flag. Si no coincidís, a debatir.",
   adivina: "Quien tiene el móvil adivina qué respondería otra persona del grupo, y luego esa persona contesta de verdad. Apuntad los aciertos en el marcador de la carta.",
   prefieres: "Elegid una opción a la vez y explicad por qué. No vale decir «ninguna».",
@@ -1505,7 +1510,7 @@ const RULES = {
   palabras: "Quien explica ve 8 palabras en secreto. Para cada una dice una sola palabra relacionada o que se la recuerde, y el resto intenta adivinarla. Tenéis 20 pistas como máximo para las 8. Cada palabra acertada es un punto para quien explica.",
   stop: "Sale una letra. Cuando empiece el tiempo, escribid una palabra que empiece por esa letra para cada una de las 6 categorías de la carta, que cambian en cada ronda. Quien acabe puede pulsar «¡Stop!». Respuesta única: 10 puntos. Repetida: 5. A distancia cada persona escribe en su móvil y la app suma. Con un solo móvil, escribid en papel y apuntad aquí los puntos.",
   naval: "Para 2 personas. Cada una coloca sus 4 barcos en secreto. Por turnos, disparad a una casilla del tablero de la otra persona: agua, tocado o hundido. Gana quien hunda antes toda la flota.",
-  dibujo: "Quien dibuja mira la palabra en secreto y la dibuja sin letras ni números. El resto intenta adivinarla antes de que acabe el tiempo. A distancia, el dibujo sale en directo en todos los móviles. Quien la adivine se lleva un punto.",
+  dibujo: "Quien dibuja mira la palabra en secreto y la dibuja sin letras ni números. El resto escribe lo que cree que es antes de que acabe el tiempo; si acierta, la app lo da por bueno y se lleva un punto. A distancia, el dibujo sale en directo en todos los móviles.",
   reves: "Quien tiene el turno mira su palabra en secreto y la graba en voz alta. La app la pone al revés. El resto escucha ese sonido raro, lo imita grabándose, y la app da la vuelta a esa imitación: si lo han hecho bien, se oirá la palabra. Quien la adivine se lleva un punto.",
   cancion: "Sale una palabra y quien tiene el turno tiene que cantar un trozo de una canción que la diga antes de que acabe el tiempo. Si se queda en blanco, la siguiente persona puede robar el punto.",
   mezcla: "Cartas de todos los juegos. Cada carta dice a qué juego pertenece y el fondo toma su color.",
@@ -1680,7 +1685,7 @@ const vars = m => `--c:${MODES[m].c};--fg:${MODES[m].fg};`;
 
 // The home shelf, grouped by what you feel like doing. Neighbours never share a similar colour.
 const SHELVES = [
-  ["Para conoceros", ["profundas", "adivina", "anecdotas", "completa", "top3", "random"]],
+  ["", ["profundas", "adivina", "anecdotas", "completa", "top3", "random"]],
   ["Para debatir", ["princess", "prefieres", "redflag", "probable", "hot", "loharia"]],
   ["Para reír y atreverse", ["verdad", "yonunca", "dosverdades"]],
   ["Juegos con puntos", ["frecuencia", "onda", "trivial", "cifras", "emociones", "codigo", "palabras", "stop", "naval", "dibujo", "reves", "cancion"]]
@@ -1710,7 +1715,7 @@ function renderHome() {
   const wide = (k, sub) => `<div class="deck-wrap"><button class="deck wide${k === "favoritas" ? " favs" : ""}" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${MODES[k].short || MODES[k].name}</span><span class="count">${sub}</span></span></button></div>`;
   $("quick").innerHTML = wide("mezcla", "De todos los juegos") + (nf ? wide("favoritas", `${nf} ${nf === 1 ? "guardada" : "guardadas"}`) : "");
   const tile = k => `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${MODES[k].name}</span><span class="desc">${DESC[k]}</span></button></div>`;
-  $("shelves").innerHTML = SHELVES.map(([title, list]) => `<section><h2 class="shelf-title">${title}</h2><div class="decks">${list.filter(k => MODES[k]).map(tile).join("")}</div></section>`).join("");
+  $("shelves").innerHTML = SHELVES.map(([title, list]) => `<section>${title ? `<h2 class="shelf-title">${title}</h2>` : ""}<div class="decks">${list.filter(k => MODES[k]).map(tile).join("")}</div></section>`).join("");
   renderNet();
   renderLevels();
 }
@@ -2594,6 +2599,48 @@ function recBtn(slot, label) {
 }
 const playBtn = (slot, label, back = true) => `<button class="mini" type="button" data-act="play" data-v="${slot}" data-back="${back ? 1 : 0}">▶ ${label}</button>`;
 
+// Pictionary guesses: whoever guesses types the word; when it matches, the app counts it.
+// Accents, capitals and a leading article don't matter, nor a plural.
+const normWord = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLowerCase().replace(/[^a-z0-9 ]/g, " ")
+  .trim().replace(/^(el|la|los|las|un|una|unos|unas) /, "").replace(/\s+/g, "");
+const sameWord = (a, b) => { a = normWord(a); b = normWord(b); return !!a && (a === b || a.replace(/e?s$/, "") === b.replace(/e?s$/, "")); };
+let guessDraft = { key: null, v: "" }, guessTyping = false;
+const guesser = c => !net.code || !myTurn();
+function guessHTML(c) {
+  const p = play(c), secs = p.secs || paceSecs(c.mode), miss = p.miss;
+  const box = guesser(c) ? `<form class="guess"><input type="text" enterkeyhint="send" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" placeholder="¿Qué es?" aria-label="Escribe qué es el dibujo"><button class="act" type="submit">Probar</button></form>` : "";
+  const no = miss ? `<p class="how miss" aria-live="polite">${net.code ? `${players()[miss.who] || ""}: ` : ""}«${esc(miss.t)}» no es.</p>` : "";
+  const time = p.end ? `<div class="actrow"><span class="countdown" aria-live="off">${secs} s</span><button class="mini soft" type="button" data-act="rev">Rendirse</button></div>`
+    : `<div class="actrow"><button class="${box ? "mini" : "act"}" type="button" data-act="go">Empezar · ${secs} s</button></div>`;
+  return box + no + time;
+}
+function guessDone(c) {
+  const p = play(c), w = `«${esc(c.text)}»`;
+  if (p.win != null) return `¡<b>${players()[p.win]}</b> lo ha adivinado! Era ${w}. Un punto.`;
+  if (p.hit) return `¡Correcto! Era ${w}. Tocad el nombre de quien lo haya adivinado.`;
+  return `Era ${w}.`;
+}
+function bindGuess(card, c) {
+  const f = card.querySelector(".guess"); if (!f) return;
+  const inp = f.querySelector("input"), key = playKey(c);
+  if (guessDraft.key === key) inp.value = guessDraft.v; else guessDraft = { key, v: "" };
+  f.addEventListener("pointerdown", e => e.stopPropagation());
+  inp.oninput = () => { guessDraft.v = inp.value; };
+  if (guessTyping) inp.focus({ preventScroll: true });
+  f.onsubmit = e => {
+    e.preventDefault();
+    const t = inp.value.trim(); if (!t || busy) return;
+    guessDraft.v = "";
+    const n = players().length, who = net.code ? meIdx() : n === 2 ? 1 - turnIdx() : null;
+    if (sameWord(t, c.text)) {
+      if (who != null && who >= 0) { state.score[who] = (state.score[who] || 0) + 1; setPlay(c, { rev: true, win: who }); }
+      else setPlay(c, { rev: true, hit: true });
+      $("live").textContent = "¡Correcto!";
+      try { navigator.vibrate && navigator.vibrate(80); } catch (e) {}
+    } else { setPlay(c, { miss: { who, t: t.slice(0, 40) } }); $("live").textContent = `«${t}» no es.`; }
+  };
+}
+
 Object.assign(GAMES, {
   dibujo: {
     score: true,
@@ -2603,10 +2650,11 @@ Object.assign(GAMES, {
         <div class="boardwrap"><canvas class="board" width="1000" height="1000" aria-label="Dibujo"></canvas></div>
         ${can ? `<div class="inks">${INK.map(col => `<button type="button" class="ink" data-act="ink" data-v="${col}" style="background:${col}" aria-label="Color" aria-pressed="${col === inkColor}"></button>`).join("")}
           <button class="tool" type="button" data-act="undoline" aria-label="Deshacer el último trazo">↶</button><button class="tool" type="button" data-act="clear" aria-label="Borrar todo el dibujo">${icon("quitar")}</button></div>` : ""}
-        ${rev ? `<p class="how">Era «${esc(c.text)}». Tocad el nombre de quien lo haya adivinado.</p>` : timedActs(c, "¡Adivinado!")}`;
+        ${rev ? `<p class="how">${guessDone(c)}</p>` : guessHTML(c)}`;
     },
     bind(card, c) {
       const cv = card.querySelector(".board"); paint(cv, c);
+      bindGuess(card, c);
       if (!drawer(c) || play(c).rev) return;
       let pts = null;
       const at = e => { const r = cv.getBoundingClientRect(); return [Math.round((e.clientX - r.left) / r.width * 1000), Math.round((e.clientY - r.top) / r.height * 1000)]; };
@@ -2740,6 +2788,7 @@ function bindScore(card) {
 
 function render(anim) {
   const total = state.deck.length, done = state.idx >= total, c = state.deck[state.idx];
+  guessTyping = !!(document.activeElement && document.activeElement.closest && document.activeElement.closest(".guess"));
   if (anim) { peeking = null; recErr = ""; if (typeof stopRec === "function") stopRec(); }
   dropRecordings(!done && c.mode === "reves" && net.code ? inKey(c) : null);
   const colorMode = done ? (META.includes(state.mode) ? "profundas" : state.mode) : c.mode;
