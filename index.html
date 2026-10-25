@@ -43,6 +43,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 
 /* ---------- Home ---------- */
 #home { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 22px; padding-bottom: 18px; scrollbar-width: none; }
+#home > div:empty { display: none; }
 .logo { padding-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
 .logo .cover { width: clamp(64px, 19vw, 92px); aspect-ratio: 1; max-width: 100%; flex: none; object-fit: cover; border-radius: 26px; border: 4px solid #fff;
   box-shadow: 5px 5px 0 #FF5A8A; transform: rotate(5deg); }
@@ -199,6 +200,23 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
   text-shadow: 3px 3px 0 #FF5A8A; transform: rotate(-3deg); transform-origin: left center; }
 .card.end-card { background: var(--ink); color: #fff; }
 .end .how { color: #CFC6E6; }
+.podium { width: 100%; display: grid; gap: 8px; }
+.podium .winner { margin: 0; font-weight: 900; font-size: 1.25rem; color: #FFD84A; }
+.podium .winner b { color: #fff; }
+.podium ol, .night ol { list-style: none; margin: 0; padding: 0; display: grid; gap: 6px; }
+.podium li { display: flex; justify-content: space-between; align-items: center; background: rgba(255,255,255,.1); border-radius: 12px; padding: 8px 14px; font-weight: 900; }
+.podium li:first-child { background: #FFD84A; color: var(--ink); }
+.podium li b { font-family: var(--font-display); font-weight: 400; font-size: 1.4rem; }
+.night { background: rgba(255,255,255,.08); border: 2px solid rgba(255,255,255,.18); border-radius: 22px; padding: 14px; display: grid; gap: 10px; color: #fff; }
+.night h2 { margin: 0; font-family: var(--font-display); font-weight: 400; font-size: 1.35rem; }
+.night li { display: flex; justify-content: space-between; align-items: center; gap: 10px; background: rgba(255,255,255,.1); border-radius: 14px; padding: 8px 12px; font-weight: 900; }
+.night li.top { background: #FFD84A; color: var(--ink); }
+.night li > span:last-child { display: grid; text-align: right; }
+.night li b { font-family: var(--font-display); font-weight: 400; font-size: 1.3rem; }
+.night small { font-weight: 800; font-size: .8rem; opacity: .8; }
+.night .nsub { margin: 0; color: #CFC6E6; font-weight: 700; font-size: .9rem; }
+.nacts { display: flex; flex-wrap: wrap; gap: 10px; align-items: center; }
+.nacts .act { --c: #FFD84A; --fg: var(--ink); flex: 1 1 auto; padding: 0 14px; font-size: 1.05rem; }
 .end .acts { display: grid; gap: 12px; width: 100%; margin-top: 8px; }
 .end .again { background: #FFD84A; color: var(--ink); border-color: #FFD84A; box-shadow: 0 6px 0 #FF5A8A; padding: 12px 20px; }
 .end .again:active { box-shadow: 0 1px 0 #FF5A8A; }
@@ -346,7 +364,12 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .secs { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; justify-content: center; }
 .secs button:not(.mini) { min-height: 44px; padding: 0 14px; border-radius: 999px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); font-weight: 900; }
 .secs button[aria-pressed="true"] { background: var(--c); color: var(--fg); }
-.countdown { font-family: var(--font-display); font-size: 2.2rem; font-variant-numeric: tabular-nums; }
+.countdown { --f: 1; --ring: var(--ink); flex: none; display: inline-grid; place-items: center; width: 62px; height: 62px; border-radius: 50%;
+  font-family: var(--font-display); font-size: 1.2rem; line-height: 1; font-variant-numeric: tabular-nums; color: var(--ink);
+  background: radial-gradient(closest-side, #fff 78%, transparent 80%), conic-gradient(var(--ring) calc(var(--f) * 360deg), #E4DEF0 0); }
+.card > .countdown { align-self: center; justify-self: center; }
+.countdown.low { --ring: #E5383B; color: #B3171A; }
+.countdown.over { font-size: .85rem; }
 
 /* Tanda 2: código, batalla naval, 8 palabras, Stop */
 #game.board .controls, #game.board .bar, #game.board #count, #game.board .ghost-card { display: none; }
@@ -441,6 +464,7 @@ canvas.board { display: block; width: min(100cqw, 100cqh); aspect-ratio: 1; back
     </header>
     <div class="toprow"><button class="netbtn" id="openNet" type="button" aria-haspopup="dialog"></button><button class="settings-btn" id="openSet" type="button" aria-haspopup="dialog"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"></svg><span>Ajustes</span></button></div>
     <div id="resume"></div>
+    <div id="nightBox"></div>
     <div class="decks" id="quick"></div>
     <div id="shelves"></div>
   </section>
@@ -1674,6 +1698,7 @@ const REPLACED = [
 function toggleFav(c) {
   const id = cardId(c), list = favs(), on = !list.includes(id);
   store.set("sm.favs", on ? [...list, id] : list.filter(x => x !== id));
+  if (state.favNew) state.favNew[on ? "add" : "delete"](id);
   return on;
 }
 
@@ -1713,6 +1738,7 @@ function renderHome() {
     <span><b>Seguir con ${esc(MODES[r.mode].short || MODES[r.mode].name)}</b><small>Carta ${r.at} de ${r.total}</small></span></button>` : "";
   const nf = cardsFor("favoritas", "todo").length;
   const wide = (k, sub) => `<div class="deck-wrap"><button class="deck wide${k === "favoritas" ? " favs" : ""}" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${MODES[k].short || MODES[k].name}</span><span class="count">${sub}</span></span></button></div>`;
+  $("nightBox").innerHTML = nightHTML(); bindNight();
   $("quick").innerHTML = wide("mezcla", "De todos los juegos") + (nf ? wide("favoritas", `${nf} ${nf === 1 ? "guardada" : "guardadas"}`) : "");
   const tile = k => `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${MODES[k].name}</span><span class="desc">${DESC[k]}</span></button></div>`;
   $("shelves").innerHTML = SHELVES.map(([title, list]) => `<section>${title ? `<h2 class="shelf-title">${title}</h2>` : ""}<div class="decks">${list.filter(k => MODES[k]).map(tile).join("")}</div></section>`).join("");
@@ -1726,9 +1752,65 @@ function renderLevels() {
   $("lvls").innerHTML = levels().map(([k, n, d]) => `<button class="lvl${k === cur ? " rec" : ""}" type="button" data-level="${k}" aria-pressed="${k === cur}"><b>${n}</b><span>${d}</span></button>`).join("");
 }
 
+// Marcador de la noche: the points of every game played on this phone tonight, added up.
+// Each game (until «Revancha») is one entry; it forgets itself 12 hours after the last point.
+// No streaks and no prizes: just who has more points and who won each game.
+const NIGHT = 12 * 36e5;
+function night() { const n = store.get("sm.night", null); return n && n.games && Date.now() - n.t < NIGHT ? n : { t: 0, games: {} }; }
+function bankScore() {
+  if (!state.mode || !state.gid || !state.score) return;
+  const pts = state.score.map(x => x || 0), n = night(), was = n.games[state.gid];
+  if (!pts.some(Boolean) && !was) return;
+  if (was && JSON.stringify(was.pts) === JSON.stringify(pts)) return;
+  if (pts.some(Boolean)) n.games[state.gid] = { mode: state.mode, names: players(), pts }; else delete n.games[state.gid];
+  n.t = Date.now(); n.last = state.mode; store.set("sm.night", n);
+}
+function nightTotals() {
+  const tot = {}, wins = {}, games = Object.values(night().games);
+  for (const g of games) {
+    g.names.forEach((nm, i) => { tot[nm] = (tot[nm] || 0) + (g.pts[i] || 0); });
+    const best = Math.max(...g.pts), w = g.names.filter((nm, i) => g.pts[i] === best);
+    if (best > 0 && w.length === 1) wins[w[0]] = (wins[w[0]] || 0) + 1;
+  }
+  return { tot, wins, games: games.length };
+}
+const plural = (n, one, many) => `${n} ${n === 1 ? one : many}`;
+function nightHTML() {
+  const { tot, wins, games } = nightTotals(); if (!games) return "";
+  const rows = Object.entries(tot).sort((a, b) => b[1] - a[1]);
+  const last = night().last;
+  return `<section class="night" aria-label="Marcador de la noche"><h2>Marcador de la noche</h2>
+    <ol>${rows.map(([nm, pts], i) => `<li${i === 0 && pts > (rows[1] || [, -1])[1] ? ' class="top"' : ""}><span>${nm}</span><span><span><b>${pts}</b> ${pts === 1 ? "punto" : "puntos"}</span>${wins[nm] ? `<small>${plural(wins[nm], "partida ganada", "partidas ganadas")}</small>` : ""}</span></li>`).join("")}</ol>
+    <p class="nsub">${plural(games, "partida", "partidas")} esta noche</p>
+    <div class="nacts">${last && MODES[last] ? `<button class="act" type="button" id="nightAgain" data-game="${last}">Revancha de ${esc(MODES[last].short || MODES[last].name)}</button>` : ""}<button class="mini soft" type="button" id="nightClear">Empezar de cero</button></div></section>`;
+}
+function bindNight() {
+  const again = $("nightAgain"), clear = $("nightClear");
+  if (again) again.onclick = () => { delete kept[again.dataset.game]; startMode(again.dataset.game); };
+  if (clear) clear.onclick = () => {
+    if (!clear.dataset.sure) { clear.dataset.sure = 1; clear.textContent = "¿Seguro? Toca otra vez"; return; }
+    store.set("sm.night", { t: 0, games: {} }); renderHome();
+  };
+}
+// The end of a deck: how many cards, favourites saved while playing, and who won.
+function endHTML(total) {
+  const pts = (state.score || []).map(x => x || 0), names = players(), scored = pts.some(Boolean);
+  const nf = state.favNew ? state.favNew.size : 0;
+  let result = "";
+  if (scored) {
+    const best = Math.max(...pts), w = names.filter((n, i) => pts[i] === best);
+    const rows = names.map((n, i) => [n, pts[i]]).sort((a, b) => b[1] - a[1]);
+    result = `<div class="podium"><p class="winner">${w.length === 1 ? `¡Gana <b>${w[0]}</b>!` : `Empate entre ${w.join(" y ")}`}</p>
+      <ol>${rows.map(([n, v]) => `<li><span>${n}</span><b>${v}</b></li>`).join("")}</ol></div>`;
+  }
+  return `<div class="end"><h2>¡Mazo terminado!</h2><p class="how">Habéis jugado las ${total} cartas${nf ? ` y guardado ${plural(nf, "favorita", "favoritas")}` : ""}.</p>${result}
+    <div class="acts"><button class="next again" type="button" id="reshuffle">${scored ? "Revancha" : "Barajar otra vez"}</button><button class="skip other" type="button" id="otherGame">Otro juego</button></div></div>`;
+}
+
 const progressKey = () => `sm.pos|${state.mode}|${state.level}`;
 const orderKey = () => `sm.order|${state.mode}|${state.level}`;
 function save() {
+  bankScore();
   push();
   if (state.mode === "favoritas" || net.code) return;
   store.set(progressKey(), { idx: state.idx, round: state.round });
@@ -1761,7 +1843,7 @@ function startMode(mode, level) {
   if (!levels().some(l => l[0] === state.level)) state.level = "todo";
   state.score = players().map(() => 0); state.lastPoint = null; state.spun = new Set(); state.plays = {}; state.team = 0;
   state.secs = PACES[mode] ? store.get(`sm.pace|${mode}`, PACES[mode][1]) : 0;
-  state.inputs = {}; state.gid = Math.random().toString(36).slice(2, 8);
+  state.inputs = {}; state.gid = Math.random().toString(36).slice(2, 8); state.favNew = new Set();
   const k = kept[mode]; delete kept[mode];
   if (k) Object.assign(state, k.game);
   const saved = mode === "favoritas" || net.code ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
@@ -1917,8 +1999,13 @@ const BEAT = 30e3, AWAY = 75e3, heard = {};
 let beatId = null, noteId = null;
 function beat(here) {
   if (!net.code) return;
-  fetch(dbUrl(net.code, `/vivo/${net.me}`), { method: "PUT", body: JSON.stringify(here ? NOW : 0), keepalive: true }).catch(() => {});
+  const t0 = Date.now();
+  fetch(dbUrl(net.code, `/vivo/${net.me}`), { method: "PUT", body: JSON.stringify(here ? NOW : 0), keepalive: true })
+    .then(r => r.json()).then(v => { const t1 = Date.now(); if (typeof v === "number" && v > 0 && t1 - t0 < 3000) net.skew = v - (t0 + t1) / 2; }).catch(() => {});
 }
+// At a distance the timers count with Firebase's clock (learnt from each beat), so a phone
+// whose own clock is a bit off still ends at the same moment as the others.
+const clock = () => Date.now() + (net.code ? net.skew || 0 : 0);
 function startBeat() {
   clearInterval(beatId); beat(!document.hidden);
   let n = 0;
@@ -1947,12 +2034,12 @@ function checkHere() {
   if (changed) { renderNet(); renderNote(back && `${back} ha vuelto`); }
 }
 // The note above the card: no connection, someone gone (while it lasts) or someone back (a moment).
-function renderNote(flash) {
+function renderNote(flash, ms = 4000) {
   const away = net.code ? roomPeople().filter(p => p.id !== net.me && !isHere(p.id)).map(p => esc(p.name || "Alguien")) : [];
   const text = !net.code ? "" : net.offline ? "Sin conexión. Reconectando…"
     : away.length ? `${away.join(" y ")} ${away.length > 1 ? "se han desconectado" : "se ha desconectado"}` : flash || "";
   clearTimeout(noteId);
-  if (flash && text === flash) noteId = setTimeout(() => renderNote(), 4000);
+  if (flash && text === flash) noteId = setTimeout(() => renderNote(), ms);
   $("netNote").innerHTML = text; $("netNote").hidden = !text;
 }
 document.addEventListener("visibilitychange", () => beat(!document.hidden));
@@ -2029,8 +2116,15 @@ function applyRemote(g) {
     if (!g.mode || !MODES[g.mode]) { if (!$("game").hidden) goHome(); return; }
     const deck = toArr(g.deck);
     if (!deck.length) return;
-    net.sig = `${seedFrom(deck.map(cardId).join("\n"))}:${deck.length}`;
-    const was = $("game").hidden || state.mode !== g.mode ? null : state.idx;
+    const newSig = `${seedFrom(deck.map(cardId).join("\n"))}:${deck.length}`;
+    const was = $("game").hidden || state.mode !== g.mode ? null : state.idx, wasSig = net.sig;
+    net.sig = newSig;
+    // Someone else moved the deck: say who, and for a moment ignore this phone's own taps,
+    // so two people pressing «Siguiente» at once don't skip a card.
+    const who = (roomPeople().find(p => p.id === g.by) || {}).name || "Alguien";
+    const moved = was == null ? "" : (g.idx || 0) > was ? `${esc(who)} ha sacado otra carta` : (g.idx || 0) < was ? `${esc(who)} ha vuelto atrás`
+      : newSig !== wasSig ? `${esc(who)} ha pasado la carta` : "";
+    if (moved) { net.moved = Date.now(); renderNote(moved, 2500); }
     Object.assign(state, { mode: g.mode, level: g.level || "todo", round: g.round || 0, idx: g.idx || 0, deck,
       score: toArr(g.score).map(n => n || 0), team: g.team || 0, plays: g.plays || {}, spun: new Set(toArr(g.spun)), gid: g.gid || "", inputs: {}, secs: g.secs || 0 });
     if ($("game").hidden) {
@@ -2167,14 +2261,21 @@ function timedActs(c, revLabel) {
   return p.end ? `<div class="actrow"><span class="countdown" aria-live="off">${secs} s</span><button class="act" type="button" data-act="rev">${revLabel}</button></div>`
     : `<div class="actrow"><button class="act" type="button" data-act="go">Empezar · ${secs} s</button><button class="mini soft" type="button" data-act="rev">${revLabel}</button></div>`;
 }
+// The countdown is a ring that empties; in the last 10 seconds it turns red with one short buzz.
 function runCountdown(card, c) {
   const p = play(c), el = card.querySelector(".countdown"); if (!el || !p.end) return;
+  const total = (p.secs || paceSecs(c.mode)) * 1000;
+  let warned = p.end - clock() <= 10500;
   const tick = () => {
-    const left = Math.ceil((p.end - Date.now()) / 1000);
+    const ms = p.end - clock(), left = Math.ceil(ms / 1000);
     el.textContent = left > 0 ? `${left} s` : "¡Tiempo!";
+    el.style.setProperty("--f", Math.max(0, Math.min(1, ms / total)).toFixed(3));
+    el.classList.toggle("low", left > 0 && left <= 10);
+    el.classList.toggle("over", left <= 0);
+    if (left > 0 && left <= 10 && !warned) { warned = true; $("live").textContent = "Quedan 10 segundos."; try { navigator.vibrate && navigator.vibrate(60); } catch (e) {} }
     if (left > 0) return;
     clearInterval(timerId);
-    if (Date.now() - p.end < 1500) { $("live").textContent = "Se acabó el tiempo."; try { navigator.vibrate && navigator.vibrate(200); } catch (e) {} }
+    if (clock() - p.end < 1500) { $("live").textContent = "Se acabó el tiempo."; try { navigator.vibrate && navigator.vibrate(200); } catch (e) {} }
   };
   tick(); timerId = setInterval(tick, 250);
 }
@@ -2378,7 +2479,7 @@ function stopPoints(c) {
     return ans.some((o, k) => k !== i && norm(o[j]) === a) ? 5 : 10;
   }));
 }
-const stopEnded = c => !!play(c).end && Date.now() >= play(c).end;
+const stopEnded = c => !!play(c).end && clock() >= play(c).end;
 
 Object.assign(GAMES, {
   codigo: {
@@ -2527,11 +2628,11 @@ Object.assign(GAMES, {
         setTimeout(() => setIn(c, meIdx(), a.map(x => x.trim() || "")), 0);
       }
       const p = play(c);
-      if (p.end && !stopEnded(c)) setTimeout(() => { if (state.deck[state.idx] === c && !$("game").hidden) render(null); }, p.end - Date.now() + 50);
+      if (p.end && !stopEnded(c)) setTimeout(() => { if (state.deck[state.idx] === c && !$("game").hidden) render(null); }, p.end - clock() + 50);
     },
     act(c, a, b) {
-      if (a === "go") { const secs = paceSecs("stop"); setPlay(c, { secs, end: Date.now() + secs * 1000 }); }
-      if (a === "stop") { $("live").textContent = "¡Stop!"; setPlay(c, { end: Date.now() }); }
+      if (a === "go") { const secs = paceSecs("stop"); setPlay(c, { secs, end: clock() + secs * 1000 }); }
+      if (a === "stop") { $("live").textContent = "¡Stop!"; setPlay(c, { end: clock() }); }
       if (a === "bad") { const bad = { ...(play(c).bad || {}) }; if (bad[b.dataset.v]) delete bad[b.dataset.v]; else bad[b.dataset.v] = true; setPlay(c, { bad }); }
       if (a === "pts") { const i = +b.dataset.p; state.score[i] = (state.score[i] || 0) + +b.dataset.v; render(null); }
     }
@@ -2720,7 +2821,7 @@ function bindGame(card, c) {
       if (busy) return;
       const a = b.dataset.act;
       if (a === "peek") { peeking = playKey(c); render(null); return; }
-      if (SECS[c.mode] && c.mode !== "stop" && a === "go") { const secs = paceSecs(c.mode); setPlay(c, { secs, end: Date.now() + secs * 1000 }); return; }
+      if (SECS[c.mode] && c.mode !== "stop" && a === "go") { const secs = paceSecs(c.mode); setPlay(c, { secs, end: clock() + secs * 1000 }); return; }
       if (a === "hide") { peeking = null; render(null); return; }
       if (a === "rev" && GAMES[c.mode].score && c.mode !== "cifras") { setPlay(c, { rev: true }); return; }
       game.act && game.act(c, a, b);
@@ -2803,12 +2904,11 @@ function render(anim) {
   $("game").classList.toggle("board", !!MODES[state.mode].board);
   $("barfill").style.width = `${(Math.min(state.idx + 1, total) / total) * 100}%`;
   $("prev").disabled = state.idx === 0;
-  $("skip").disabled = done;
-  $("next").disabled = done;
+  $("skip").hidden = done;
+  $("next").hidden = done;
   const table = $("table");
   table.innerHTML = `<div class="ghost-card g1"></div><div class="ghost-card g2"></div>` + (done
-    ? `<div class="card end-card${anim ? " deal" : ""}"><div class="end"><h2>¡Mazo terminado!</h2><p class="how">Habéis jugado las ${total} cartas.</p>
-        <div class="acts"><button class="next again" type="button" id="reshuffle">Barajar otra vez</button><button class="skip other" type="button" id="otherGame">Otro juego</button></div></div></div>`
+    ? `<div class="card end-card${anim ? " deal" : ""}">${endHTML(total)}</div>`
     : `<div class="card${GAMES[c.mode] ? " game" : ""}${anim ? ` ${anim}` : ""}" role="group" aria-roledescription="carta">${cardHTML(c)}</div>`);
   if (anim) $("live").textContent = done ? `Mazo terminado. Habéis pasado las ${total} cartas.`
     : `Carta ${state.idx + 1} de ${total}. ${[...table.querySelector(".card").children].filter(e => !e.matches(".score")).map(e => e.innerText).join(" ").replace(/\s+/g, " ")}`;
@@ -2816,6 +2916,9 @@ function render(anim) {
   if (done) {
     $("otherGame").onclick = goHome;
     $("reshuffle").onclick = () => {
+      // «Revancha»: same game, new deck order and scores back to 0 (the last game stays in the night's score).
+      if (state.score.some(Boolean)) { state.score = players().map(() => 0); state.lastPoint = null; state.team = 0; state.gid = Math.random().toString(36).slice(2, 8); state.inputs = {}; }
+      state.favNew = new Set();
       state.round++; state.idx = 0; state.plays = {}; state.deck = buildDeck(state.mode, state.level, state.round); save();
       if (reduced) { render("deal"); return; }
       table.classList.add("shuffling");
@@ -2863,9 +2966,10 @@ function bindTimer(card) {
 }
 
 let busy = false;
+const justMoved = () => net.code && Date.now() - (net.moved || 0) < 1200;
 const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
 function throwCard(dir) {
-  if (busy) return;
+  if (busy || justMoved()) return;
   if (dir > 0 && state.idx >= state.deck.length) return;
   if (dir < 0 && state.idx === 0) return;
   const card = $("table").querySelector(".card");
@@ -2917,7 +3021,7 @@ $("undoHide").onclick = () => {
 };
 
 function skipCard() {
-  if (busy || state.idx >= state.deck.length) return;
+  if (busy || justMoved() || state.idx >= state.deck.length) return;
   // On the last card there is nothing to put it behind, so passing just ends the deck.
   if (state.idx === state.deck.length - 1) { throwCard(1); return; }
   const card = $("table").querySelector(".card");
