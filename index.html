@@ -362,7 +362,8 @@ button.pword:disabled { cursor: default; }
 .letter b { font-family: var(--font-display); font-weight: 400; font-size: 4.2rem; line-height: 1; }
 .stophead { display: flex; align-items: center; justify-content: space-around; }
 .stophead .letter b { font-size: 3rem; }
-.cats { margin: 0; padding-left: 1.4em; columns: 2; font-weight: 900; font-size: 1.1rem; line-height: 1.6; }
+.cats { margin: 0; padding-left: 1.4em; columns: 8em 2; column-gap: 2em; font-weight: 900; font-size: 1.1rem; line-height: 1.35; }
+.cats li { break-inside: avoid; margin-bottom: .3em; }
 .form { display: grid; gap: 8px; }
 .form label { display: grid; grid-template-columns: 82px 1fr; align-items: center; gap: 8px; font-weight: 900; font-size: .9rem; }
 .form input { font: inherit; font-weight: 800; font-size: 1rem; color: var(--ink); background: var(--soft); border: 2.5px solid var(--ink); border-radius: 12px; padding: 8px 10px; min-height: 44px; width: 100%; min-width: 0; }
@@ -437,7 +438,7 @@ canvas.board { display: block; align-self: center; width: min(100%, 44vh); aspec
   <div class="pop" role="dialog" aria-modal="true" aria-labelledby="swipeTitle">
     <div class="demo" aria-hidden="true"><div class="demo-back"></div><div class="demo-card"><span></span><span></span><span></span></div></div>
     <h2 id="swipeTitle">Cómo pasar cartas</h2>
-    <p>Pulsa <b>Siguiente</b> o desliza la carta a la izquierda. Si una carta no os apetece, pulsa <b>Pasar</b>: se va al final del mazo y no pasa nada.</p>
+    <p>Pulsa <b>Siguiente</b> o desliza la carta a la izquierda. Para volver a la anterior, pulsa el botón de la flecha o desliza la carta a la derecha. Si una carta no os apetece, pulsa <b>Pasar</b>: se va al final del mazo y no pasa nada.</p>
     <button class="play" id="swipeOk" type="button">¡A jugar!</button>
   </div>
 </div>
@@ -550,7 +551,7 @@ const DATA = {
       "¿Qué te gustaba en tu infancia que ahora te da ternura?",
       "¿Qué cosa haces mejor que la mayoría de la gente que conoces?",
       "¿Cuál es tu forma favorita de perder el tiempo?",
-      "¿Qué palabra o expresión dices demasiado?",
+      "¿Qué canción te lleva directamente a una etapa de tu vida?",
       "¿Qué viaje repetirías mañana mismo?",
       "¿Qué es lo mejor que te ha pasado este mes?",
       "¿Qué te ilusiona de los próximos meses?",
@@ -635,7 +636,7 @@ const DATA = {
       "¿Qué parte de ti te parece más atractiva?",
       "¿Cuál es el sitio más raro donde has dado un beso?",
       "¿Qué es lo más romántico que te han dicho?",
-      "¿Alguna vez te ha flechado alguien en una sola noche?",
+      "¿Te has enamorado alguna vez de alguien en una sola noche?",
       "¿Qué piropo te encantaría recibir?",
       "¿Cuánto tardas en contestar a alguien que te gusta, y cuánto finges tardar?",
       "¿Cómo sería tu cita perfecta, de principio a fin?",
@@ -722,7 +723,7 @@ const DATA = {
     "¿Qué haría en una cita perfecta?",
     "¿Cuál es su mayor placer culpable?",
     "¿Qué asignatura odiaba en el colegio?",
-    "¿Qué es lo que más ruido le hace en la cabeza ahora mismo?",
+    "¿Qué le ronda la cabeza estos días?",
     "¿Qué cambiaría de su casa si pudiera?",
     "¿Qué palabra usaría para describirse?",
     "¿Qué haría en un apocalipsis zombi?",
@@ -751,7 +752,7 @@ const DATA = {
     ["Viajar un mes sin compañía", "viajar un mes con alguien que apenas conoces"],
     ["Ser la persona más lista de la sala", "ser la más divertida"],
     ["Perder todas tus fotos", "perder todos tus mensajes"],
-    ["Cambiar algo de tu pasado", "saber una cosa de tu futuro"],
+    ["Tener un botón de pausa en la vida", "uno de rebobinar"],
     ["Tener siempre frío", "tener siempre calor"],
     ["Un perro", "un gato"],
     ["Desayuno dulce", "desayuno salado"],
@@ -761,7 +762,7 @@ const DATA = {
     ["Volar", "teletransportarte"],
     ["Una semana sin móvil", "una semana sin hablar"],
     ["Que te recuerden por algo bonito", "que nadie te recuerde"],
-    ["Conocer a tu yo del futuro", "a tu yo del pasado"],
+    ["Tener siempre la nevera llena", "no tener que fregar nunca más"],
     ["Que lean tus mensajes en voz alta", "que vean tu historial de búsqueda"],
     ["Pocos planes pero épicos", "muchos planes pequeños"],
     ["Amanecer en la playa", "atardecer en la montaña"],
@@ -794,7 +795,7 @@ const DATA = {
     "Dormir con calcetines está bien.",
     "Los regalos hechos a mano valen más que los comprados.",
     "Está bien tener amistades que solo ves una vez al año.",
-    "La amistad entre ex no existe.",
+    "Dormir la siesta es un derecho, no un lujo.",
     "Hay que dejar propina siempre.",
     "Ver el final de una serie antes de tiempo no estropea nada.",
     "Las redes sociales hacen la vida peor.",
@@ -836,7 +837,7 @@ const DATA = {
     "Te escribe todos los días, todo el día.",
     "No sabe estar sin planes.",
     "Te dice lo que piensa aunque no te guste.",
-    "Su ex sigue en su vida de alguna forma.",
+    "Se ríe de ti delante de otra gente.",
     "Tiene la casa impecable.",
     "No le gusta conocer a tu familia.",
     "Te manda memes en vez de hablar de cosas serias.",
@@ -893,43 +894,43 @@ const DATA = {
     ["Verdad", "¿Qué búsqueda de Google no enseñarías nunca?"],
     ["Verdad", "¿Qué opinas de verdad de alguien con quien he salido?"],
     ["Verdad", "¿Qué es lo que más te gusta de ti?"],
-    ["Verdad", "¿Con quién fue tu último mensaje antes de este juego?"],
+    ["Verdad", "¿A quién le mandaste el último mensaje antes de jugar?"],
     ["Verdad", "¿Has tenido un crush con alguien que conozco?"],
     ["Verdad", "¿Qué es lo más raro que has comido?"],
     ["Verdad", "¿Qué hábito tuyo escondes?"],
     ["Verdad", "¿Cuál es la mayor tontería por la que te has enfadado?"],
-    ["Verdad", "¿Qué te gustaría que hiciera más a menudo?"],
+    ["Verdad", "¿Qué es lo que peor llevas que te digan?"],
     ["Verdad", "¿Qué canción pones cuando nadie te escucha?"],
-    ["Reto", "Narra lo que hace la otra persona como en un documental de animales, durante 30 segundos.", "Risas"],
-    ["Reto", "Imita a la otra persona durante 30 segundos.", "Risas"],
-    ["Reto", "Cuenta chistes malos hasta que la otra persona se ría.", "Risas"],
+    ["Reto", "Narra lo que hace la persona que elijas como en un documental de animales, durante 30 segundos.", "Risas"],
+    ["Reto", "Imita a la persona que elijas durante 30 segundos.", "Risas"],
+    ["Reto", "Cuenta chistes malos hasta que alguien se ría.", "Risas"],
     ["Reto", "Habla con un acento durante las dos próximas cartas.", "Risas"],
     ["Reto", "Habla solo con preguntas hasta tu próximo turno.", "Risas"],
     ["Reto", "Da el pronóstico del tiempo de cómo va a ir la noche, como en la tele.", "Risas"],
     ["Reto", "Canta el estribillo de la última canción que has escuchado.", "Espectáculo"],
-    ["Reto", "Inventa y canta una canción de diez segundos sobre la otra persona.", "Espectáculo"],
+    ["Reto", "Inventa y canta una canción de diez segundos sobre la persona que elijas.", "Espectáculo"],
     ["Reto", "Haz tu mejor imitación de un personaje famoso.", "Espectáculo"],
     ["Reto", "Baila 20 segundos sin música.", "Espectáculo"],
     ["Reto", "Haz tu mejor pose de foto de perfil.", "Espectáculo"],
-    ["Reto", "Representa una película sin hablar y que la otra persona la adivine.", "Espectáculo"],
-    ["Reto", "Cuenta una película solo con emojis y que la otra persona la adivine.", "Habilidad"],
+    ["Reto", "Representa una película sin hablar hasta que alguien la adivine.", "Espectáculo"],
+    ["Reto", "Cuenta una película solo con emojis hasta que alguien la adivine.", "Habilidad"],
     ["Reto", "Haz 10 sentadillas sin dejar de hablar.", "Habilidad"],
-    ["Reto", "Deja que la otra persona te elija una pose y aguántala 20 segundos.", "Habilidad"],
+    ["Reto", "Deja que te elijan una pose y aguántala 20 segundos.", "Habilidad"],
     ["Reto", "Di el abecedario al revés lo más rápido que puedas.", "Habilidad"],
-    ["Reto", "Dibuja a la otra persona en el móvil en 30 segundos.", "Habilidad"],
-    ["Reto", "Aguanta 30 segundos sin reírte mientras la otra persona intenta hacerte reír.", "Habilidad"],
-    ["Reto", "Describe a la otra persona con tres palabras sinceras.", "Cariño"],
-    ["Reto", "Di tres cosas que te gusten de la otra persona.", "Cariño"],
-    ["Reto", "Cuenta un recuerdo bonito que tengas con la otra persona.", "Cariño"],
-    ["Reto", "Escribe en el móvil una frase bonita para la otra persona y léela en voz alta.", "Cariño"],
-    ["Reto", "Dale a la otra persona un cumplido que nunca le hayas dicho.", "Cariño"],
-    ["Reto", "Haz un brindis por la otra persona, aunque sea con agua.", "Cariño"],
+    ["Reto", "Dibuja a la persona que elijas en el móvil en 30 segundos.", "Habilidad"],
+    ["Reto", "Aguanta 30 segundos sin reírte mientras te intentan hacer reír.", "Habilidad"],
+    ["Reto", "Describe a la persona que elijas con tres palabras sinceras.", "Cariño"],
+    ["Reto", "Di tres cosas que te gusten de la persona que elijas.", "Cariño"],
+    ["Reto", "Cuenta un recuerdo bonito que tengas con la persona que elijas.", "Cariño"],
+    ["Reto", "Escribe en el móvil una frase bonita para la persona que elijas y léela en voz alta.", "Cariño"],
+    ["Reto", "Dale a la persona que elijas un cumplido que nunca le hayas dicho.", "Cariño"],
+    ["Reto", "Haz un brindis por quienes jugáis, aunque sea con agua.", "Cariño"],
     ["Reto", "Enseña una foto de tu carrete que te guste mucho y cuenta su historia.", "Vergüenza"],
     ["Reto", "Enseña tus emojis más usados.", "Vergüenza"],
     ["Reto", "Pon la canción que más vergüenza te da que te guste.", "Vergüenza"],
     ["Reto", "Enseña una foto tuya de hace años y cuenta qué pasaba ese día.", "Vergüenza"],
     ["Reto", "Cuenta tu anécdota más vergonzosa en 30 segundos.", "Vergüenza"],
-    ["Reto", "Deja que la otra persona vea lo que más has escuchado esta semana.", "Vergüenza"]
+    ["Reto", "Enseña lo que más has escuchado esta semana.", "Vergüenza"]
   ],
   probable: [
     "¿Quién es más probable que acabe viviendo en otro país?",
@@ -955,10 +956,10 @@ const DATA = {
     "¿Quién es más probable que se haga viral en internet?",
     "¿Quién es más probable que se olvide las llaves?",
     "¿Quién es más probable que llore de risa?",
-    "¿Quién es más probable que se apunte a un plan a última hora?",
+    "¿Quién es más probable que salude a todos los perros por la calle?",
     "¿Quién es más probable que tenga mil pestañas abiertas en el navegador?",
     "¿Quién es más probable que se enamore en un viaje?",
-    "¿Quién es más probable que se coma la comida de la otra persona?",
+    "¿Quién es más probable que se coma la comida del plato de al lado?",
     "¿Quién es más probable que se haga un tatuaje del que se arrepienta?",
     "¿Quién es más probable que conteste con audios de diez minutos?",
     "¿Quién es más probable que gane un concurso de la tele?",
@@ -1082,10 +1083,10 @@ const DATA = {
     "3 recuerdos favoritos de tu infancia",
     "3 cosas que te hacen feliz al instante",
     "3 olores que te encantan",
-    "3 cosas que te llevarías a una isla desierta",
+    "3 canciones que no pueden faltar en un viaje en coche",
     "3 trabajos que te gustaría probar un día",
     "3 caprichos que te das sin culpa",
-    "3 cosas que te dan miedo",
+    "3 inventos sin los que no podrías vivir",
     "3 apps que más usas",
     "3 cosas que admiras de la gente",
     "3 cosas que quieres hacer antes de los 40",
@@ -1115,25 +1116,25 @@ const DATA = {
     "¿Qué canción cantarías en un karaoke ahora mismo?",
     "¿Qué superpoder inútil te gustaría tener?",
     "¿Cuál es la peor moda que has seguido?",
-    "¿Qué harías con un millón de euros en 24 horas?",
-    "¿Qué emoji usas más y qué dice de ti?",
+    "¿Qué habilidad absurda te gustaría dominar?",
+    "¿Qué sticker o gif mandas más?",
     "¿Cuál es tu snack de madrugada?",
     "Si pudieras cambiarte el nombre, ¿cuál elegirías?",
     "¿Qué personaje de dibujos animados se parece más a ti?",
-    "¿Cuál es la cosa más rara que has comido?",
-    "¿Qué olimpiada ganarías sin entrenar?",
-    "¿Qué objeto te llevarías a una isla desierta?",
+    "¿Cuál es el regalo más raro que te han hecho?",
+    "¿Qué prueba de las Olimpiadas ganarías sin entrenar?",
+    "¿Qué objeto absurdo de tu casa no tirarías nunca?",
     "¿Qué palabra te parece graciosa sin motivo?",
-    "¿Cuál es tu bostezo de película favorito? Imítalo.",
-    "¿Pizza con piña: sí o no? Defiéndelo.",
+    "Haz tu mejor bostezo de película.",
+    "¿Croquetas de jamón o de pollo? Defiéndelo.",
     "¿Qué harías si fueras alcalde o alcaldesa por un día?",
     "¿Qué famoso te invitarías a cenar a casa?",
     "¿Cuál ha sido tu peor corte de pelo?",
     "¿Qué app borrarías del mundo?",
     "¿Qué te compras siempre en el súper aunque no lo necesites?",
-    "Si fueras un helado, ¿de qué sabor serías?",
+    "Si fueras una tapa, ¿cuál serías?",
     "¿Cuál es la excusa más mala que has puesto?",
-    "¿Qué serie verías otra vez desde cero?",
+    "¿Qué serie dejaste a medias y nunca acabaste?",
     "¿Qué animal te gustaría tener aunque sea imposible?",
     "¿Cuál es tu plan perfecto para un día de lluvia?",
     "¿En qué época de la historia serías un desastre?",
@@ -1260,13 +1261,13 @@ const DATA = {
     ["Historia", "¿Quién pintó la Mona Lisa?", "Leonardo da Vinci", "Miguel Ángel", "Rafael", "Botticelli"],
     ["Historia", "¿En qué año cayó el Muro de Berlín?", "1989", "1979", "1991", "1985"],
     ["Historia", "¿Quién fue la primera persona en pisar la Luna?", "Neil Armstrong", "Buzz Aldrin", "Yuri Gagarin", "Michael Collins"],
-    ["Historia", "¿Qué civilización construyó Machu Picchu?", "Los incas", "Los mayas", "Los aztecas", "Los olmecas"],
+    ["Historia", "¿Qué civilización construyó Chichén Itzá?", "Los mayas", "Los incas", "Los aztecas", "Los olmecas"],
     ["Historia", "¿En qué año se hundió el Titanic?", "1912", "1905", "1915", "1921"],
     ["Historia", "¿Quién pintó el Guernica?", "Picasso", "Dalí", "Miró", "Goya"],
     ["Historia", "¿Quién perdió la batalla de Waterloo?", "Napoleón", "Luis XIV", "Carlomagno", "Julio César"],
     ["Ciencia", "¿Cuál es el planeta más grande del sistema solar?", "Júpiter", "Saturno", "Neptuno", "La Tierra"],
     ["Ciencia", "¿Cuál es el símbolo químico del oro?", "Au", "Ag", "Or", "Go"],
-    ["Ciencia", "¿Cuántos huesos tiene una persona adulta?", "206", "186", "226", "306"],
+    ["Ciencia", "¿Cuál es el metal más abundante en la corteza terrestre?", "Aluminio", "Hierro", "Cobre", "Oro"],
     ["Ciencia", "¿Qué gas toman las plantas para hacer la fotosíntesis?", "Dióxido de carbono", "Oxígeno", "Nitrógeno", "Helio"],
     ["Ciencia", "¿Cuál es el órgano más grande del cuerpo humano?", "La piel", "El hígado", "El cerebro", "Los pulmones"],
     ["Ciencia", "¿Cuántas patas tiene una araña?", "8", "6", "10", "12"],
@@ -1313,7 +1314,7 @@ const DATA = {
     ["¿Cuántas copias se han vendido del GTA V?", 200000000, "Más de 200 millones."],
     ["¿Cuántos metros mide el Everest?", 8849, "8.849 metros."],
     ["¿Cuántos huesos tiene una persona adulta?", 206, "206 huesos."],
-    ["¿Cuántas personas viven en España?", 48000000, "Unos 48 millones."],
+    ["¿Cuántas personas viven en España?", 49000000, "Unos 49 millones."],
     ["¿Cuántas personas viven en el mundo?", 8000000000, "Unos 8.000 millones."],
     ["¿A cuántos kilómetros está la Luna de la Tierra?", 384400, "Unos 384.400 km de media."],
     ["¿Cuántas veces late el corazón en un día?", 100000, "Unas 100.000 veces."],
@@ -1356,7 +1357,7 @@ const DATA = {
     "Uva", "Piña", "Coco", "Perro", "Gato", "Caballo", "Vaca", "Cerdo", "Oveja", "Gallina", "Pato", "León",
     "Tigre", "Mono", "Jirafa", "Cebra", "Oso", "Lobo", "Zorro", "Conejo", "Ratón", "Serpiente", "Rana", "Tortuga",
     "Pez", "Ballena", "Delfín", "Pulpo", "Mariposa", "Abeja", "Hormiga", "Araña", "Mosquito", "Flor", "Rosa", "Árbol",
-    "Hoja", "Jardín", "Parque", "Colegio", "Profesor", "Médico", "Bombero", "Policía", "Cocinero", "Payaso", "Circo", "Fiesta",
+    "Hoja", "Jardín", "Parque", "Colegio", "Pizarra", "Tiza", "Manguera", "Casco", "Sartén", "Payaso", "Circo", "Fiesta",
     "Cumpleaños", "Regalo", "Tarta", "Vela", "Globo", "Música", "Baile", "Canción", "Concierto", "Fútbol", "Baloncesto", "Tenis",
     "Piscina", "Gimnasio", "Zapatilla", "Camiseta", "Pantalón", "Vestido", "Sombrero", "Gafas", "Bufanda", "Guante", "Bolso", "Dinero",
     "Banco", "Tienda", "Mercado", "Carta", "Libro", "Periódico", "Lápiz", "Papel", "Tijeras", "Pegamento", "Llave", "Puerta",
@@ -1364,7 +1365,7 @@ const DATA = {
     "Abrazo", "Risa", "Lágrima", "Miedo", "Amor", "Selfie", "Karaoke", "Pijama", "Disfraz", "Vampiro", "Zombi", "Momia",
     "Calabaza", "Galleta", "Caramelo", "Palomitas"
   ],
-  stop: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M", "N", "O", "P", "R", "S", "T", "V"],
+  stop: ["A", "B", "C", "D", "E", "F", "G", "H", "I", "J", "L", "M", "N", "O", "P", "R", "S", "T", "U", "V", "Z"],
   cancion: [
     "Amor", "Corazón", "Noche", "Fuego", "Bailar", "Luna", "Sol", "Mar", "Cielo", "Beso", "Loco", "Fiesta",
     "Verano", "Lluvia", "Calle", "Ciudad", "Tiempo", "Vida", "Sueño", "Dinero", "Coche", "Playa", "Música", "Ojos",
@@ -1436,49 +1437,49 @@ const MODES = {
   dosverdades:{ name: "Dos verdades y una mentira", tag: "Tema", c: "#FFD84A", fg: "#1E1633" },
   random:     { name: "Preguntas random", short: "Random", tag: "Random", c: "#FF9E7A", fg: "#1E1633" },
   frecuencia: { name: "Frecuencia", tag: "Frecuencia", c: "#3D9BFF", fg: "#1E1633", game: true },
-  onda:       { name: "Wavelength", tag: "Wavelength", c: "#9B5DE5", fg: "#FFFFFF", game: true },
+  onda:       { name: "Wavelength", tag: "Wavelength", c: "#7F4FD6", fg: "#FFFFFF", game: true },
   trivial:    { name: "Trivial", tag: "Trivial", c: "#FFC93C", fg: "#1E1633", game: true },
   cifras:     { name: "¿Cuántos?", tag: "¿Cuántos?", c: "#FF7A59", fg: "#1E1633", game: true },
   emociones:  { name: "Emociones", tag: "Emoción", c: "#F15BB5", fg: "#1E1633", game: true },
-  codigo:     { name: "Adivina el código", short: "El código", tag: "Código", c: "#2EC4B6", fg: "#1E1633", game: true, board: true, sub: "2 o más personas" },
+  codigo:     { name: "Adivina el código", short: "El código", tag: "Código", c: "#5C677D", fg: "#FFFFFF", game: true, board: true, sub: "2 o más personas" },
   palabras:   { name: "8 palabras", tag: "8 palabras", c: "#06D6A0", fg: "#1E1633", game: true },
-  stop:       { name: "Stop", tag: "Stop", c: "#EF476F", fg: "#FFFFFF", game: true, nodrag: true },
-  naval:      { name: "Batalla naval", tag: "Batalla naval", c: "#4361EE", fg: "#FFFFFF", game: true, board: true, sub: "2 personas" },
+  stop:       { name: "Stop", tag: "Stop", c: "#D62839", fg: "#FFFFFF", game: true, nodrag: true },
+  naval:      { name: "Batalla naval", tag: "Batalla naval", c: "#1D3A8A", fg: "#FFFFFF", game: true, board: true, sub: "2 personas" },
   dibujo:     { name: "Pictionary", tag: "Dibuja", c: "#FFB627", fg: "#1E1633", game: true, nodrag: true },
-  reves:      { name: "Palabras al revés", short: "Al revés", tag: "Al revés", c: "#7B2CBF", fg: "#FFFFFF", game: true },
-  cancion:    { name: "Furor", tag: "Furor", c: "#FF6B9A", fg: "#1E1633", game: true },
+  reves:      { name: "Palabras al revés", short: "Al revés", tag: "Al revés", c: "#5A189A", fg: "#FFFFFF", game: true },
+  cancion:    { name: "Furor", tag: "Furor", c: "#D4924A", fg: "#1E1633", game: true },
   mezcla:     { name: "Mezcla de todo", tag: "Mezcla", c: "#FFFFFF", fg: "#1E1633", wide: true },
-  favoritas:  { name: "Vuestras favoritas", tag: "Favorita", c: "#F0384F", fg: "#1E1633", wide: true }
+  favoritas:  { name: "Vuestras favoritas", tag: "Favorita", c: "#F7576C", fg: "#1E1633", wide: true }
 };
 // Modes that gather cards from the other decks instead of having their own.
 const META = ["mezcla", "favoritas"];
 const RULES = {
   profundas: "Contestad la pregunta por turnos, sin prisa. No hay respuestas buenas ni malas. Tocad el título para elegir si van todas mezcladas o de suaves a profundas.",
   princess: "Contad 3, 2, 1 y decid a la vez: princess treatment (un detallazo), bare minimum (lo mínimo) o red flag. Si no coincidís, a debatir.",
-  adivina: "Quien tiene el móvil adivina qué respondería la otra persona, y luego esta contesta de verdad. Apuntad los aciertos en el marcador de la carta.",
+  adivina: "Quien tiene el móvil adivina qué respondería otra persona del grupo, y luego esa persona contesta de verdad. Apuntad los aciertos en el marcador de la carta.",
   prefieres: "Elegid una opción a la vez y explicad por qué. No vale decir «ninguna».",
-  hot: "Decid si estáis de acuerdo y defended vuestra postura. Gana quien convenza a la otra persona.",
+  hot: "Decid si estáis de acuerdo y defended vuestra postura. Gana quien convenza al resto.",
   redflag: "Decid a la vez si os parece green flag, red flag o depende, y explicad por qué.",
   yonunca: "Quien lo haya hecho, lo confiesa y cuenta la historia.",
-  verdad: "Una carta para cada persona, por turnos. En los retos, girad la ruleta para ver de qué estilo os toca. Los retos son siempre solo entre vosotros dos. Si una carta no os apetece, pulsad «Pasar»: se va al final y no pasa nada.",
+  verdad: "Una carta para cada persona, por turnos. En los retos, girad la ruleta para ver de qué estilo os toca. Los retos son siempre solo entre quienes jugáis. Si una carta no os apetece, pulsad «Pasar»: se va al final y no pasa nada.",
   probable: "Señalad a la vez a quién le pega más. Si no coincidís, defended vuestra elección.",
   completa: "Terminad la frase en voz alta, por turnos, con lo primero que os salga.",
-  anecdotas: "Por turnos, contad una historia real que encaje con la carta. La otra persona puede hacer tres preguntas para sacar más detalles.",
-  loharia: "Cada persona dice qué haría de verdad en esa situación. Luego la otra dice si se lo cree o si en realidad haría otra cosa.",
-  top3: "Cada persona dice su podio del tema, del tercero al primero, y explica por qué. Si coincidís en alguno, punto para los dos.",
-  dosverdades: "Quien tiene el móvil cuenta tres cosas sobre el tema: dos verdaderas y una inventada. La otra persona adivina cuál es la mentira.",
+  anecdotas: "Por turnos, contad una historia real que encaje con la carta. El resto puede hacer tres preguntas para sacar más detalles.",
+  loharia: "Cada persona dice qué haría de verdad en esa situación. Luego el resto dice si se lo cree o si en realidad haría otra cosa.",
+  top3: "Cada persona dice su podio del tema, del tercero al primero, y explica por qué. Si coincidís en alguno, punto para cada persona que coincida.",
+  dosverdades: "Quien tiene el móvil cuenta tres cosas sobre el tema: dos verdaderas y una inventada. El resto adivina cuál es la mentira.",
   random: "Preguntas para pasar el rato, sin nada profundo. Contestad por turnos y sin pensarlo mucho.",
-  frecuencia: "A quien le toca le sale en secreto un número del 1 al 10. Tiene que decir algo del tema que para su gusto sea justo ese número, sin decir el número. Los demás adivinan cuál era, y quien acierte se lleva un punto.",
-  onda: "Quien da la pista mira en secreto dónde está la zona de colores entre los dos extremos y dice una sola cosa que caiga ahí. Por ejemplo, entre frío y caliente, «un café con leche». Los demás mueven la aguja y pulsan «Revelar». Cuanto más cerca del centro, más puntos para el equipo.",
+  frecuencia: "A quien le toca le sale en secreto un número del 1 al 10. Tiene que decir algo del tema que para su gusto sea justo ese número, sin decir el número. El resto adivina cuál era, y quien acierte se lleva un punto.",
+  onda: "Quien da la pista mira en secreto dónde está la zona de colores entre los dos extremos y dice una sola cosa que caiga ahí. Por ejemplo, entre frío y caliente, «un café con leche». El resto mueve la aguja y pulsa «Revelar». Cuanto más cerca del centro, más puntos para el equipo.",
   trivial: "Por turnos, cada persona contesta una pregunta con cuatro opciones. Si acierta, se lleva un punto.",
-  cifras: "Todos responden a la misma pregunta moviendo la barra de menos a más, y fijan su respuesta sin enseñarla. Luego se ve la respuesta buena y quien más se acerque se lleva un punto.",
+  cifras: "Cada persona responde a la misma pregunta moviendo la barra de menos a más, y fija su respuesta sin enseñarla. Luego se ve la respuesta buena y quien más se acerque se lleva un punto.",
   emociones: "A quien le toca le sale una emoción en secreto. Tiene que contar una situación, real o inventada, en la que sentiría esa emoción, sin decir la palabra. Elegid el tiempo y pulsad «Empezar». Quien la adivine se lleva un punto.",
   codigo: "Hay un código secreto de 4 cifras. Por turnos, cada persona prueba un código y la app dice cuántas cifras están en su sitio exacto. Gana quien lo complete antes. Podéis jugar con un código que se inventa la app o poniendo cada persona el suyo.",
-  palabras: "Quien explica ve 8 palabras en secreto. Para cada una dice una sola palabra relacionada o que se la recuerde, y los demás intentan adivinarla. Tenéis 20 pistas como máximo para las 8. Cada palabra acertada es un punto para quien explica.",
-  stop: "Sale una letra. Cuando empiece el tiempo, escribid un nombre, un apellido, una ciudad, una cosa, un color, una comida y un animal que empiecen por esa letra. Quien acabe puede pulsar «¡Stop!». Respuesta única: 10 puntos. Repetida: 5. A distancia cada persona escribe en su móvil y la app suma. Con un solo móvil, escribid en papel y apuntad aquí los puntos.",
+  palabras: "Quien explica ve 8 palabras en secreto. Para cada una dice una sola palabra relacionada o que se la recuerde, y el resto intenta adivinarla. Tenéis 20 pistas como máximo para las 8. Cada palabra acertada es un punto para quien explica.",
+  stop: "Sale una letra. Cuando empiece el tiempo, escribid una palabra que empiece por esa letra para cada una de las 6 categorías de la carta, que cambian en cada ronda. Quien acabe puede pulsar «¡Stop!». Respuesta única: 10 puntos. Repetida: 5. A distancia cada persona escribe en su móvil y la app suma. Con un solo móvil, escribid en papel y apuntad aquí los puntos.",
   naval: "Para 2 personas. Cada una coloca sus 4 barcos en secreto. Por turnos, disparad a una casilla del tablero de la otra persona: agua, tocado o hundido. Gana quien hunda antes toda la flota.",
-  dibujo: "Quien dibuja mira la palabra en secreto y la dibuja sin letras ni números. Los demás intentan adivinarla antes de que acabe el tiempo. A distancia, el dibujo sale en directo en todos los móviles. Quien la adivine se lleva un punto.",
-  reves: "Quien tiene el turno mira su palabra en secreto y la graba en voz alta. La app la pone al revés. Los demás escuchan ese sonido raro, lo imitan grabándose, y la app da la vuelta a su imitación: si lo han hecho bien, se oirá la palabra. Quien la adivine se lleva un punto.",
+  dibujo: "Quien dibuja mira la palabra en secreto y la dibuja sin letras ni números. El resto intenta adivinarla antes de que acabe el tiempo. A distancia, el dibujo sale en directo en todos los móviles. Quien la adivine se lleva un punto.",
+  reves: "Quien tiene el turno mira su palabra en secreto y la graba en voz alta. La app la pone al revés. El resto escucha ese sonido raro, lo imita grabándose, y la app da la vuelta a esa imitación: si lo han hecho bien, se oirá la palabra. Quien la adivine se lleva un punto.",
   cancion: "Sale una palabra y quien tiene el turno tiene que cantar un trozo de una canción que la diga antes de que acabe el tiempo. Si se queda en blanco, la siguiente persona puede robar el punto.",
   mezcla: "Cartas de todos los juegos. Cada carta dice a qué juego pertenece y el fondo toma su color.",
   favoritas: "Las cartas que habéis marcado con el corazón. Para quitar una, tocad otra vez el corazón."
@@ -1536,6 +1537,7 @@ function allCardsFor(mode, level, data) {
   if (mode === "dibujo" || mode === "reves") return data.palabras.map(text => ({ mode, text }));
   if (mode === "codigo" || mode === "naval") return [{ mode, text: "Partida" }];
   if (mode === "cifras") return data.cifras.map(([text, ans, note]) => ({ mode, text, ans, note }));
+  if (mode === "stop") return data.stop.map(text => ({ mode, text, cats: stopCatsFor(text) }));
   if (mode === "mezcla") return playable().filter(m => !MODES[m].game).flatMap(m => cardsFor(m, "todo", data));
   if (mode === "favoritas") { const f = new Set(favs()); return cardsFor("mezcla").filter(c => f.has(cardId(c))); }
   return (data[mode] || []).map(x => Array.isArray(x) ? { mode, text: x[0], ans: x[1] } : { mode, text: x }).concat(own);
@@ -1561,9 +1563,14 @@ const LEGACY = { profundas: { ligero: 20, profundo: 23, muy: 18 }, princess: 30,
 const legacyData = () => Object.fromEntries(Object.entries(DATA).map(([k, v]) => [k, Array.isArray(v) ? v.slice(0, LEGACY[k] || 0)
   : Object.fromEntries(Object.entries(v).map(([l, list]) => [l, list.slice(0, LEGACY[k][l] || 0)]))]));
 
+// Lists that the people in a room at a distance share (see shareLists).
+const SHARED = ["sm.favs", "sm.custom", "sm.hidden"];
 const store = {
   get(k, d) { try { const v = localStorage.getItem(k); return v == null ? d : JSON.parse(v); } catch (e) { return d; } },
-  set(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {} }
+  set(k, v) {
+    try { localStorage.setItem(k, JSON.stringify(v)); } catch (e) {}
+    if (SHARED.includes(k)) setTimeout(() => shareLists(), 0);
+  }
 };
 
 const cardId = c => [c.mode, c.text || `${c.a}|${c.b}`].join("|");
@@ -1578,6 +1585,63 @@ const hidden = () => store.get("sm.hidden", []);
 // The old Picante deck now lives inside Preguntillas, so its favourites and own cards move there too.
 store.set("sm.favs", favs().map(id => id.replace(/^picante\|/, "profundas|")));
 store.set("sm.custom", store.get("sm.custom", []).map(c => c.mode === "picante" ? { ...c, mode: "profundas" } : c));
+// Cards reworded in October 2026: favourites, removed cards and started decks follow them.
+// Cards swapped for a different one only keep their place in a started deck.
+const RENAMED = [
+  ["random|¿Cuál es tu bostezo de película favorito? Imítalo.", "random|Haz tu mejor bostezo de película."],
+  ["profundas|¿Alguna vez te ha flechado alguien en una sola noche?", "profundas|¿Te has enamorado alguna vez de alguien en una sola noche?"],
+  ["verdad|¿Con quién fue tu último mensaje antes de este juego?", "verdad|¿A quién le mandaste el último mensaje antes de jugar?"],
+  ["adivina|¿Qué es lo que más ruido le hace en la cabeza ahora mismo?", "adivina|¿Qué le ronda la cabeza estos días?"],
+  ["random|¿Qué olimpiada ganarías sin entrenar?", "random|¿Qué prueba de las Olimpiadas ganarías sin entrenar?"],
+  ["probable|¿Quién es más probable que se coma la comida de la otra persona?", "probable|¿Quién es más probable que se coma la comida del plato de al lado?"],
+  ...[["Narra lo que hace la otra persona como en un documental de animales, durante 30 segundos.", "Narra lo que hace la persona que elijas como en un documental de animales, durante 30 segundos."],
+    ["Imita a la otra persona durante 30 segundos.", "Imita a la persona que elijas durante 30 segundos."],
+    ["Cuenta chistes malos hasta que la otra persona se ría.", "Cuenta chistes malos hasta que alguien se ría."],
+    ["Inventa y canta una canción de diez segundos sobre la otra persona.", "Inventa y canta una canción de diez segundos sobre la persona que elijas."],
+    ["Representa una película sin hablar y que la otra persona la adivine.", "Representa una película sin hablar hasta que alguien la adivine."],
+    ["Cuenta una película solo con emojis y que la otra persona la adivine.", "Cuenta una película solo con emojis hasta que alguien la adivine."],
+    ["Deja que la otra persona te elija una pose y aguántala 20 segundos.", "Deja que te elijan una pose y aguántala 20 segundos."],
+    ["Dibuja a la otra persona en el móvil en 30 segundos.", "Dibuja a la persona que elijas en el móvil en 30 segundos."],
+    ["Aguanta 30 segundos sin reírte mientras la otra persona intenta hacerte reír.", "Aguanta 30 segundos sin reírte mientras te intentan hacer reír."],
+    ["Describe a la otra persona con tres palabras sinceras.", "Describe a la persona que elijas con tres palabras sinceras."],
+    ["Di tres cosas que te gusten de la otra persona.", "Di tres cosas que te gusten de la persona que elijas."],
+    ["Cuenta un recuerdo bonito que tengas con la otra persona.", "Cuenta un recuerdo bonito que tengas con la persona que elijas."],
+    ["Escribe en el móvil una frase bonita para la otra persona y léela en voz alta.", "Escribe en el móvil una frase bonita para la persona que elijas y léela en voz alta."],
+    ["Dale a la otra persona un cumplido que nunca le hayas dicho.", "Dale a la persona que elijas un cumplido que nunca le hayas dicho."],
+    ["Haz un brindis por la otra persona, aunque sea con agua.", "Haz un brindis por quienes jugáis, aunque sea con agua."],
+    ["Deja que la otra persona vea lo que más has escuchado esta semana.", "Enseña lo que más has escuchado esta semana."]].map(([a, b]) => [`verdad|${a}`, `verdad|${b}`])
+];
+const REPLACED = [
+  ["random|¿Cuál es la cosa más rara que has comido?", "random|¿Cuál es el regalo más raro que te han hecho?"],
+  ["random|¿Qué objeto te llevarías a una isla desierta?", "random|¿Qué objeto absurdo de tu casa no tirarías nunca?"],
+  ["random|¿Qué harías con un millón de euros en 24 horas?", "random|¿Qué habilidad absurda te gustaría dominar?"],
+  ["random|¿Qué serie verías otra vez desde cero?", "random|¿Qué serie dejaste a medias y nunca acabaste?"],
+  ["random|Si fueras un helado, ¿de qué sabor serías?", "random|Si fueras una tapa, ¿cuál serías?"],
+  ["random|¿Qué emoji usas más y qué dice de ti?", "random|¿Qué sticker o gif mandas más?"],
+  ["random|¿Pizza con piña: sí o no? Defiéndelo.", "random|¿Croquetas de jamón o de pollo? Defiéndelo."],
+  ["hot|La amistad entre ex no existe.", "hot|Dormir la siesta es un derecho, no un lujo."],
+  ["redflag|Su ex sigue en su vida de alguna forma.", "redflag|Se ríe de ti delante de otra gente."],
+  ["prefieres|Cambiar algo de tu pasado|saber una cosa de tu futuro", "prefieres|Tener un botón de pausa en la vida|uno de rebobinar"],
+  ["prefieres|Conocer a tu yo del futuro|a tu yo del pasado", "prefieres|Tener siempre la nevera llena|no tener que fregar nunca más"],
+  ["probable|¿Quién es más probable que se apunte a un plan a última hora?", "probable|¿Quién es más probable que salude a todos los perros por la calle?"],
+  ["profundas|¿Qué palabra o expresión dices demasiado?", "profundas|¿Qué canción te lleva directamente a una etapa de tu vida?"],
+  ["verdad|¿Qué te gustaría que hiciera más a menudo?", "verdad|¿Qué es lo que peor llevas que te digan?"],
+  ["trivial|¿Cuántos huesos tiene una persona adulta?", "trivial|¿Cuál es el metal más abundante en la corteza terrestre?"],
+  ["trivial|¿Qué civilización construyó Machu Picchu?", "trivial|¿Qué civilización construyó Chichén Itzá?"],
+  ["top3|3 cosas que te dan miedo", "top3|3 inventos sin los que no podrías vivir"],
+  ["top3|3 cosas que te llevarías a una isla desierta", "top3|3 canciones que no pueden faltar en un viaje en coche"],
+  ...[["Profesor", "Pizarra"], ["Médico", "Tiza"], ["Bombero", "Manguera"], ["Policía", "Casco"], ["Cocinero", "Sartén"]]
+    .flatMap(([a, b]) => ["dibujo", "reves"].map(m => [`${m}|${a}`, `${m}|${b}`]))
+];
+{
+  const swap = (list, pairs) => { const m = new Map(pairs); return list.map(id => m.get(id) || id); };
+  const all = [...RENAMED, ...REPLACED];
+  store.set("sm.favs", swap(favs(), RENAMED));
+  store.set("sm.hidden", swap(hidden(), RENAMED));
+  try {
+    for (const k of Object.keys(localStorage)) if (k.startsWith("sm.order|")) store.set(k, swap(store.get(k, []), all));
+  } catch (e) {}
+}
 function toggleFav(c) {
   const id = cardId(c), list = favs(), on = !list.includes(id);
   store.set("sm.favs", on ? [...list, id] : list.filter(x => x !== id));
@@ -1647,17 +1711,26 @@ function startMode(mode, level) {
   state.score = players().map(() => 0); state.lastPoint = null; state.spun = new Set(); state.plays = {}; state.team = 0;
   state.secs = PACES[mode] ? store.get(`sm.pace|${mode}`, PACES[mode][1]) : 0;
   state.inputs = {}; state.gid = Math.random().toString(36).slice(2, 8);
+  const k = kept[mode]; delete kept[mode];
+  if (k) Object.assign(state, k.game);
   const saved = mode === "favoritas" || net.code ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
   state.round = saved.round; state.idx = saved.idx;
   state.deck = mode === "favoritas" ? buildDeck(mode, state.level, state.round) : loadDeck();
+  if (k && k.deck && net.code) Object.assign(state, { deck: k.deck, idx: k.idx, round: k.round });
   if (state.idx > state.deck.length || state.idx < 0) state.idx = 0;
   $("home").hidden = true; $("game").hidden = false;
   $("game").classList.remove("enter"); void $("game").offsetWidth; $("game").classList.add("enter");
   render("deal");
   if (!store.get("sm.helpSeen", false)) openDialog("swipePop", "swipeOk");
 }
+// What a game had when you left it with the X (scores, answers, whose turn): going back to the
+// same game brings it back while the app stays open.
+const kept = {};
 function goHome() {
   clearInterval(timerId);
+  if (state.mode) kept[state.mode] = { game: { score: state.score, lastPoint: state.lastPoint, team: state.team, plays: state.plays, spun: state.spun, inputs: state.inputs, gid: state.gid },
+    ...(net.code ? { deck: state.deck, idx: state.idx, round: state.round } : {}) };
+  dropRecordings(null);
   $("toast").hidden = true; lastHidden = null;
   $("game").hidden = true; $("home").hidden = false;
   document.body.style.backgroundColor = "";
@@ -1668,18 +1741,18 @@ function goHome() {
 const HOW = {
   princess: "Contad 3, 2, 1 y decidlo a la vez.",
   redflag: "Decidid a la vez y explicad por qué.",
-  adivina: "Quien tenga la carta adivina primero. La otra persona dice si ha acertado.",
+  adivina: "Quien tenga la carta adivina qué respondería otra persona. Luego esa persona dice si ha acertado.",
   prefieres: "Elegid a la vez y defended vuestra respuesta.",
-  hot: "¿De acuerdo o no? Gana quien convenza a la otra persona.",
+  hot: "¿De acuerdo o no? Gana quien convenza al resto.",
   yonunca: "Si lo has hecho, confiesa y cuenta la historia.",
   verdad: "Os turnáis: una carta para cada persona. Si no te apetece, pulsa «Pasar».",
   probable: "Señalad a la vez a la persona que creéis.",
-  completa: "Termina la frase en voz alta. Luego le toca a la otra persona.",
-  anecdotas: "Cuenta la historia. La otra persona puede hacerte tres preguntas.",
-  loharia: "Di qué harías de verdad. ¿La otra persona se lo cree?",
+  completa: "Termina la frase en voz alta. Luego le toca a la siguiente persona.",
+  anecdotas: "Cuenta la historia. El resto puede hacerte tres preguntas.",
+  loharia: "Di qué harías de verdad. ¿El resto se lo cree?",
   top3: "Decid vuestro podio, del tercero al primero. ¿Coincidís en alguno?",
-  dosverdades: "Di dos verdades y una mentira sobre este tema. La otra persona adivina cuál es la mentira.",
-  random: "Contesta sin pensarlo mucho. Luego le toca a la otra persona."
+  dosverdades: "Di dos verdades y una mentira sobre este tema. El resto adivina cuál es la mentira.",
+  random: "Contesta sin pensarlo mucho. Luego le toca a la siguiente persona."
 };
 const VERDICTS = { princess: "¿Princess treatment, bare minimum o red flag?", redflag: "¿Green flag, red flag o depende?" };
 const upper = s => s.charAt(0).toUpperCase() + s.slice(1);
@@ -1733,6 +1806,67 @@ const toArr = x => Array.isArray(x) ? x : x && typeof x === "object" ? Object.va
 const roomPeople = () => toArr(net.room && net.room.ppl).filter(p => p && p.id);
 const roomNames = () => roomPeople().map(p => p.name || "Alguien");
 const dbUrl = (code, path = "") => `${FIREBASE_URL}/salas/${code}${path}.json`;
+// Rooms nobody has used for a day are cleared by the next phone that creates or joins one.
+// vivas/<code> only holds when each room was last used, by the server's clock, so the cleanup
+// never reads anyone's names or game.
+const DAY = 864e5, NOW = { ".sv": "timestamp" };
+const vivaUrl = (code = "") => `${FIREBASE_URL}/vivas${code ? `/${code}` : ""}.json`;
+function touchRoom(force) {
+  if (!net.code || (!force && Date.now() - (net.touched || 0) < 6e5)) return;
+  net.touched = Date.now();
+  fetch(vivaUrl(net.code), { method: "PUT", body: JSON.stringify(NOW) }).catch(() => {});
+}
+async function sweepRooms() {
+  try {
+    const cut = Date.now() - DAY - 36e5;
+    const r = await fetch(`${vivaUrl()}?orderBy=${encodeURIComponent('"$value"')}&endAt=${cut}&limitToFirst=20`);
+    if (!r.ok) return;
+    for (const [code, t] of Object.entries((await r.json()) || {})) {
+      if (typeof t !== "number" || t >= cut || code === net.code) continue;
+      await api(code, "", "DELETE").catch(() => {});
+      await fetch(vivaUrl(code), { method: "DELETE" }).catch(() => {});
+    }
+  } catch (e) {}
+}
+// Favourites, own cards and removed cards are shared by everyone in the room: each phone puts its
+// lists at salas/<code>/mis/<id> and copies in what the others add or take away, so every phone
+// keeps them after the game. They leave the room with their phone, or when the room is deleted.
+const LIST_KEY = { "sm.favs": "favs", "sm.custom": "custom", "sm.hidden": "hidden" };
+const itemKey = x => typeof x === "string" ? x : [x.mode, x.kind, x.text, x.a, x.b].map(v => v || "").join("|");
+function shareLists() {
+  if (!net.code || !net.room) return;
+  const mine = Object.fromEntries(SHARED.map(k => [LIST_KEY[k], store.get(k, [])]));
+  const sig = JSON.stringify(mine);
+  if (sig === net.listSig) return;
+  net.listSig = sig;
+  api(net.code, `/mis/${net.me}`, "PUT", mine).catch(() => { net.listSig = null; });
+}
+function mergeLists() {
+  const seen = net.lastMis || (net.lastMis = {});
+  let changed = false;
+  for (const [id, lists] of Object.entries((net.room && net.room.mis) || {})) {
+    if (id === net.me || !lists) continue;
+    for (const k of SHARED) {
+      const now = toArr(lists[LIST_KEY[k]]), was = seen[id] && toArr(seen[id][LIST_KEY[k]]);
+      const nowK = new Set(now.map(itemKey)), wasK = was ? new Set(was.map(itemKey)) : null;
+      // The first time, everything they have is new; after that, only what changed since.
+      const add = now.filter(x => !wasK || !wasK.has(itemKey(x))), gone = was ? was.filter(x => !nowK.has(itemKey(x))).map(itemKey) : [];
+      const list = store.get(k, []), have = new Set(list.map(itemKey));
+      const next = list.filter(x => !gone.includes(itemKey(x))).concat(add.filter(x => !have.has(itemKey(x))));
+      if (next.length !== list.length || next.some((x, i) => itemKey(x) !== itemKey(list[i]))) { store.set(k, next); changed = true; }
+    }
+    seen[id] = JSON.parse(JSON.stringify(lists));
+  }
+  if (changed && !$("home").hidden) renderHome();
+}
+// Voice recordings of Palabras al revés only stay in the room while their card is on the table.
+let recKey = null;
+function dropRecordings(next) {
+  const k = recKey; recKey = next;
+  if (!k || k === next || !net.code) return;
+  net.room = setAt(net.room, `/in/${k}`, null);
+  api(net.code, `/in/${k}`, "DELETE").catch(() => {});
+}
 async function api(code, path, method, body) {
   const r = await fetch(dbUrl(code, path), method ? { method, body: JSON.stringify(body) } : {});
   if (!r.ok) throw new Error(`HTTP ${r.status}`);
@@ -1764,7 +1898,7 @@ function listen() {
 }
 function onRoom() {
   if (!net.room || !roomPeople().length) { leaveRoom(); netMsg("La partida se ha cerrado."); return; }
-  renderNet();
+  renderNet(); mergeLists(); shareLists();
   const g = net.room.g, inSig = JSON.stringify(net.room.in || null);
   if (inSig !== net.inSig) {
     net.inSig = inSig;
@@ -1788,7 +1922,7 @@ function push() {
     const sig = `${seedFrom(state.deck.map(cardId).join("\n"))}:${state.deck.length}`;
     if (sig !== net.sig) { g.deck = state.deck; net.sig = sig; }
   }
-  net.seen = v;
+  net.seen = v; touchRoom();
   api(net.code, "/g", "PATCH", JSON.parse(JSON.stringify(g))).catch(() => netMsg("No se ha podido enviar la jugada. Revisa la conexión."));
 }
 function applyRemote(g) {
@@ -1819,7 +1953,7 @@ async function enterRoom(create) {
   try {
     if (create) {
       for (let i = 0; i < 6; i++) { code = newCode(); if (!(await api(code, "/ppl"))) break; }
-      await api(code, "", "PUT", { ppl: [{ id: net.me, name }], t: Date.now() });
+      await api(code, "", "PUT", { ppl: [{ id: net.me, name }], t: NOW });
     } else {
       const ppl = toArr(await api(code, "/ppl")).filter(p => p && p.id);
       if (!ppl.length) { netMsg("No hay ninguna partida con ese código."); return; }
@@ -1827,24 +1961,28 @@ async function enterRoom(create) {
       if (mine) mine.name = name; else ppl.push({ id: net.me, name });
       await api(code, "/ppl", "PUT", ppl);
     }
-    connect(code);
+    connect(code); sweepRooms();
     netMsg(create ? "Partida creada. Pasa el código." : "¡Dentro!");
   } catch (e) { netMsg("No se ha podido conectar. Revisa que tengas internet."); }
 }
 function connect(code) {
-  Object.assign(net, { code, room: null, sig: null, seen: null, fresh: true, offline: false });
+  Object.assign(net, { code, room: null, sig: null, seen: null, fresh: true, offline: false, listSig: null, lastMis: {} });
   store.set("sm.room", code);
-  listen(); renderNet();
+  listen(); touchRoom(true); renderHome();
 }
 async function leaveRoom() {
   const code = net.code; if (!code) return;
+  dropRecordings(null);
+  api(code, `/mis/${net.me}`, "DELETE").catch(() => {});
+  Object.assign(net, { listSig: null, lastMis: {} });
   if (net.es) net.es.close();
   Object.assign(net, { es: null, code: null, room: null });
   store.set("sm.room", null);
-  renderNet();
+  renderHome();
   try {
     const ppl = toArr(await api(code, "/ppl")).filter(p => p && p.id && p.id !== net.me);
-    await (ppl.length ? api(code, "/ppl", "PUT", ppl) : api(code, "", "DELETE"));
+    if (ppl.length) await api(code, "/ppl", "PUT", ppl);
+    else { await api(code, "", "DELETE"); await fetch(vivaUrl(code), { method: "DELETE" }); }
   } catch (e) {}
 }
 const netMsg = t => { $("netMsg").textContent = t; };
@@ -1937,7 +2075,7 @@ const GAMES = {
     html: c => { const rev = play(c).rev;
       return `<p class="q">${esc(c.text)}</p><p class="scale"><span>1 = ${esc(c.lo)}</span><span>10 = ${esc(c.hi)}</span></p>
         ${secretHTML(c, `<span class="big">${c.n}</span>`, "tu número")}
-        <p class="how">${rev ? `Era un ${c.n}. Tocad el nombre de quien lo haya acertado.` : "Di algo del tema que para ti sea justo ese número. Los demás adivinan cuál es."}</p>
+        <p class="how">${rev ? `Era un ${c.n}. Tocad el nombre de quien lo haya acertado.` : "Di algo del tema que para ti sea justo ese número. El resto adivina cuál es."}</p>
         ${rev ? "" : `<button class="act" type="button" data-act="rev">Descubrir el número</button>`}`; }
   },
   onda: {
@@ -1947,7 +2085,7 @@ const GAMES = {
         : `<button class="mini" type="button" data-act="${show ? "hide" : "peek"}">${show ? "Ocultar el objetivo" : "Ver el objetivo"}</button>`;
       return `<div class="dialwrap">${dialSVG(c.n, g, show)}<div class="ends"><span>${esc(c.a)}</span><span>${esc(c.b)}</span></div></div>
         ${secret}${p.rev ? "" : `<button class="act" type="button" data-act="reveal">Revelar</button>`}
-        <p class="team">Lleváis <b>${state.team || 0}</b> puntos entre todos</p>`; },
+        <p class="team">Lleváis <b>${state.team || 0}</b> puntos en equipo</p>`; },
     bind(card, c) {
       const svg = card.querySelector(".dial"), p = play(c);
       if (p.rev || (net.code && myTurn())) return;
@@ -1996,7 +2134,7 @@ const GAMES = {
           <div class="steps"><button type="button" data-act="down" aria-label="Menos">−</button><button type="button" data-act="up" aria-label="Más">+</button></div>
           <button class="mini" type="button" data-act="lock">Fijar mi respuesta</button></div>
           <div class="col" role="slider" tabindex="0" aria-label="Cantidad" aria-valuetext="${fmtNum(slide.v)}"><span class="lbl top">Más</span><span class="lbl bot">Menos</span><span class="thumb" style="bottom:${(posOf(slide.v) * 100).toFixed(1)}%"></span></div></div>`
-          : `<p class="how">${net.code ? "Esperando a que respondan los demás." : "Ya habéis respondido todos."}</p>`}
+          : `<p class="how">${net.code ? "Esperando al resto." : "Ya habéis respondido."}</p>`}
         ${locks}${any ? `<button class="act" type="button" data-act="rev">Ver la respuesta</button>` : ""}`; },
     bind(card, c) {
       const col = card.querySelector(".col"); if (!col) return;
@@ -2113,13 +2251,19 @@ const ownCell = (ships, theirShots) => x => { const ship = ships.some(s => s.inc
   return ship ? [shot ? "tocado mine" : "mine", shot ? "tocado" : "barco"] : shot ? ["agua", "agua"] : ["", ""]; };
 
 // ---------- Stop ----------
+// Each letter gets 6 categories out of these, different every round. They travel with the card,
+// so every phone at a distance sees the same ones.
+const STOP_ALL = ["Nombre", "Apellido", "Ciudad", "País", "Cosa", "Color", "Comida", "Animal", "Fruta o verdura", "Profesión",
+  "Persona famosa", "Película o serie", "Marca", "Deporte", "Cantante o grupo", "Cosa de casa", "Ropa", "Parte del cuerpo", "Bebida", "Cosa de viaje"];
 const STOP_CATS = ["Nombre", "Apellido", "Ciudad", "Cosa", "Color", "Comida", "Animal"];
+const stopCatsFor = letter => shuffle(STOP_ALL, rng(seedFrom(`${state.seed}|stop|${letter}|${state.round}`))).slice(0, 6);
+const stopCats = c => toArr(c.cats).length ? toArr(c.cats) : STOP_CATS;
 const norm = s => String(s || "").normalize("NFD").replace(/[̀-ͯ]/g, "").toLowerCase().trim();
 let stopDraft = { key: null, a: [] };
 // Points of each answer: 10 if only you said it, 5 if repeated, 0 if empty, wrong letter or crossed out.
 function stopPoints(c) {
   const names = players(), p = play(c), bad = p.bad || {}, ans = names.map((n, i) => toArr(getIn(c, i)));
-  return names.map((n, i) => STOP_CATS.map((cat, j) => {
+  return names.map((n, i) => stopCats(c).map((cat, j) => {
     const a = norm(ans[i][j]);
     if (!a || !a.startsWith(norm(c.text)) || bad[`${i}_${j}`]) return 0;
     return ans.some((o, k) => k !== i && norm(o[j]) === a) ? 5 : 10;
@@ -2243,13 +2387,13 @@ Object.assign(GAMES, {
     html: c => {
       const p = play(c), names = players(), k = inKey(c), me = meIdx(), secs = p.secs || paceSecs("stop");
       const letter = `<div class="letter"><small>Letra</small><b>${esc(c.text)}</b></div>`;
-      if (!p.end) return `${letter}<p class="how">${STOP_CATS.join(", ")}.</p><div class="secs"><button class="mini" type="button" data-act="go">Empezar · ${secs} s</button></div>`;
+      if (!p.end) return `${letter}<p class="how">${stopCats(c).join(", ")}.</p><div class="secs"><button class="mini" type="button" data-act="go">Empezar · ${secs} s</button></div>`;
       if (!stopEnded(c)) {
-        if (!net.code) return `${letter}<span class="countdown">${secs} s</span><ol class="cats">${STOP_CATS.map(x => `<li>${x}</li>`).join("")}</ol>
+        if (!net.code) return `${letter}<span class="countdown">${secs} s</span><ol class="cats">${stopCats(c).map(x => `<li>${x}</li>`).join("")}</ol>
           <p class="how">Escribid en papel. Quien acabe, que diga «¡Stop!».</p><button class="act" type="button" data-act="stop">¡Stop!</button>`;
-        if (stopDraft.key !== k) stopDraft = { key: k, a: STOP_CATS.map(() => "") };
+        if (stopDraft.key !== k) stopDraft = { key: k, a: stopCats(c).map(() => "") };
         return `<div class="stophead">${letter}<span class="countdown">${secs} s</span></div>
-          <div class="form">${STOP_CATS.map((x, j) => `<label><span>${x}</span><input type="text" data-j="${j}" maxlength="30" autocomplete="off" autocapitalize="sentences" value="${esc(stopDraft.a[j])}"></label>`).join("")}</div>
+          <div class="form">${stopCats(c).map((x, j) => `<label><span>${x}</span><input type="text" data-j="${j}" maxlength="30" autocomplete="off" autocapitalize="sentences" value="${esc(stopDraft.a[j])}"></label>`).join("")}</div>
           <button class="act" type="button" data-act="stop">¡Stop!</button>`;
       }
       if (!net.code) return `${letter}<p class="result">¡Tiempo!</p><p class="how">Leed las respuestas. Única: 10 puntos. Repetida: 5. Apuntadlos aquí.</p>
@@ -2257,11 +2401,11 @@ Object.assign(GAMES, {
           `<button type="button" data-act="pts" data-p="${i}" data-v="${v}">${v > 0 ? "+" : "−"}${Math.abs(v)}</button>`).join("")}</span></div>`).join("")}</div>`;
       const pts = stopPoints(c), sent = names.map((n, i) => !!getIn(c, i)), bad = p.bad || {};
       const total = i => state.deck.slice(0, state.idx + 1).reduce((s, card) => s + (card === c ? pts : stopPoints(card))[i].reduce((a, b) => a + b, 0), 0);
-      return `${letter}<div class="table-wrap"><table class="stoptable"><thead><tr><th></th>${names.map(n => `<th>${n}</th>`).join("")}</tr></thead><tbody>${STOP_CATS.map((cat, j) =>
+      return `${letter}<div class="table-wrap"><table class="stoptable"><thead><tr><th></th>${names.map(n => `<th>${n}</th>`).join("")}</tr></thead><tbody>${stopCats(c).map((cat, j) =>
         `<tr><th>${cat}</th>${names.map((n, i) => { const a = toArr(getIn(c, i))[j]; return !sent[i] ? "<td>…</td>" : `<td><button type="button" class="ans${bad[`${i}_${j}`] ? " bad" : ""}" data-act="bad" data-v="${i}_${j}"${a ? "" : " disabled"}>${esc(a || "—")}<small>${pts[i][j]}</small></button></td>`; }).join("")}</tr>`).join("")}
         <tr class="sum"><th>Ronda</th>${names.map((n, i) => `<td>${pts[i].reduce((a, b) => a + b, 0)}</td>`).join("")}</tr>
         <tr class="sum"><th>Total</th>${names.map((n, i) => `<td>${total(i)}</td>`).join("")}</tr></tbody></table></div>
-        <p class="how">${sent.every(Boolean) ? "Tocad una respuesta que no valga para tacharla." : "Esperando las respuestas de todos…"}</p>`;
+        <p class="how">${sent.every(Boolean) ? "Tocad una respuesta que no valga para tacharla." : "Esperando las respuestas del resto…"}</p>`;
     },
     bind(card, c) {
       card.querySelectorAll(".form input").forEach(inp => {
@@ -2394,7 +2538,7 @@ Object.assign(GAMES, {
         ? `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "tu palabra")}
           ${canSee(c) && !p.rev ? `<p class="how">Graba la palabra en voz alta, normal.</p>${recBtn("a", a ? "Grabar otra vez" : "🎤 Grabar")}${a ? playBtn("a", "Escuchar al revés") : ""}` : ""}`
         : `<p class="how">${a ? "" : `Esperando a que <b>${names[t]}</b> grabe su palabra.`}</p>`;
-      const step2 = !a ? "" : net.code && mine ? (b ? `<div class="steps2">${playBtn("b", "Escuchar su imitación al revés")}</div>` : "") : `<div class="steps2"><p class="padlbl">${net.code && !mine ? "Tu turno de imitar" : `Los demás: imitad el sonido`}</p>
+      const step2 = !a ? "" : net.code && mine ? (b ? `<div class="steps2">${playBtn("b", "Escuchar su imitación al revés")}</div>` : "") : `<div class="steps2"><p class="padlbl">${net.code && !mine ? "Tu turno de imitar" : `El resto: imitad el sonido`}</p>
         ${playBtn("a", "1. Escuchar al revés")}
         ${!net.code || !mine ? recBtn("b", b ? "2. Grabar otra vez" : "🎤 2. Grabar la imitación") : ""}
         ${b ? playBtn("b", "3. Escuchar la imitación al revés") : ""}</div>`;
@@ -2411,7 +2555,7 @@ Object.assign(GAMES, {
   cancion: {
     score: true,
     html: c => `<p class="padlbl">Canta una canción que diga…</p><span class="big word">${esc(c.text)}</span>
-      <p class="how">Vale cualquier canción que tenga esa palabra. Si te quedas en blanco antes de que acabe el tiempo, punto para quien la cante.</p>
+      <p class="how">Vale cualquier canción que tenga esa palabra. Si te quedas en blanco, la siguiente persona puede robarte el punto.</p>
       ${countdownHTML(c)}`
   }
 });
@@ -2436,7 +2580,9 @@ function bindGame(card, c) {
 }
 
 function cardHTML(c) {
-  let tag = c.kind || c.cat || (c.ans ? "Dato curioso" : c.level ? LEVEL_NAME[c.level] : MODES[c.mode].tag);
+  // Trivia with a hidden answer (Preguntas random). ¿Cuántos? also has answers, but it is a game.
+  const fact = c.ans && !GAMES[c.mode];
+  let tag = c.kind || c.cat || (fact ? "Dato curioso" : c.level ? LEVEL_NAME[c.level] : MODES[c.mode].tag);
   if (c.kind === "Reto" && c.style && !needsSpin(c)) tag = `Reto de ${c.style.toLowerCase()}`;
   if (META.includes(state.mode) && !c.kind) tag = MODES[c.mode].short || MODES[c.mode].name;
   if (c.custom) tag += " (vuestra)";
@@ -2447,11 +2593,11 @@ function cardHTML(c) {
   else if (c.mode === "hot") body = `<p class="q">«${t}»</p>`;
   else if (c.mode === "yonunca") body = `<p class="q">Yo nunca ${t}</p>`;
   else if (c.mode === "anecdotas") body = `<p class="q">Cuéntame una vez que ${t}.</p>`;
-  else if (c.ans) body = `<p class="q${c.text.length > 80 ? " long" : ""}">${t}</p><details class="reveal"><summary>Ver la respuesta</summary><p>${esc(c.ans)}</p></details>`;
+  else if (fact) body = `<p class="q${c.text.length > 80 ? " long" : ""}">${t}</p><details class="reveal"><summary>Ver la respuesta</summary><p>${esc(c.ans)}</p></details>`;
   else if (needsSpin(c)) body = wheelHTML();
   else body = `<p class="q${c.text.length > 80 ? " long" : ""}">${t}</p>`;
   const v = VERDICTS[c.mode] ? `<p class="verdicts">${VERDICTS[c.mode]}</p>` : "";
-  const how = c.ans ? `<p class="how">Dato curioso: decid vuestra respuesta antes de mirarla.</p>` : c.level === "chispa" ? `<p class="how">Si no te apetece, pulsa «Pasar».</p>` : HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
+  const how = fact ? `<p class="how">Dato curioso: decid vuestra respuesta antes de mirarla.</p>` : c.level === "chispa" ? `<p class="how">Si no te apetece, pulsa «Pasar».</p>` : HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
   const fav = favs().includes(cardId(c));
   const heart = `<button class="fav" type="button" aria-pressed="${fav}" aria-label="Guardar en favoritas">${icon("favoritas")}</button>`;
   const score = c.mode === "adivina" || (GAMES[c.mode] && GAMES[c.mode].score) ? scoreHTML() : "";
@@ -2491,6 +2637,7 @@ function bindScore(card) {
 function render(anim) {
   const total = state.deck.length, done = state.idx >= total, c = state.deck[state.idx];
   if (anim) { peeking = null; recErr = ""; if (typeof stopRec === "function") stopRec(); }
+  dropRecordings(!done && c.mode === "reves" && net.code ? inKey(c) : null);
   const colorMode = done ? (META.includes(state.mode) ? "profundas" : state.mode) : c.mode;
   const m = MODES[colorMode];
   document.body.style.backgroundColor = m.c;
@@ -2503,7 +2650,7 @@ function render(anim) {
   $("game").classList.toggle("board", !!MODES[state.mode].board);
   $("barfill").style.width = `${(Math.min(state.idx + 1, total) / total) * 100}%`;
   $("prev").disabled = state.idx === 0;
-  $("skip").disabled = done || state.idx >= total - 1;
+  $("skip").disabled = done;
   $("next").disabled = done;
   const table = $("table");
   table.innerHTML = `<div class="ghost-card g1"></div><div class="ghost-card g2"></div>` + (done
@@ -2617,7 +2764,9 @@ $("undoHide").onclick = () => {
 };
 
 function skipCard() {
-  if (busy || state.idx >= state.deck.length - 1) return;
+  if (busy || state.idx >= state.deck.length) return;
+  // On the last card there is nothing to put it behind, so passing just ends the deck.
+  if (state.idx === state.deck.length - 1) { throwCard(1); return; }
   const card = $("table").querySelector(".card");
   const after = () => {
     busy = false;
