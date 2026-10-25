@@ -44,19 +44,32 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 /* ---------- Home ---------- */
 #home { flex: 1; min-height: 0; overflow-y: auto; display: flex; flex-direction: column; gap: 22px; padding-bottom: 18px; scrollbar-width: none; }
 .logo { padding-top: 12px; display: flex; align-items: center; justify-content: space-between; gap: 14px; }
-.logo .cover { width: clamp(92px, 27vw, 128px); aspect-ratio: 1; max-width: 100%; flex: none; object-fit: cover; border-radius: 26px; border: 4px solid #fff;
+.logo .cover { width: clamp(64px, 19vw, 92px); aspect-ratio: 1; max-width: 100%; flex: none; object-fit: cover; border-radius: 26px; border: 4px solid #fff;
   box-shadow: 5px 5px 0 #FF5A8A; transform: rotate(5deg); }
-.logo h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(2.3rem, 10.5vw, 3.4rem); line-height: .95; min-width: 0; margin: 0;
+.logo h1 { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.9rem, 9vw, 2.8rem); line-height: .95; min-width: 0; margin: 0;
   color: #FFD84A; text-shadow: 4px 4px 0 #FF5A8A; transform: rotate(-3deg); transform-origin: left center; display: inline-block; letter-spacing: .01em; }
 .logo p { margin: 14px 0 0; color: #CFC6E6; font-weight: 700; font-size: 1.02rem; line-height: 1.4; max-width: 30ch; }
 
-.shelf-title { font-family: var(--font-display); font-size: 1.35rem; margin: 0 0 -8px; color: #fff; font-weight: 400; }
-.decks { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
-.deck { position: relative; text-align: left; border-radius: 22px; padding: 14px 14px 16px; min-height: 138px;
+.shelf-title { font-family: var(--font-display); font-size: 1.35rem; margin: 0 0 10px; color: #fff; font-weight: 400; }
+#shelves { display: grid; gap: 22px; }
+.toprow { display: flex; gap: 10px; align-items: stretch; }
+.toprow .netbtn { flex: 1; min-width: 0; }
+.toprow .settings-btn { min-height: 52px; border-radius: 18px; }
+@media (max-width: 320px) { .toprow .settings-btn span { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); } .toprow .settings-btn { padding: 0 14px; } }
+.resume { width: 100%; display: flex; align-items: center; gap: 12px; text-align: left; border-radius: 20px; padding: 12px 14px; background: #FFD84A; color: var(--ink);
+  box-shadow: 0 6px 0 #FF5A8A; }
+.resume:active { transform: translateY(5px); box-shadow: 0 1px 0 #FF5A8A; }
+.resume .badge { width: 44px; height: 44px; border-radius: 14px; background: var(--c); color: var(--fg); border: 2.5px solid var(--ink); display: grid; place-items: center; flex: none; }
+.resume b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 1.2rem; line-height: 1.1; }
+.resume small { font-weight: 800; font-size: .88rem; }
+.deck .desc { font-size: .85rem; font-weight: 800; line-height: 1.25; opacity: .92; }
+.decks { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+#quick { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+.deck { position: relative; text-align: left; border-radius: 22px; padding: 12px 12px 14px; min-height: 112px;
   background: var(--c); color: var(--fg); display: flex; flex-direction: column; gap: 8px;
   box-shadow: 0 6px 0 rgba(0,0,0,.38); transition: transform .08s ease, box-shadow .08s ease; }
 .deck:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.38); }
-.deck .badge { width: 44px; height: 44px; border-radius: 14px; background: rgba(255,255,255,.28); display: grid; place-items: center; }
+.deck .badge { width: 38px; height: 38px; border-radius: 12px; background: rgba(255,255,255,.28); display: grid; place-items: center; }
 .deck .name { font-family: var(--font-display); font-size: 1.18rem; line-height: 1.08; margin-top: auto; }
 .deck .count { font-size: .85rem; font-weight: 800; }
 .deck-wrap { position: relative; display: flex; }
@@ -73,9 +86,10 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .sheet .head h2 { margin: 0; line-height: 1.05; }
 .play { background: var(--ink); color: #fff; border-radius: 18px; padding: 14px; font-family: var(--font-display); font-size: 1.3rem; box-shadow: 0 5px 0 rgba(0,0,0,.35); }
 .play:active { transform: translateY(4px); box-shadow: 0 1px 0 rgba(0,0,0,.35); }
-.deck.wide { min-height: 0; flex-direction: row; align-items: center; gap: 14px;
+.deck.wide { min-height: 0; flex-direction: row; align-items: center; gap: 10px; padding: 10px;
   background: repeating-linear-gradient(-55deg, #FF6FAE 0 22px, #FFD84A 22px 44px, #1FC7AE 44px 66px, #6C5CFF 66px 88px, #FF5A36 88px 110px); }
-.deck.wide .label { background: var(--card); color: var(--ink); border-radius: 16px; padding: 10px 14px; display: flex; flex-direction: column; gap: 2px; }
+.deck.wide .label { background: var(--card); color: var(--ink); border-radius: 14px; padding: 8px 10px; display: flex; flex-direction: column; gap: 2px; min-width: 0; }
+.deck.wide .name { font-size: 1.05rem; }
 .deck.wide .badge { background: var(--card); color: var(--ink); flex: none; }
 .deck.wide .name { margin: 0; }
 .deck.wide.favs { background: repeating-linear-gradient(-55deg, #F0384F 0 22px, #FF6FAE 22px 44px); }
@@ -103,8 +117,9 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .round:disabled { opacity: .45; cursor: default; transform: none; }
 .round svg.i { width: 22px; height: 22px; stroke-width: 3; }
 .gt { min-width: 0; display: grid; justify-items: start; gap: 2px; }
-.gtitle { font-family: var(--font-display); font-size: 1.25rem; line-height: 1.05; max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-.lvlbtn { position: relative; font-weight: 900; font-size: .85rem; padding: 3px 10px; margin-left: -2px; min-height: 30px; border-radius: 999px; background: rgba(30,22,51,.28); color: var(--fg); }
+.gtitle { font-family: var(--font-display); font-size: clamp(1rem, 5.4vw, 1.25rem); line-height: 1.05; max-width: 100%; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+@media (max-width: 320px) { .topbar { gap: 8px; grid-template-columns: 44px 1fr auto auto; } .topbar .round { width: 44px; height: 44px; } .pill { padding: 6px 9px; font-size: .8rem; } .topbar .info { width: 36px; height: 36px; } }
+.lvlbtn { position: relative; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; font-weight: 900; font-size: .85rem; padding: 3px 10px; margin-left: -2px; min-height: 30px; border-radius: 999px; background: rgba(30,22,51,.28); color: var(--fg); }
 .lvlbtn::before { content: ""; position: absolute; inset: -7px -4px; }
 .lvlbtn::after { content: " ▾"; }
 .lvl[aria-pressed="true"] b::after { content: "  ✓"; }
@@ -214,8 +229,6 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .timer.done { animation: nudge .5s; }
 @keyframes nudge { 20%, 60% { transform: rotate(-5deg); } 40%, 80% { transform: rotate(5deg); } }
 /* Ajustes */
-.shelf { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: -8px; }
-.shelf .shelf-title { margin: 0; }
 .settings-btn { display: inline-flex; align-items: center; gap: 8px; min-height: 44px; padding: 0 16px 0 12px; border-radius: 999px; background: var(--table-2);
   color: #fff; font-weight: 900; font-size: .95rem; border: 2px solid rgba(255,255,255,.22); }
 .settings-btn svg.i { width: 20px; height: 20px; }
@@ -262,11 +275,13 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
   border: 2px solid rgba(255,255,255,.22); font-weight: 900; font-size: 1rem; text-align: left; }
 .netbtn svg.i { width: 24px; height: 24px; flex: none; }
 .netbtn.on { background: #22B573; color: var(--ink); border-color: transparent; }
+.netnote { margin: -4px 0 -6px; align-self: center; max-width: 100%; background: var(--ink); color: #fff; border-radius: 999px; padding: 6px 14px; font-weight: 800; font-size: .9rem; text-align: center; }
+.here { display: inline-block; width: 12px; height: 12px; border-radius: 50%; background: #B8B0CC; margin-right: 8px; vertical-align: 0; }
+.here.on { background: #22B573; }
 .netbox { display: grid; gap: 12px; }
 .code { margin: 0; font-family: var(--font-display); font-size: 3rem; letter-spacing: .2em; text-align: center; background: var(--soft); border-radius: 18px; padding: 6px 0 6px .2em; }
 #netCode { text-transform: uppercase; letter-spacing: .2em; font-size: 1.3rem; }
 .sheet button:disabled { opacity: .45; cursor: default; }
-#games { margin-top: -4px; }
 /* Juegos con puntos */
 .big { font-family: var(--font-display); font-size: clamp(4rem, 22vw, 5.6rem); line-height: 1; }
 .big.word { font-size: clamp(2.1rem, 10vw, 3rem); text-align: center; line-height: 1.05; }
@@ -275,6 +290,15 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .secret p { margin: 0; color: var(--muted-ink); }
 .secret p b { color: var(--ink); }
 .mini { justify-self: center; min-height: 44px; padding: 0 18px; border-radius: 14px; background: var(--ink); color: #fff; font-weight: 900; }
+.mini.soft { align-self: center; background: var(--soft); color: var(--ink); }
+.actrow { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 10px; }
+.actrow .act { flex: 1 1 auto; min-width: 0; padding: 0 12px; white-space: nowrap; }
+.actrow .mini { flex: none; }
+.card.game { gap: 10px; }
+.secret.slim { grid-template-columns: minmax(0, auto) auto; justify-content: center; align-items: center; gap: 12px; padding: 8px 12px; }
+.secret.slim .big.word { font-size: clamp(1.4rem, 6.5vw, 2.2rem); overflow-wrap: break-word; }
+@media (max-width: 320px) { .secret.slim { grid-template-columns: 1fr; gap: 6px; } }
+.secret.slim:not(.on) { grid-template-columns: 1fr; gap: 6px; }
 .act { min-height: 52px; flex: none; border-radius: 16px; border: 3px solid var(--ink); background: var(--c); color: var(--fg); font-family: var(--font-display); font-size: 1.2rem; box-shadow: 0 4px 0 var(--ink); }
 .act:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
 .scale { display: flex; justify-content: space-between; gap: 12px; margin: -8px 0 0; font-weight: 800; font-size: .9rem; color: var(--muted-ink); }
@@ -292,15 +316,15 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .dial { width: 100%; max-width: 380px; justify-self: center; display: block; touch-action: none; }
 .ends { display: flex; justify-content: space-between; gap: 12px; font-weight: 900; font-size: 1.05rem; }
 .ends span:last-child { text-align: right; }
-.cifra { display: grid; grid-template-columns: 1fr 64px; gap: 14px; min-height: 240px; }
+.cifra { display: grid; grid-template-columns: minmax(0, 1fr) 56px; gap: 12px; min-height: 220px; }
 .cifra .val { display: grid; align-content: center; gap: 12px; min-width: 0; }
 .cifra .val small { font-weight: 800; color: var(--muted-ink); font-size: .9rem; }
 .cifra .val b.cval { font-family: var(--font-display); font-weight: 400; font-size: clamp(1.7rem, 8vw, 2.3rem); line-height: 1.05; overflow-wrap: anywhere; }
 .cifra .mini { justify-self: start; }
 .steps { display: flex; gap: 8px; }
-.steps button { width: 56px; height: 48px; border-radius: 14px; border: 3px solid var(--ink); background: var(--soft); color: var(--ink); font-size: 1.6rem; font-weight: 900; line-height: 1; }
+.steps button { flex: 1 1 0; min-width: 44px; max-width: 56px; height: 48px; border-radius: 14px; border: 3px solid var(--ink); background: var(--soft); color: var(--ink); font-size: 1.6rem; font-weight: 900; line-height: 1; }
 .col { position: relative; border: 3px solid var(--ink); border-radius: 999px; background: linear-gradient(to top, var(--soft), var(--c)); touch-action: none; cursor: ns-resize; }
-.col .thumb { position: absolute; left: 50%; width: 56px; height: 30px; border-radius: 12px; background: var(--ink); border: 3px solid #fff; transform: translate(-50%, 50%); }
+.col .thumb { position: absolute; left: 50%; width: 48px; height: 30px; border-radius: 12px; background: var(--ink); border: 3px solid #fff; transform: translate(-50%, 50%); }
 .col .lbl { position: absolute; left: 0; right: 0; text-align: center; font-weight: 900; font-size: .72rem; }
 .col .top { top: 10px; } .col .bot { bottom: 10px; }
 .locks { display: flex; flex-wrap: wrap; gap: 8px; }
@@ -382,9 +406,12 @@ button.pword:disabled { cursor: default; }
 .tally button { min-width: 48px; min-height: 44px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); font-weight: 900; margin-left: 4px; }
 
 /* Tanda 3: Pictionary, Palabras al revés, Canta una canción */
-canvas.board { display: block; align-self: center; width: min(100%, 44vh); aspect-ratio: 1; flex: none; background: #fff; border: 3px solid var(--ink); border-radius: 18px; touch-action: none; cursor: crosshair; }
-.inks { display: flex; align-items: center; justify-content: center; gap: 8px; flex-wrap: wrap; }
-.ink { width: 36px; height: 36px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--ink); }
+.boardwrap { flex: 1 1 0; min-height: 130px; container-type: size; display: grid; place-items: center; }
+canvas.board { display: block; width: min(100cqw, 100cqh); aspect-ratio: 1; background: #fff; border: 3px solid var(--ink); border-radius: 18px; touch-action: none; cursor: crosshair; }
+.inks { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+.inks .tool { width: 40px; height: 40px; border-radius: 50%; background: var(--soft); color: var(--ink); font-size: 1.4rem; font-weight: 900; display: grid; place-items: center; }
+.inks .tool svg.i { width: 22px; height: 22px; }
+.ink { width: 40px; height: 40px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--ink); }
 .ink[aria-pressed="true"] { box-shadow: 0 0 0 4px var(--ink); }
 .steps2 { display: grid; gap: 10px; justify-items: center; background: var(--soft); border-radius: 18px; padding: 12px; }
 .act.rec { width: 100%; }
@@ -407,11 +434,10 @@ canvas.board { display: block; align-self: center; width: min(100%, 44vh); aspec
       <h1>Preguntas de Sara</h1>
       <img class="cover" src="data:image/jpeg;base64,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" alt="Sara">
     </header>
-    <button class="netbtn" id="openNet" type="button" aria-haspopup="dialog"></button>
-    <div class="shelf"><h2 class="shelf-title">Modos de juego</h2><button class="settings-btn" id="openSet" type="button" aria-haspopup="dialog"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"></svg>Ajustes</button></div>
-    <div class="decks" id="decks"></div>
-    <h2 class="shelf-title">Juegos con puntos</h2>
-    <div class="decks" id="games"></div>
+    <div class="toprow"><button class="netbtn" id="openNet" type="button" aria-haspopup="dialog"></button><button class="settings-btn" id="openSet" type="button" aria-haspopup="dialog"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"></svg><span>Ajustes</span></button></div>
+    <div id="resume"></div>
+    <div class="decks" id="quick"></div>
+    <div id="shelves"></div>
   </section>
 
   <section id="game" hidden>
@@ -423,6 +449,7 @@ canvas.board { display: block; align-self: center; width: min(100%, 44vh); aspec
       <button class="info" id="gameInfo" type="button" aria-label="Cómo se juega">i</button>
     </div>
     <div class="bar"><i id="barfill"></i></div>
+    <p class="netnote" id="netNote" role="status" hidden></p>
     <div class="table" id="table"></div>
     <div class="controls">
       <button class="round" id="prev" type="button" aria-label="Carta anterior"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"><path d="M15 5l-7 7 7 7"/></svg></button>
@@ -461,7 +488,7 @@ canvas.board { display: block; align-self: center; width: min(100%, 44vh); aspec
     <button class="more" id="addName" type="button">Añadir persona</button>
     <hr class="sep">
     <p class="group-title">Vuestras cartas</p>
-    <p class="hint">Escribid vuestras propias cartas. Se guardan solo en este móvil.</p>
+    <p class="hint">Escribid vuestras propias cartas. Se guardan en este móvil y, si jugáis a distancia, también en el de quien juega con vosotros.</p>
     <div class="field"><label for="cMode">Juego</label><select id="cMode"></select></div>
     <div class="field" id="cKindWrap" hidden><label for="cKind">Tipo</label><select id="cKind"><option value="Verdad">Verdad</option><option value="Reto">Reto</option></select></div>
     <div class="field"><label for="cText" id="cTextLabel">Texto de la carta</label><textarea id="cText" rows="2" maxlength="160"></textarea></div>
@@ -1449,7 +1476,7 @@ const MODES = {
   reves:      { name: "Palabras al revés", short: "Al revés", tag: "Al revés", c: "#5A189A", fg: "#FFFFFF", game: true },
   cancion:    { name: "Furor", tag: "Furor", c: "#D4924A", fg: "#1E1633", game: true },
   mezcla:     { name: "Mezcla de todo", tag: "Mezcla", c: "#FFFFFF", fg: "#1E1633", wide: true },
-  favoritas:  { name: "Vuestras favoritas", tag: "Favorita", c: "#F7576C", fg: "#1E1633", wide: true }
+  favoritas:  { name: "Vuestras favoritas", short: "Favoritas", tag: "Favorita", c: "#F7576C", fg: "#1E1633", wide: true }
 };
 // Modes that gather cards from the other decks instead of having their own.
 const META = ["mezcla", "favoritas"];
@@ -1542,9 +1569,6 @@ function allCardsFor(mode, level, data) {
   if (mode === "favoritas") { const f = new Set(favs()); return cardsFor("mezcla").filter(c => f.has(cardId(c))); }
   return (data[mode] || []).map(x => Array.isArray(x) ? { mode, text: x[0], ans: x[1] } : { mode, text: x }).concat(own);
 }
-// Home order: neighbours on the shelf never share a similar colour.
-const HOME_ORDER = ["profundas", "princess", "adivina", "prefieres", "probable", "redflag", "yonunca", "verdad", "hot", "completa", "anecdotas", "loharia", "top3", "random", "dosverdades",
-  "frecuencia", "onda", "trivial", "cifras", "emociones", "codigo", "palabras", "stop", "naval", "dibujo", "reves", "cancion"];
 // Decks with their own cards.
 const playable = () => Object.keys(MODES).filter(m => !META.includes(m));
 function buildDeck(mode, level, round, data = DATA) {
@@ -1654,17 +1678,39 @@ store.set("sm.code", state.seed);
 const $ = id => document.getElementById(id);
 const vars = m => `--c:${MODES[m].c};--fg:${MODES[m].fg};`;
 
+// The home shelf, grouped by what you feel like doing. Neighbours never share a similar colour.
+const SHELVES = [
+  ["Para conoceros", ["profundas", "adivina", "anecdotas", "completa", "top3", "random"]],
+  ["Para debatir", ["princess", "prefieres", "redflag", "probable", "hot", "loharia"]],
+  ["Para reír y atreverse", ["verdad", "yonunca", "dosverdades"]],
+  ["Juegos con puntos", ["frecuencia", "onda", "trivial", "cifras", "emociones", "codigo", "palabras", "stop", "naval", "dibujo", "reves", "cancion"]]
+];
+const DESC = {
+  profundas: "Para conoceros de verdad", adivina: "¿Sabes qué contestaría?", anecdotas: "Historias reales que contar", completa: "Termina la frase sin pensar",
+  top3: "Tu podio de cada tema", random: "Para pasar el rato", princess: "¿Detallazo, lo mínimo o red flag?", prefieres: "Dos opciones, solo una",
+  redflag: "¿Te parece bien o mal?", probable: "¿A quién le pega más?", hot: "Opiniones para discutir", loharia: "¿Qué harías de verdad?",
+  verdad: "Con ruleta de retos", yonunca: "Confiesa lo que has hecho", dosverdades: "¿Cuál es la mentira?",
+  frecuencia: "Adivina el número", onda: "Pistas entre dos extremos", trivial: "Cuatro opciones, una buena", cifras: "¿Quién se acerca más?",
+  emociones: "Cuéntala sin decirla", codigo: "Descifra 4 cifras", palabras: "8 palabras, 20 pistas", stop: "Una letra, 6 categorías",
+  naval: "Hunde la flota, para 2", dibujo: "Dibuja y que adivinen", reves: "Tu voz del revés", cancion: "Canta con la palabra"
+};
+// "Seguir": the last deck played on this phone, if it was left halfway.
+function resumeInfo() {
+  const last = store.get("sm.last", null);
+  if (!last || !MODES[last.mode] || META.includes(last.mode) || MODES[last.mode].board) return null;
+  const pos = store.get(`sm.pos|${last.mode}|${last.level}`, null), total = cardsFor(last.mode, last.level).length;
+  if (!pos || !pos.idx || pos.idx >= total) return null;
+  return { ...last, at: pos.idx + 1, total };
+}
 function renderHome() {
-  const order = [...META, ...HOME_ORDER.filter(m => playable().includes(m))];
-  const tile = ([k, m]) => {
-    const n = cardsFor(k, "todo").length;
-    if (k === "favoritas" && !n) return "";
-    const info = `<button class="info" type="button" data-info="${k}" aria-label="Cómo se juega a ${m.name}">i</button>`;
-    if (m.wide) return `<div class="deck-wrap wide"><button class="deck wide${k === "favoritas" ? " favs" : ""}" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${m.name}</span><span class="count">${k === "favoritas" ? `${n} ${n === 1 ? "carta guardada" : "cartas guardadas"}` : `${n} cartas de todos los juegos`}</span></span></button>${info}</div>`;
-    return `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${m.name}</span><span class="count">${m.sub || `${n} cartas`}</span></button>${info}</div>`;
-  };
-  $("decks").innerHTML = order.filter(k => !MODES[k].game).map(k => tile([k, MODES[k]])).join("");
-  $("games").innerHTML = order.filter(k => MODES[k].game).map(k => tile([k, MODES[k]])).join("");
+  const r = resumeInfo();
+  $("resume").innerHTML = r ? `<button class="resume" type="button" data-mode="${r.mode}" data-level="${r.level}"><span class="badge" style="${vars(r.mode)}">${icon(r.mode)}</span>
+    <span><b>Seguir con ${esc(MODES[r.mode].short || MODES[r.mode].name)}</b><small>Carta ${r.at} de ${r.total}</small></span></button>` : "";
+  const nf = cardsFor("favoritas", "todo").length;
+  const wide = (k, sub) => `<div class="deck-wrap"><button class="deck wide${k === "favoritas" ? " favs" : ""}" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${MODES[k].short || MODES[k].name}</span><span class="count">${sub}</span></span></button></div>`;
+  $("quick").innerHTML = wide("mezcla", "De todos los juegos") + (nf ? wide("favoritas", `${nf} ${nf === 1 ? "guardada" : "guardadas"}`) : "");
+  const tile = k => `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${MODES[k].name}</span><span class="desc">${DESC[k]}</span></button></div>`;
+  $("shelves").innerHTML = SHELVES.map(([title, list]) => `<section><h2 class="shelf-title">${title}</h2><div class="decks">${list.filter(k => MODES[k]).map(tile).join("")}</div></section>`).join("");
   renderNet();
   renderLevels();
 }
@@ -1718,6 +1764,7 @@ function startMode(mode, level) {
   state.deck = mode === "favoritas" ? buildDeck(mode, state.level, state.round) : loadDeck();
   if (k && k.deck && net.code) Object.assign(state, { deck: k.deck, idx: k.idx, round: k.round });
   if (state.idx > state.deck.length || state.idx < 0) state.idx = 0;
+  if (!net.code && mode !== "favoritas") store.set("sm.last", { mode, level: state.level });
   $("home").hidden = true; $("game").hidden = false;
   $("game").classList.remove("enter"); void $("game").offsetWidth; $("game").classList.add("enter");
   render("deal");
@@ -1859,6 +1906,52 @@ function mergeLists() {
   }
   if (changed && !$("home").hidden) renderHome();
 }
+// Who is here: every phone says so every 30 s at salas/<code>/vivo/<id>, and says 0 when it is
+// closed or put away. Someone counts as gone when nothing has come from them for 75 s.
+const BEAT = 30e3, AWAY = 75e3, heard = {};
+let beatId = null, noteId = null;
+function beat(here) {
+  if (!net.code) return;
+  fetch(dbUrl(net.code, `/vivo/${net.me}`), { method: "PUT", body: JSON.stringify(here ? NOW : 0), keepalive: true }).catch(() => {});
+}
+function startBeat() {
+  clearInterval(beatId); beat(!document.hidden);
+  let n = 0;
+  beatId = setInterval(() => { if (++n % 3 === 0 && !document.hidden) beat(true); checkHere(); }, BEAT / 3);
+}
+const isHere = id => id === net.me ? !net.offline : !!heard[id] && Date.now() - heard[id] < AWAY;
+function trackHere() {
+  const v = (net.room && net.room.vivo) || {}, last = net.lastVivo || (net.lastVivo = {});
+  for (const p of roomPeople()) {
+    if (p.id === net.me) continue;
+    if (v[p.id] !== last[p.id]) { heard[p.id] = v[p.id] ? Date.now() : 0; last[p.id] = v[p.id]; }
+    else if (heard[p.id] === undefined) heard[p.id] = Date.now();
+  }
+  checkHere();
+}
+function checkHere() {
+  if (!net.code) return;
+  const here = net.here || (net.here = {});
+  let back = null, changed = false;
+  for (const p of roomPeople()) {
+    if (p.id === net.me) continue;
+    const now = isHere(p.id);
+    if (here[p.id] !== undefined && here[p.id] !== now) { changed = true; if (now) back = p.name || "Alguien"; }
+    here[p.id] = now;
+  }
+  if (changed) { renderNet(); renderNote(back && `${back} ha vuelto`); }
+}
+// The note above the card: no connection, someone gone (while it lasts) or someone back (a moment).
+function renderNote(flash) {
+  const away = net.code ? roomPeople().filter(p => p.id !== net.me && !isHere(p.id)).map(p => esc(p.name || "Alguien")) : [];
+  const text = !net.code ? "" : net.offline ? "Sin conexión. Reconectando…"
+    : away.length ? `${away.join(" y ")} ${away.length > 1 ? "se han desconectado" : "se ha desconectado"}` : flash || "";
+  clearTimeout(noteId);
+  if (flash && text === flash) noteId = setTimeout(() => renderNote(), 4000);
+  $("netNote").innerHTML = text; $("netNote").hidden = !text;
+}
+document.addEventListener("visibilitychange", () => beat(!document.hidden));
+addEventListener("pagehide", () => beat(false));
 // Voice recordings of Palabras al revés only stay in the room while their card is on the table.
 let recKey = null;
 function dropRecordings(next) {
@@ -1893,12 +1986,12 @@ function listen() {
   };
   es.addEventListener("put", e => on(e, false));
   es.addEventListener("patch", e => on(e, true));
-  es.onopen = () => { net.offline = false; renderNet(); };
-  es.onerror = () => { net.offline = true; renderNet(); };
+  es.onopen = () => { net.offline = false; renderNet(); renderNote(); };
+  es.onerror = () => { net.offline = true; renderNet(); renderNote(); };
 }
 function onRoom() {
   if (!net.room || !roomPeople().length) { leaveRoom(); netMsg("La partida se ha cerrado."); return; }
-  renderNet(); mergeLists(); shareLists();
+  trackHere(); renderNet(); mergeLists(); shareLists();
   const g = net.room.g, inSig = JSON.stringify(net.room.in || null);
   if (inSig !== net.inSig) {
     net.inSig = inSig;
@@ -1966,14 +2059,16 @@ async function enterRoom(create) {
   } catch (e) { netMsg("No se ha podido conectar. Revisa que tengas internet."); }
 }
 function connect(code) {
-  Object.assign(net, { code, room: null, sig: null, seen: null, fresh: true, offline: false, listSig: null, lastMis: {} });
+  Object.assign(net, { code, room: null, sig: null, seen: null, fresh: true, offline: false, listSig: null, lastMis: {}, lastVivo: {}, here: {} });
   store.set("sm.room", code);
-  listen(); touchRoom(true); renderHome();
+  listen(); touchRoom(true); startBeat(); renderHome();
 }
 async function leaveRoom() {
   const code = net.code; if (!code) return;
   dropRecordings(null);
   api(code, `/mis/${net.me}`, "DELETE").catch(() => {});
+  api(code, `/vivo/${net.me}`, "DELETE").catch(() => {});
+  clearInterval(beatId); renderNote();
   Object.assign(net, { listSig: null, lastMis: {} });
   if (net.es) net.es.close();
   Object.assign(net, { es: null, code: null, room: null });
@@ -1996,7 +2091,8 @@ function renderNet() {
   $("netOff").hidden = ready;
   if (!on) return;
   $("netShowCode").textContent = net.code;
-  $("netPeople").innerHTML = roomPeople().map(p => `<li><span>${esc(p.name || "Alguien")}${p.id === net.me ? " <small>(tú)</small>" : ""}</span></li>`).join("");
+  $("netPeople").innerHTML = roomPeople().map(p => { const on = isHere(p.id);
+    return `<li><span><i class="here${on ? " on" : ""}" aria-hidden="true"></i>${esc(p.name || "Alguien")}${p.id === net.me ? " <small>(tú)</small>" : ""}<span class="sr-only">, ${on ? "en línea" : "sin conexión"}</span></span></li>`; }).join("");
 }
 function closeOpenDialogs() {
   for (const id of ["netSheet", "setSheet", "infoSheet", "sheet", "paceSheet", "swipePop"]) if (!$(id).hidden) closeDialog(id);
@@ -2015,10 +2111,11 @@ const myTurn = () => !net.code || turnIdx() === meIdx();
 // phone they tap to look while the others look away.
 let peeking = null;
 const canSee = c => !!play(c).rev || (net.code ? myTurn() : peeking === playKey(c));
-function secretHTML(c, inner, what) {
-  if (canSee(c)) return `<div class="secret on">${inner}${!net.code && !play(c).rev ? `<button class="mini" type="button" data-act="hide">Ocultar</button>` : ""}</div>`;
-  if (net.code) return `<div class="secret"><p>Solo lo ve <b>${players()[turnIdx()]}</b>.</p></div>`;
-  return `<div class="secret"><button class="mini" type="button" data-act="peek">Ver ${what}</button><p>Solo quien tiene el turno. Que no mire nadie más.</p></div>`;
+function secretHTML(c, inner, what, slim) {
+  const cls = slim ? " slim" : "";
+  if (canSee(c)) return `<div class="secret on${cls}">${inner}${!net.code && !play(c).rev ? `<button class="mini" type="button" data-act="hide">Ocultar</button>` : ""}</div>`;
+  if (net.code) return `<div class="secret${cls}"><p>Solo lo ve <b>${players()[turnIdx()]}</b>.</p></div>`;
+  return `<div class="secret${cls}"><button class="mini" type="button" data-act="peek">Ver ${what}</button><p>Solo quien tiene el turno. Que no mire nadie más.</p></div>`;
 }
 const pickOf = (c, k) => seedFrom(`${state.seed}|${c}|${state.round}`) % k;
 const grp = x => String(x).replace(/\B(?=(\d{3})+(?!\d))/g, ".");
@@ -2055,7 +2152,15 @@ const SECS = PACES;
 const paceSecs = mode => state.secs || store.get(`sm.pace|${mode}`, PACES[mode][1]);
 function countdownHTML(c) {
   const p = play(c), secs = p.secs || paceSecs(c.mode);
-  return `<div class="secs">${p.end ? `<span class="countdown" aria-live="off">${secs} s</span>` : `<button class="mini" type="button" data-act="go">Empezar · ${secs} s</button>`}</div>`;
+  return p.end ? `<div class="secs"><span class="countdown" aria-live="off">${secs} s</span></div>` : `<button class="act" type="button" data-act="go">Empezar · ${secs} s</button>`;
+}
+// Games with a timer and a secret: one main button per step. Before the time starts it is
+// "Empezar" (revealing early stays possible, smaller); once it runs, the reveal button.
+function timedActs(c, revLabel) {
+  const p = play(c), secs = p.secs || paceSecs(c.mode);
+  if (p.rev) return "";
+  return p.end ? `<div class="actrow"><span class="countdown" aria-live="off">${secs} s</span><button class="act" type="button" data-act="rev">${revLabel}</button></div>`
+    : `<div class="actrow"><button class="act" type="button" data-act="go">Empezar · ${secs} s</button><button class="mini soft" type="button" data-act="rev">${revLabel}</button></div>`;
 }
 function runCountdown(card, c) {
   const p = play(c), el = card.querySelector(".countdown"); if (!el || !p.end) return;
@@ -2165,10 +2270,9 @@ const GAMES = {
   emociones: {
     score: true,
     html: c => { const rev = play(c).rev;
-      return `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "tu emoción")}
-        <p class="how">${rev ? "Tocad el nombre de quien la haya adivinado." : "Cuenta una situación, real o inventada, en la que sentirías esa emoción, sin decir la palabra."}</p>
-        ${countdownHTML(c)}
-        ${rev ? "" : `<button class="act" type="button" data-act="rev">Revelar la emoción</button>`}`; }
+      return `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "tu emoción", true)}
+        <p class="how">${rev ? `Era «${esc(c.text)}». Tocad el nombre de quien la haya adivinado.` : "Cuenta una situación, real o inventada, en la que sentirías esa emoción, sin decir la palabra."}</p>
+        ${timedActs(c, "Revelar")}`; }
   }
 };
 // What each person enters at the same time as the others (a secret code, a fleet, the Stop answers)
@@ -2387,7 +2491,7 @@ Object.assign(GAMES, {
     html: c => {
       const p = play(c), names = players(), k = inKey(c), me = meIdx(), secs = p.secs || paceSecs("stop");
       const letter = `<div class="letter"><small>Letra</small><b>${esc(c.text)}</b></div>`;
-      if (!p.end) return `${letter}<p class="how">${stopCats(c).join(", ")}.</p><div class="secs"><button class="mini" type="button" data-act="go">Empezar · ${secs} s</button></div>`;
+      if (!p.end) return `${letter}<p class="how">${stopCats(c).join(", ")}.</p><button class="act" type="button" data-act="go">Empezar · ${secs} s</button>`;
       if (!stopEnded(c)) {
         if (!net.code) return `${letter}<span class="countdown">${secs} s</span><ol class="cats">${stopCats(c).map(x => `<li>${x}</li>`).join("")}</ol>
           <p class="how">Escribid en papel. Quien acabe, que diga «¡Stop!».</p><button class="act" type="button" data-act="stop">¡Stop!</button>`;
@@ -2495,12 +2599,11 @@ Object.assign(GAMES, {
     score: true,
     html: c => {
       const rev = play(c).rev, can = drawer(c) && !rev;
-      return `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "la palabra")}
-        <canvas class="board" width="1000" height="1000" aria-label="Dibujo"></canvas>
+      return `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "la palabra", true)}
+        <div class="boardwrap"><canvas class="board" width="1000" height="1000" aria-label="Dibujo"></canvas></div>
         ${can ? `<div class="inks">${INK.map(col => `<button type="button" class="ink" data-act="ink" data-v="${col}" style="background:${col}" aria-label="Color" aria-pressed="${col === inkColor}"></button>`).join("")}
-          <button class="undo" type="button" data-act="undoline">Deshacer</button><button class="undo" type="button" data-act="clear">Borrar todo</button></div>` : ""}
-        ${countdownHTML(c)}
-        ${rev ? `<p class="how">Era «${esc(c.text)}». Tocad el nombre de quien lo haya adivinado.</p>` : `<button class="act" type="button" data-act="rev">¡Adivinado! Ver la palabra</button>`}`;
+          <button class="tool" type="button" data-act="undoline" aria-label="Deshacer el último trazo">↶</button><button class="tool" type="button" data-act="clear" aria-label="Borrar todo el dibujo">${icon("quitar")}</button></div>` : ""}
+        ${rev ? `<p class="how">Era «${esc(c.text)}». Tocad el nombre de quien lo haya adivinado.</p>` : timedActs(c, "¡Adivinado!")}`;
     },
     bind(card, c) {
       const cv = card.querySelector(".board"); paint(cv, c);
@@ -2600,7 +2703,8 @@ function cardHTML(c) {
   const how = fact ? `<p class="how">Dato curioso: decid vuestra respuesta antes de mirarla.</p>` : c.level === "chispa" ? `<p class="how">Si no te apetece, pulsa «Pasar».</p>` : HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
   const fav = favs().includes(cardId(c));
   const heart = `<button class="fav" type="button" aria-pressed="${fav}" aria-label="Guardar en favoritas">${icon("favoritas")}</button>`;
-  const score = c.mode === "adivina" || (GAMES[c.mode] && GAMES[c.mode].score) ? scoreHTML() : "";
+  // Pictionary needs the room for the drawing: its scores show once the word is out.
+  const score = (c.mode === "adivina" || (GAMES[c.mode] && GAMES[c.mode].score)) && !(c.mode === "dibujo" && !play(c).rev) ? scoreHTML() : "";
   const ppl = net.code ? roomNames() : people(), who = ppl.length > 1 && !NOTURN.includes(c.mode) ? esc(ppl[state.idx % ppl.length]) : "";
   const turn = !who ? "" : net.code && TURNS.includes(c.mode) && myTurn() ? `<p class="turn"><b>Te toca a ti</b></p>`
     : `<p class="turn">${TURNS.includes(c.mode) ? TURN_LABEL[c.mode] || "Le toca a" : "Empieza"} <b>${who}</b></p>`;
@@ -2656,7 +2760,7 @@ function render(anim) {
   table.innerHTML = `<div class="ghost-card g1"></div><div class="ghost-card g2"></div>` + (done
     ? `<div class="card end-card${anim ? " deal" : ""}"><div class="end"><h2>¡Mazo terminado!</h2><p class="how">Habéis jugado las ${total} cartas.</p>
         <div class="acts"><button class="next again" type="button" id="reshuffle">Barajar otra vez</button><button class="skip other" type="button" id="otherGame">Otro juego</button></div></div></div>`
-    : `<div class="card${anim ? ` ${anim}` : ""}" role="group" aria-roledescription="carta">${cardHTML(c)}</div>`);
+    : `<div class="card${GAMES[c.mode] ? " game" : ""}${anim ? ` ${anim}` : ""}" role="group" aria-roledescription="carta">${cardHTML(c)}</div>`);
   if (anim) $("live").textContent = done ? `Mazo terminado. Habéis pasado las ${total} cartas.`
     : `Carta ${state.idx + 1} de ${total}. ${[...table.querySelector(".card").children].filter(e => !e.matches(".score")).map(e => e.innerText).join(" ").replace(/\s+/g, " ")}`;
   clearInterval(timerId);
@@ -2816,8 +2920,11 @@ function openPace(mode, inGame) {
   openDialog("paceSheet", "cancelPace");
   $("paces").querySelector('[aria-pressed="true"]').focus();
 }
-function openMode(mode) {
-  if (PACES[mode]) openPace(mode, false); else startMode(mode);
+// The first time you open a game on this phone, its rules come first. Later they stay behind the "i".
+function openMode(mode, level) {
+  const seen = store.get("sm.rulesSeen", []);
+  if (!META.includes(mode) && !seen.includes(mode)) { store.set("sm.rulesSeen", [...seen, mode]); openInfo(mode); return; }
+  if (PACES[mode]) openPace(mode, false); else startMode(mode, level);
 }
 // Dialogs: the page behind goes inert so focus and screen readers stay inside, and focus
 // returns to whatever opened the dialog.
@@ -2850,10 +2957,9 @@ $("gameInfo").onclick = () => openInfo(META.includes(state.mode) ? state.deck[Ma
 const onShelf = e => {
   const i = e.target.closest("[data-info]"); if (i) { openInfo(i.dataset.info); return; }
   const b = e.target.closest("[data-mode]"); if (!b) return;
-  openMode(b.dataset.mode);
+  openMode(b.dataset.mode, b.dataset.level);
 };
-$("decks").addEventListener("click", onShelf);
-$("games").addEventListener("click", onShelf);
+for (const id of ["resume", "quick", "shelves"]) $(id).addEventListener("click", onShelf);
 $("lvls").addEventListener("click", e => {
   const b = e.target.closest("[data-level]"); if (!b) return;
   store.set("sm.lvl", b.dataset.level); renderLevels();
