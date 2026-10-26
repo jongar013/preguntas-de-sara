@@ -82,6 +82,10 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .info:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
 .topbar .info { position: relative; top: auto; right: auto; width: 40px; height: 40px; }
 .rules { font-weight: 700; font-size: 1.05rem; line-height: 1.5; margin: 0 0 6px; color: var(--ink); }
+.rules p { margin: 0 0 8px; }
+.rules ol { margin: 0 0 8px; padding-left: 1.4em; display: grid; gap: 4px; }
+.rules .example { background: var(--soft); border-radius: 14px; padding: 10px 12px; font-weight: 700; font-size: .98rem; }
+.rules .example b { font-weight: 900; }
 .sheet .head { display: flex; align-items: center; gap: 12px; }
 .sheet .head .badge { width: 46px; height: 46px; border-radius: 14px; background: var(--c); color: var(--fg); border: 2.5px solid var(--ink); display: grid; place-items: center; flex: none; }
 .sheet .head h2 { margin: 0; line-height: 1.05; }
@@ -265,6 +269,10 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .names .nm input { width: 100%; min-width: 0; }
 .names .nm.x input { padding-right: 44px; }
 .names .del { position: absolute; right: 0; top: 50%; transform: translateY(-50%); width: 44px; height: 44px; display: grid; place-items: center; font-size: 1.4rem; font-weight: 900; color: var(--muted-ink); }
+.mixlist { display: flex; flex-wrap: wrap; gap: 8px; }
+.mixchip { display: inline-flex; align-items: center; gap: 6px; min-height: 44px; padding: 0 12px 0 8px; border-radius: 999px; border: 2.5px solid var(--ink); background: var(--soft); color: var(--muted-ink); font-weight: 900; font-size: .92rem; text-decoration: line-through; }
+.mixchip svg.i { width: 22px; height: 22px; padding: 3px; border-radius: 50%; background: #fff; color: var(--ink); }
+.mixchip[aria-pressed="true"] { background: var(--c); color: var(--fg); text-decoration: none; }
 .more { justify-self: start; min-height: 44px; padding: 0 16px; border-radius: 14px; background: var(--soft); color: var(--ink); font-weight: 900; }
 .switch { display: flex; align-items: center; justify-content: space-between; gap: 14px; min-height: 48px; }
 .switch b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 1.2rem; }
@@ -502,7 +510,7 @@ canvas.board { display: block; width: min(100cqw, 100cqh); aspect-ratio: 1; back
 <div class="sheet-wrap" id="infoSheet" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="infoTitle" id="infoPanel">
     <div class="head"><span class="badge" id="infoIcon"></span><h2 id="infoTitle"></h2></div>
-    <p class="rules" id="infoText"></p>
+    <div class="rules" id="infoText"></div>
     <button class="play" id="infoPlay" type="button">Jugar</button>
     <button class="cancel" id="infoClose" type="button">Cerrar</button>
   </div>
@@ -515,6 +523,10 @@ canvas.board { display: block; width: min(100cqw, 100cqh); aspect-ratio: 1; back
     <p class="hint">Opcional. Con vuestros nombres, la carta dice a quién le toca o quién empieza, y el marcador de Adivina los usa.</p>
     <div class="names" id="nameList"></div>
     <button class="more" id="addName" type="button">Añadir persona</button>
+    <hr class="sep">
+    <p class="group-title">Mezcla de todo</p>
+    <p class="hint" id="mixHint">Tocad un juego para quitarlo de la Mezcla o volver a ponerlo.</p>
+    <div class="mixlist" id="mixList" role="group" aria-labelledby="mixHint"></div>
     <hr class="sep">
     <p class="group-title">Vuestras cartas</p>
     <p class="hint">Escribid vuestras propias cartas. Se guardan en este móvil y, si jugáis a distancia, también en el de quien juega con vosotros.</p>
@@ -675,7 +687,15 @@ const DATA = {
       "¿Qué momento de tu vida reescribirías si pudieras?",
       "¿Qué te gustaría que supiera de verdad sobre cómo estás ahora?",
       "¿Qué promesa te hiciste y no has cumplido?",
-      "¿Qué te enorgullece de ti, aunque no lo digas?"
+      "¿Qué te enorgullece de ti, aunque no lo digas?",
+      "¿Qué pérdida te cambió más de lo que la gente cree?",
+      "¿Qué te gustaría sanar antes de que pase otro año?",
+      "¿Qué necesitas oír y casi nadie te dice?",
+      "¿Qué parte de tu infancia sigue contigo hoy?",
+      "¿Qué te gustaría haberle dicho a alguien que ya no está?",
+      "¿Por qué cosa todavía sientes culpa?",
+      "¿Qué sueño dejaste por el camino, y por qué?",
+      "¿Cuándo fue la última vez que lloraste, y qué lo provocó?"
     ],
     chispa: [
       "¿Qué es lo primero en lo que te fijas de alguien que te gusta?",
@@ -701,7 +721,19 @@ const DATA = {
       "¿Cuál es tu escapada romántica soñada?",
       "¿Qué opinas de besar en la primera cita?",
       "¿Has tenido algún amor de verano? Cuéntalo.",
-      "¿Qué detalle de alguien te hace tilín sin remedio?"
+      "¿Qué detalle de alguien te hace tilín sin remedio?",
+      "¿Qué es lo que más te gusta que hagan en una cita para ganarte?",
+      "¿Cuál ha sido la cita más rara a la que has ido?",
+      "¿Qué te pondrías para impresionar en una primera cita?",
+      "¿Prefieres que te tiren la caña directamente o con indirectas?",
+      "¿Qué mensaje te gustaría recibir ahora mismo de alguien que te gusta?",
+      "¿Has besado alguna vez a alguien por un reto?",
+      "¿Qué es lo más bonito que has hecho para conquistar a alguien?",
+      "¿Qué voz, acento o forma de hablar te parece irresistible?",
+      "¿Cuál es tu mejor truco para ligar, si tienes alguno?",
+      "¿Qué plan de cita te parece sobrevalorado?",
+      "¿Te gusta más dar el primer paso o que te lo den?",
+      "¿Cuál ha sido el momento más incómodo al despedirte después de una cita?"
     ]
   },
   princess: [
@@ -1057,7 +1089,17 @@ const DATA = {
     "Mi mejor recuerdo de este año es…",
     "Lo que más necesito ahora mismo de la gente que quiero es…",
     "Algo que antes me importaba mucho y ahora no es…",
-    "Me gustaría que me recordaran por…"
+    "Me gustaría que me recordaran por…",
+    "Lo primero que hago al despertarme es…",
+    "Me siento en casa cuando…",
+    "Algo que me gustaría hacer más a menudo es…",
+    "La última vez que sentí libertad de verdad fue…",
+    "Si pudiera cambiar una cosa del mundo, sería…",
+    "Algo que siempre me levanta el ánimo es…",
+    "Lo que más valoro en una amistad es…",
+    "Una costumbre de mi familia que me encanta es…",
+    "Una cosa que me gustaría que supieras de mí es…",
+    "La mejor decisión que he tomado es…"
   ],
   anecdotas: [
     "te reíste hasta llorar",
@@ -1089,7 +1131,22 @@ const DATA = {
     "hiciste un viaje que no olvidarás",
     "te tocó improvisar delante de gente",
     "alguien te dijo justo lo que necesitabas oír",
-    "sentiste que habías hecho lo correcto"
+    "sentiste que habías hecho lo correcto",
+    "hiciste algo por primera vez y te encantó",
+    "te libraste de algo por los pelos",
+    "te tocó algo en un sorteo o una apuesta",
+    "llegaste tardísimo a algo importante",
+    "alguien desconocido te alegró el día",
+    "hiciste el ridículo bailando",
+    "te quedaste en blanco en un examen o una entrevista",
+    "te enamoraste sin esperarlo",
+    "cocinaste algo que salió fatal",
+    "te reencontraste con alguien después de muchos años",
+    "te asustaste por algo que al final no era nada",
+    "hiciste un plan improvisado que salió genial",
+    "recibiste un mensaje que te cambió el día",
+    "te sentiste en casa lejos de casa",
+    "aprendiste algo importante de un error"
   ],
   loharia: [
     "Encuentras una cartera con 500 € y un DNI en la calle.",
@@ -1121,7 +1178,22 @@ const DATA = {
     "En el piso de al lado ponen música alta a las 2 de la mañana.",
     "Puedes saber una sola cosa de tu futuro.",
     "Te piden que guardes un secreto que no te parece bien.",
-    "Te ofrecen cambiar de vida con alguien durante un mes."
+    "Te ofrecen cambiar de vida con alguien durante un mes.",
+    "Encuentras un móvil desbloqueado en un banco del parque.",
+    "Te invitan a cenar y la comida no te gusta nada.",
+    "Te ofrecen dar la vuelta al mundo durante un año, pero sin móvil.",
+    "Alguien te confunde con otra persona y te cuenta un secreto.",
+    "Te piden que trabajes el día de tu cumpleaños.",
+    "Entras por error en una boda que no es a la que ibas.",
+    "Puedes cenar una hora con cualquier persona de la historia.",
+    "Una amistad te pide dinero y sabes que le cuesta devolverlo.",
+    "Ves que a alguien se le cae un billete de 20 € y no se da cuenta.",
+    "Te ofrecen un papel pequeño en una película, pero tienes que raparte el pelo.",
+    "Descubres que alguien cercano te ha dejado de seguir en redes.",
+    "Te quedas sin batería en una ciudad que no conoces.",
+    "Te regalan un perro sin avisarte.",
+    "Tu grupo favorito toca el mismo día que una boda de tu familia.",
+    "Puedes saber qué piensa de ti de verdad la gente de tu alrededor."
   ],
   top3: [
     "Tus 3 comidas favoritas",
@@ -1153,14 +1225,30 @@ const DATA = {
     "3 cosas que te dan vergüenza ajena",
     "3 cosas que te relajan",
     "3 personajes de ficción con los que te identificas",
-    "3 cosas por las que das las gracias hoy"
+    "3 cosas por las que das las gracias hoy",
+    "3 cosas que te llevarías a una isla desierta",
+    "3 platos que te salen bien",
+    "3 lugares donde has sido muy feliz",
+    "3 cosas que te dan mucha pereza",
+    "3 cantantes o grupos que más has escuchado",
+    "3 libros o cómics que te marcaron",
+    "3 cosas que harías con un día extra a la semana",
+    "3 regalos que te encantaría recibir",
+    "3 dulces que no puedes resistir",
+    "3 cosas que cambiarías de tu ciudad",
+    "3 épocas de la historia que te gustaría visitar",
+    "3 animales que tendrías de mascota si pudieras",
+    "3 cosas que te gustaría aprender este año",
+    "3 películas que te hicieron llorar",
+    "3 cosas que siempre llevas encima"
   ],
   dosverdades: [
     "Tu infancia", "Viajes", "Citas desastrosas", "Comida", "El instituto", "Tu familia",
     "Cosas que te dan miedo", "Trabajos que has tenido", "Talentos ocultos", "Accidentes y heridas",
     "Tus ex", "Fiestas", "Algo que rompiste", "Música", "Animales", "Cosas que has ganado", "Primeras veces", "Vacaciones de verano", "Cosas que has perdido", "Gente famosa", "Deportes", "Tu primer móvil", "Cumpleaños", "Sueños raros",
     "Tu barrio", "Profesores", "Vergüenzas en público", "Regalos", "Supersticiones", "Cosas que coleccionas",
-    "Bodas y celebraciones", "Mudanzas"
+    "Bodas y celebraciones", "Mudanzas",
+    "Navidades", "Comida rara que has probado", "Conciertos", "Viajes en carretera", "Redes sociales", "Exámenes", "Disfraces", "Extraescolares", "Manías", "Tu nombre"
   ],
   random: [
     "Si fueras un electrodoméstico, ¿cuál serías y por qué?",
@@ -1509,36 +1597,72 @@ const MODES = {
 };
 // Modes that gather cards from the other decks instead of having their own.
 const META = ["mezcla", "favoritas"];
+// Rules: two sentences at most, then one example. Games with several steps get a numbered list.
 const RULES = {
   profundas: "Contestad la pregunta por turnos, sin prisa. No hay respuestas buenas ni malas.",
-  princess: "Contad 3, 2, 1 y decid a la vez: princess treatment (un detallazo), bare minimum (lo mínimo) o red flag. Si no coincidís, a debatir.",
-  adivina: "Quien tiene el móvil adivina qué respondería otra persona del grupo, y luego esa persona contesta de verdad. Apuntad los aciertos en el marcador de la carta.",
+  princess: "Contad 3, 2, 1 y decid a la vez si es princess treatment (un detallazo), bare minimum (lo mínimo) o red flag. Si no coincidís, a debatir.",
+  adivina: "Quien tiene el móvil adivina qué respondería otra persona, y luego esa persona contesta de verdad. Si acierta, punto en el marcador.",
   prefieres: "Elegid una opción a la vez y explicad por qué. No vale decir «ninguna».",
   hot: "Decid si estáis de acuerdo y defended vuestra postura. Gana quien convenza al resto.",
   redflag: "Decid a la vez si os parece green flag, red flag o depende, y explicad por qué.",
-  yonunca: "Quien lo haya hecho, lo confiesa y cuenta la historia.",
-  verdad: "Una carta para cada persona, por turnos. En los retos, girad la ruleta para ver de qué estilo os toca. Los retos son siempre solo entre quienes jugáis. Si una carta no os apetece, pulsad «Pasar»: se va al final y no pasa nada.",
+  yonunca: "Leed la carta en voz alta. Quien lo haya hecho, lo confiesa y cuenta la historia.",
+  verdad: "Una carta para cada persona, por turnos; en los retos, girad la ruleta para ver el estilo. Los retos son solo entre quienes jugáis y siempre podéis pulsar «Pasar» sin que pase nada.",
   probable: "Señalad a la vez a quién le pega más. Si no coincidís, defended vuestra elección.",
   completa: "Terminad la frase en voz alta, por turnos, con lo primero que os salga.",
   anecdotas: "Por turnos, contad una historia real que encaje con la carta. El resto puede hacer tres preguntas para sacar más detalles.",
-  loharia: "Cada persona dice qué haría de verdad en esa situación. Luego el resto dice si se lo cree o si en realidad haría otra cosa.",
-  top3: "Cada persona dice su podio del tema, del tercero al primero, y explica por qué. Si coincidís en alguno, punto para cada persona que coincida.",
+  loharia: "Cada persona dice qué haría de verdad en esa situación. El resto dice si se lo cree.",
+  top3: "Cada persona dice su podio del tema, del tercero al primero, y explica por qué. Si coincidís en alguno, punto para quienes coincidan.",
   dosverdades: "Quien tiene el móvil cuenta tres cosas sobre el tema: dos verdaderas y una inventada. El resto adivina cuál es la mentira.",
-  random: "Preguntas para pasar el rato, sin nada profundo. Contestad por turnos y sin pensarlo mucho.",
-  frecuencia: "A quien le toca le sale en secreto un número del 1 al 10. Tiene que decir algo del tema que para su gusto sea justo ese número, sin decir el número. El resto adivina cuál era, y quien acierte se lleva un punto.",
-  onda: "Quien da la pista mira en secreto dónde está la zona de colores entre los dos extremos y dice una sola cosa que caiga ahí. Por ejemplo, entre frío y caliente, «un café con leche». El resto mueve la aguja y pulsa «Revelar». Cuanto más cerca del centro, más puntos para el equipo.",
+  random: "Preguntas para pasar el rato. Contestad por turnos y sin pensarlo mucho.",
+  frecuencia: "A quien le toca le sale un número secreto del 1 al 10 y dice algo del tema que, para su gusto, valga justo ese número. El resto adivina el número, y quien acierte se lleva un punto.",
+  onda: "Quien da la pista ve dónde está la zona de colores y dice una sola cosa que caiga ahí. El resto mueve la aguja: cuanto más cerca del centro, más puntos para el equipo.",
   trivial: "Por turnos, cada persona contesta una pregunta con cuatro opciones. Si acierta, se lleva un punto.",
-  cifras: "Cada persona responde a la misma pregunta moviendo la barra de menos a más, y fija su respuesta sin enseñarla. Luego se ve la respuesta buena y quien más se acerque se lleva un punto.",
-  emociones: "A quien le toca le sale una emoción en secreto. Tiene que contar una situación, real o inventada, en la que sentiría esa emoción, sin decir la palabra. Elegid el tiempo y pulsad «Empezar». Quien la adivine se lleva un punto.",
-  codigo: "Hay un código secreto de 4 cifras. Por turnos, cada persona prueba un código y la app dice cuántas cifras están en su sitio exacto. Gana quien lo complete antes. Podéis jugar con un código que se inventa la app o poniendo cada persona el suyo.",
-  palabras: "Quien explica ve 8 palabras en secreto. Para cada una dice una sola palabra relacionada o que se la recuerde, y el resto intenta adivinarla. Tenéis 20 pistas como máximo para las 8. Cada palabra acertada es un punto para quien explica.",
-  stop: "Sale una letra. Cuando empiece el tiempo, escribid una palabra que empiece por esa letra para cada una de las 6 categorías de la carta, que cambian en cada ronda. Quien acabe puede pulsar «¡Stop!». Respuesta única: 10 puntos. Repetida: 5. A distancia cada persona escribe en su móvil y la app suma. Con un solo móvil, escribid en papel y apuntad aquí los puntos.",
-  naval: "Para 2 personas. Cada una coloca sus 4 barcos en secreto. Por turnos, disparad a una casilla del tablero de la otra persona: agua, tocado o hundido. Gana quien hunda antes toda la flota.",
-  dibujo: "Quien dibuja mira la palabra en secreto y la dibuja sin letras ni números. El resto escribe lo que cree que es antes de que acabe el tiempo; si acierta, la app lo da por bueno y se lleva un punto. A distancia, el dibujo sale en directo en todos los móviles.",
-  reves: "Quien tiene el turno mira su palabra en secreto y la graba en voz alta. La app la pone al revés. El resto escucha ese sonido raro, lo imita grabándose, y la app da la vuelta a esa imitación: si lo han hecho bien, se oirá la palabra. Quien la adivine se lleva un punto.",
-  cancion: "Sale una palabra y quien tiene el turno tiene que cantar un trozo de una canción que la diga antes de que acabe el tiempo. Si se queda en blanco, la siguiente persona puede robar el punto.",
-  mezcla: "Cartas de todos los juegos. Cada carta dice a qué juego pertenece y el fondo toma su color.",
+  cifras: "Todo el mundo responde a la misma pregunta con la barra y fija su respuesta sin enseñarla. Quien más se acerque al número de verdad se lleva el punto.",
+  emociones: "A quien le toca le sale una emoción secreta y cuenta una situación en la que la sentiría, sin decir la palabra. Quien la adivine antes de que acabe el tiempo se lleva un punto.",
+  codigo: "Hay un código secreto de 4 cifras: por turnos, cada persona prueba uno y la app dice cuántas cifras están en su sitio. Gana quien lo descubra antes.",
+  palabras: "Quien explica ve 8 palabras secretas y da pistas de una sola palabra para que el resto las adivine. Hay 20 pistas para las 8, y cada acierto es un punto para quien explica.",
+  stop: "Sale una letra: escribid una palabra que empiece por ella para cada categoría, y quien acabe pulsa «¡Stop!». Respuesta única, 10 puntos; repetida, 5.",
+  naval: "Para 2 personas: cada una coloca sus 4 barcos en secreto y, por turnos, disparáis a una casilla del tablero de la otra. Gana quien hunda antes toda la flota.",
+  dibujo: "Quien dibuja ve la palabra en secreto y la dibuja sin letras ni números. El resto escribe lo que cree que es, y si acierta, la app le da el punto.",
+  reves: "Una palabra grabada, puesta del revés e imitada hasta que se entienda. Así se juega:",
+  cancion: "Cantad un trozo de una canción que tenga la palabra antes de que acabe el tiempo. Así se juega:",
+  mezcla: "Cartas de todos los juegos: cada una dice a qué juego pertenece y el fondo toma su color. En Ajustes podéis elegir qué juegos entran.",
   favoritas: "Las cartas que habéis marcado con el corazón. Para quitar una, tocad otra vez el corazón."
+};
+const RULE_STEPS = {
+  reves: ["Quien tiene el turno ve su palabra en secreto y se graba diciéndola.", "La app pone la grabación del revés: suena como un idioma rarísimo.",
+    "El resto imita ese sonido y se graba.", "La app da la vuelta a la imitación. Si suena a la palabra, punto para quien la adivine."],
+  cancion: ["Sale una palabra y quien tiene el turno pulsa «Empezar».", "Canta un trozo de cualquier canción que diga esa palabra.",
+    "Si se queda en blanco antes de que acabe el tiempo, la siguiente persona puede robar el punto."]
+};
+const RULE_EX = {
+  profundas: "«¿Qué te hace sentir en casa?» → «Llegar y que huela a comida recién hecha».",
+  princess: "«Te recoge en el aeropuerto a las 6 de la mañana»: ¿detallazo o lo mínimo?",
+  adivina: "Dices que la otra persona elegiría playa, y contesta playa: punto para ti.",
+  prefieres: "«¿Volar o ser invisible?» → «Volar, para no hacer colas nunca más».",
+  hot: "«La pizza con piña está buena» → «De acuerdo: lo dulce y lo salado combinan».",
+  redflag: "«Mira tu móvil sin preguntar» → red flag, casi seguro.",
+  yonunca: "«Yo nunca me he dormido en el cine» → si te ha pasado, cuéntalo.",
+  verdad: "Reto de risas: imitar a la otra persona durante un minuto.",
+  probable: "«¿Quién es más probable que se pierda con el GPS puesto?» → 3, 2, 1… ¡y señalad!",
+  completa: "«Me da paz…» → «…el ruido de la lluvia».",
+  anecdotas: "«Cuéntame una vez que te perdiste en un sitio nuevo» → ¿dónde?, ¿con quién?, ¿cómo acabó?",
+  loharia: "«Te dan el cambio de más» → «Lo devuelvo»… ¿seguro?",
+  top3: "«Tus 3 comidas favoritas» → 3.º tortilla, 2.º sushi, 1.º croquetas.",
+  dosverdades: "«Viajes»: he estado en Japón, me perdí en Roma y dormí en un aeropuerto. ¿Cuál es mentira?",
+  random: "«¿Qué desayunarías todos los días?» → «Churros, sin dudarlo».",
+  frecuencia: "Tema «picante» y te sale el 9 → «una guindilla entera».",
+  onda: "Entre frío y caliente, con la zona casi en medio → «un café con leche».",
+  trivial: "«¿Cuál es el río más largo de Europa?»: Volga, Danubio, Rin o Sena.",
+  cifras: "«¿Cuántos huesos tiene el cuerpo?» → si dices 200 y son 206, ganas a quien dijo 300.",
+  emociones: "«Nostalgia» → «Cuando encuentro fotos de mi infancia en casa de mis abuelos».",
+  codigo: "El código es 1234 y pruebas 1290 → la app dice «2 en su sitio».",
+  palabras: "Palabra «playa» → pista «arena».",
+  stop: "Letra M, categoría Animal → «mono».",
+  naval: "Disparas a la B3 → agua, tocado o hundido.",
+  dibujo: "Palabra «tiburón» → una aleta asomando del agua.",
+  reves: "«Pizza» del revés suena algo así como «assip».",
+  cancion: "Palabra «corazón» → cualquier canción que diga «corazón»."
 };
 const LEVELS = [
   ["todo", "Todo mezclado", "Cualquier nivel, al azar."],
@@ -1594,12 +1718,15 @@ function allCardsFor(mode, level, data) {
   if (mode === "codigo" || mode === "naval") return [{ mode, text: "Partida" }];
   if (mode === "cifras") return data.cifras.map(([text, ans, note]) => ({ mode, text, ans, note }));
   if (mode === "stop") return data.stop.map(text => ({ mode, text, cats: stopCatsFor(text) }));
-  if (mode === "mezcla") return playable().filter(m => !MODES[m].game).flatMap(m => cardsFor(m, "todo", data));
-  if (mode === "favoritas") { const f = new Set(favs()); return cardsFor("mezcla").filter(c => f.has(cardId(c))); }
+  if (mode === "mezcla") return mixModes().flatMap(m => cardsFor(m, "todo", data));
+  if (mode === "favoritas") { const f = new Set(favs()); return mixAll().flatMap(m => cardsFor(m, "todo")).filter(c => f.has(cardId(c))); }
   return (data[mode] || []).map(x => Array.isArray(x) ? { mode, text: x[0], ans: x[1] } : { mode, text: x }).concat(own);
 }
 // Decks with their own cards.
 const playable = () => Object.keys(MODES).filter(m => !META.includes(m));
+// Mezcla de todo: every card game, minus the ones switched off in Ajustes (never all of them).
+const mixAll = () => playable().filter(m => !MODES[m].game);
+function mixModes() { const off = new Set(store.get("sm.mixOff", [])), on = mixAll().filter(m => !off.has(m)); return on.length ? on : mixAll(); }
 function buildDeck(mode, level, round, data = DATA) {
   const base = `${state.seed}|${mode}|${level}|${round}`;
   if (mode === "profundas" && level === "subiendo") {
@@ -1739,7 +1866,8 @@ function renderHome() {
   const nf = cardsFor("favoritas", "todo").length;
   const wide = (k, sub) => `<div class="deck-wrap"><button class="deck wide${k === "favoritas" ? " favs" : ""}" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${MODES[k].short || MODES[k].name}</span><span class="count">${sub}</span></span></button></div>`;
   $("nightBox").innerHTML = nightHTML(); bindNight();
-  $("quick").innerHTML = wide("mezcla", "De todos los juegos") + (nf ? wide("favoritas", `${nf} ${nf === 1 ? "guardada" : "guardadas"}`) : "");
+  const nm = mixModes().length;
+  $("quick").innerHTML = wide("mezcla", nm === mixAll().length ? "De todos los juegos" : `De ${nm} ${nm === 1 ? "juego" : "juegos"}`) + (nf ? wide("favoritas", `${nf} ${nf === 1 ? "guardada" : "guardadas"}`) : "");
   const tile = k => `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${MODES[k].name}</span><span class="desc">${DESC[k]}</span></button></div>`;
   $("shelves").innerHTML = SHELVES.map(([title, list]) => `<section>${title ? `<h2 class="shelf-title">${title}</h2>` : ""}<div class="decks">${list.filter(k => MODES[k]).map(tile).join("")}</div></section>`).join("");
   renderNet();
@@ -2155,6 +2283,8 @@ async function enterRoom(create) {
     }
     connect(code); sweepRooms();
     netMsg(create ? "Partida creada. Pasa el código." : "¡Dentro!");
+    // Joining: nothing else to do here, so back to the games after a moment. Creating: the code stays to share.
+    if (!create) setTimeout(() => { if (net.code === code && !$("netSheet").hidden) closeDialog("netSheet"); }, 900);
   } catch (e) { netMsg("No se ha podido conectar. Revisa que tengas internet."); }
 }
 function connect(code) {
@@ -3097,7 +3227,8 @@ function openInfo(mode) {
   $("infoPanel").style.cssText = mode === "mezcla" ? "--c:#FFD84A;--fg:#1E1633;" : vars(mode);
   $("infoIcon").innerHTML = icon(mode);
   $("infoTitle").textContent = MODES[mode].name;
-  $("infoText").textContent = RULES[mode];
+  $("infoText").innerHTML = `<p>${esc(RULES[mode])}</p>${RULE_STEPS[mode] ? `<ol>${RULE_STEPS[mode].map(x => `<li>${esc(x)}</li>`).join("")}</ol>` : ""}${
+    RULE_EX[mode] ? `<p class="example"><b>Ejemplo:</b> ${esc(RULE_EX[mode])}</p>` : ""}`;
   const inGame = !$("game").hidden;
   $("infoPlay").textContent = inGame ? "Seguir jugando" : "Jugar";
   $("infoClose").hidden = inGame;
@@ -3163,8 +3294,22 @@ function renderCustom() {
 }
 $("openSet").querySelector("svg").innerHTML = ICONS.ajustes;
 $("cMode").innerHTML = Object.keys(MODES).filter(m => !META.includes(m) && !MODES[m].game).map(m => `<option value="${m}">${esc(MODES[m].short || MODES[m].name)}</option>`).join("");
+function renderMix() {
+  const on = new Set(mixModes());
+  $("mixList").innerHTML = mixAll().map(m => `<button type="button" class="mixchip" data-m="${m}" aria-pressed="${on.has(m)}" style="${vars(m)}">${icon(m)}<span>${MODES[m].short || MODES[m].name}</span></button>`).join("");
+}
+$("mixList").onclick = e => {
+  const b = e.target.closest(".mixchip"); if (!b) return;
+  const off = new Set(store.get("sm.mixOff", [])), m = b.dataset.m;
+  if (off.has(m)) off.delete(m);
+  else if (mixModes().length <= 1) { $("mixHint").textContent = "Tiene que quedar al menos un juego en la Mezcla."; return; }
+  else off.add(m);
+  store.set("sm.mixOff", [...off]); delete kept.mezcla;
+  $("mixHint").textContent = "Tocad un juego para quitarlo de la Mezcla o volver a ponerlo.";
+  renderMix(); $("mixList").querySelector(`[data-m="${m}"]`).focus();
+};
 $("openSet").onclick = () => {
-  renderNames();
+  renderNames(); renderMix();
   $("cMsg").textContent = ""; $("hMsg").textContent = ""; renderCustom(); renderHidden();
   openDialog("setSheet", "setTitle");
 };
@@ -3251,6 +3396,8 @@ if (store.get("sm.room", null) && FIREBASE_URL) connect(store.get("sm.room", nul
 if (invite && !net.code) {
   history.replaceState(null, "", location.pathname);
   $("openNet").click(); $("netCode").value = invite.toUpperCase().slice(0, 4);
+  // With a name saved from before, the link goes straight in; otherwise it waits for the name.
+  if (store.get("sm.myname", "")) enterRoom(false); else $("netName").focus();
 }
 if ("serviceWorker" in navigator && location.protocol === "https:") navigator.serviceWorker.register("sw.js").catch(() => {});
 </script>
