@@ -54,6 +54,9 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 
 .shelf-title { font-family: var(--font-display); font-size: 1.35rem; margin: 0 0 10px; color: #fff; font-weight: 400; }
 #shelves { display: grid; gap: 22px; }
+.tabs { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; padding: 5px; border-radius: 20px; background: var(--table-2); border: 2px solid rgba(255,255,255,.14); }
+.tab { min-height: 48px; border-radius: 15px; color: #CFC6E6; font-family: var(--font-display); font-size: 1.08rem; line-height: 1.05; padding: 4px 8px; }
+.tab[aria-selected="true"] { background: #FFD84A; color: var(--ink); box-shadow: 0 3px 0 #FF5A8A; }
 .toprow { display: flex; gap: 10px; align-items: stretch; }
 .toprow .netbtn { flex: 1; min-width: 0; }
 .toprow .settings-btn { min-height: 52px; border-radius: 18px; }
@@ -130,11 +133,46 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .lvlbtn::after { content: " ▾"; }
 .lvl[aria-pressed="true"] b::after { content: "  ✓"; }
 .paces { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
+.rulepick { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+.rulepick .wide { grid-column: 1 / -1; }
+.rulepick .lvl span { font-weight: 700; font-size: .85rem; color: var(--muted-ink); line-height: 1.25; }
+.rulepick .lvl[aria-pressed="true"] { background: #E7E3FF; }
+#paceLbl { margin: 6px 0 -2px; }
 .paces .lvl { text-align: center; padding: 18px 6px; }
 .paces .lvl b { font-size: 1.6rem; }
 .paces .lvl[aria-pressed="true"] b::after { content: ""; }
-.pill { background: var(--ink); color: #fff; border-radius: 999px; padding: 7px 12px; font-weight: 900; font-size: .9rem; font-variant-numeric: tabular-nums; }
+.pill { background: var(--ink); color: #fff; border-radius: 999px; padding: 7px 12px; font-weight: 900; font-size: .9rem; font-variant-numeric: tabular-nums; display: inline-flex; align-items: center; gap: 5px; min-height: 36px; }
+.pill svg.i { width: 16px; height: 16px; stroke-width: 3; }
 .bar { height: 10px; border-radius: 999px; background: rgba(30,22,51,.22); overflow: hidden; }
+/* Marcador grande de los juegos con puntos */
+.band { display: grid; gap: 8px; margin-top: -2px; }
+.bsrow { display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr); gap: 8px; }
+.bsrow.many { grid-auto-flow: row; grid-template-columns: repeat(auto-fill, minmax(104px, 1fr)); }
+.bs { display: flex; align-items: center; justify-content: space-between; gap: 8px; min-width: 0; min-height: 58px; padding: 6px 7px 6px 12px; text-align: left;
+  border: 3px solid var(--ink); border-radius: 18px; background: var(--card); color: var(--ink); box-shadow: 0 4px 0 var(--ink); }
+button.bs:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.bs .who { display: grid; gap: 4px; min-width: 0; }
+.bs .nm { font-weight: 900; font-size: .98rem; line-height: 1.1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.bs b { flex: none; min-width: 46px; padding: 5px 8px 3px; border-radius: 12px; background: var(--soft); text-align: center;
+  font-family: var(--font-display); font-weight: 400; font-size: 2.1rem; line-height: 1; font-variant-numeric: tabular-nums; }
+.bs.lead b { background: var(--c); color: var(--fg); border: 2.5px solid var(--ink); }
+.bs.out { opacity: .6; }
+.bs.bump b { animation: bump .3s cubic-bezier(.2,.9,.3,1.5); }
+.hearts { display: flex; flex-wrap: wrap; gap: 1px; }
+.hearts svg.i { width: 15px; height: 15px; stroke-width: 2.4; color: #B8B0CC; }
+.hearts svg.on { color: #F0384F; fill: currentColor; }
+.bsmsg { margin: 0; justify-self: center; max-width: 100%; background: var(--ink); color: #fff; border-radius: 999px; padding: 6px 14px; font-weight: 800; font-size: .92rem; text-align: center; }
+.bsmsg.win { background: #FFD84A; color: var(--ink); border: 2.5px solid var(--ink); }
+div.bsmsg.win { display: flex; align-items: center; gap: 10px; padding: 3px 3px 3px 14px; }
+.bsmsg .mini { min-height: 40px; padding: 0 14px; }
+.band .undo { justify-self: center; min-height: 32px; color: var(--fg); }
+@media (max-width: 360px) { .bs { min-height: 52px; padding-left: 10px; } .bs b { font-size: 1.8rem; min-width: 40px; } }
+/* Pictionary needs the room for the drawing: a lower board, hearts beside the name. */
+.band.slim .bs { min-height: 40px; padding: 3px 4px 3px 10px; border-radius: 14px; box-shadow: 0 3px 0 var(--ink); }
+.band.slim .bs .who { display: flex; align-items: center; gap: 6px; }
+.band.slim .bs b { font-size: 1.45rem; min-width: 36px; padding: 3px 6px 1px; border-radius: 10px; }
+.band.slim .hearts svg.i { width: 12px; height: 12px; }
+.band.slim .bsmsg { padding: 4px 12px; font-size: .85rem; }
 .bar i { display: block; height: 100%; background: var(--ink); border-radius: 999px; transition: width .3s ease; }
 
 .table { flex: 1; min-height: 0; position: relative; margin: 6px 6px 12px; }
@@ -294,6 +332,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .next { background: var(--ink); color: #fff; box-shadow: 0 6px 0 rgba(0,0,0,.45); }
 .next:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.45); }
 .skip { background: var(--card); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
+.skip:disabled { opacity: .5; box-shadow: 0 2px 0 var(--ink); transform: translateY(4px); cursor: default; font-size: 1.15rem; }
 .skip:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ink); }
 .controls button:disabled { opacity: .45; cursor: default; transform: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
@@ -472,12 +511,14 @@ button.pword:disabled { cursor: default; }
 .tally button { min-width: 48px; min-height: 44px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); font-weight: 900; margin-left: 4px; }
 
 /* Tanda 3: Pictionary, Palabras al revés, Canta una canción */
-.drawrow { flex: 1 1 0; min-height: 372px; display: flex; gap: 8px; align-items: stretch; }
+.drawrow { flex: 1 1 0; min-height: 352px; display: flex; gap: 8px; align-items: stretch; }
 .boardwrap { flex: 1 1 0; min-width: 0; container-type: size; display: grid; place-items: start center; }
 canvas.board { display: block; width: min(100cqw, calc(100cqh * 1000 / 1300)); aspect-ratio: 1000 / 1300; background: #fff; border: 3px solid var(--ink); border-radius: 18px; touch-action: none; cursor: crosshair; }
 .card.draw { padding: 16px 12px 14px; gap: 8px; }
-.inks { flex: none; width: 50px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 7px; }
-.inks .countdown { width: 50px; height: 50px; font-size: .95rem; margin-bottom: 2px; }
+.inks { flex: none; width: 50px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 5px; }
+.inks .countdown { width: 48px; height: 48px; font-size: .95rem; margin-bottom: 2px; }
+/* With the board above the card, Pictionary drops the progress line (the counter still says where you are). */
+#game.drawing .bar { display: none; }
 .inks .ink, .inks .tool { width: 38px; height: 38px; flex: none; }
 .inks .giveup { margin-top: auto; min-height: 36px; width: 100%; padding: 0 2px; font-size: .72rem; border-radius: 12px; }
 .secret.tiny { padding: 6px 10px; }
@@ -492,7 +533,7 @@ canvas.board { display: block; width: min(100cqw, calc(100cqh * 1000 / 1300)); a
 @keyframes pulse { 50% { transform: scale(1.03); } }
 
 @media (prefers-reduced-motion: reduce) {
-  .fav.pop-in svg, .pt.bump b, .toast, .q.reveal, .act.rec.on, .demo-card { animation: none; }
+  .fav.pop-in svg, .pt.bump b, .bs.bump b, .toast, .q.reveal, .act.rec.on, .demo-card { animation: none; }
   .wheel { transition: none; }
   .card.deal, .card.back, #game.enter, .timer.done, .table.shuffling .ghost-card { animation: none !important; }
   .card.fly, .card.gather { transition: none; } body { transition: none; } .sheet { animation: none; }
@@ -509,6 +550,7 @@ canvas.board { display: block; width: min(100cqw, calc(100cqh * 1000 / 1300)); a
     </header>
     <div class="toprow"><button class="netbtn" id="openNet" type="button" aria-haspopup="dialog"></button><button class="settings-btn" id="openSet" type="button" aria-haspopup="dialog"><svg class="i" viewBox="0 0 24 24" aria-hidden="true"></svg><span>Ajustes</span></button></div>
     <div id="resume"></div>
+    <div class="tabs" id="tabs" role="tablist" aria-label="Tipo de juego"></div>
     <div id="nightBox"></div>
     <div class="decks" id="quick"></div>
     <div id="shelves"></div>
@@ -519,10 +561,11 @@ canvas.board { display: block; width: min(100cqw, calc(100cqh * 1000 / 1300)); a
     <div class="topbar">
       <button class="round" id="back" type="button" aria-label="Volver a los mazos"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
       <div class="gt"><h1 class="gtitle" id="gtitle"></h1><button class="lvlbtn" id="lvlBtn" type="button" hidden aria-haspopup="dialog"></button></div>
-      <div class="pill" id="count"></div>
+      <button class="pill" id="count" type="button" aria-haspopup="dialog"></button>
       <button class="info" id="gameInfo" type="button" aria-label="Cómo se juega">i</button>
     </div>
     <div class="bar"><i id="barfill"></i></div>
+    <div class="band" id="band" hidden></div>
     <p class="netnote" id="netNote" role="status" hidden></p>
     <div class="table" id="table"></div>
     <div class="controls">
@@ -541,6 +584,15 @@ canvas.board { display: block; width: min(100cqw, calc(100cqh * 1000 / 1300)); a
     <h2 id="swipeTitle">Cómo pasar cartas</h2>
     <p>Pulsa <b>Siguiente</b> o desliza la carta a la izquierda. Para volver a la anterior, pulsa el botón de la flecha o desliza la carta a la derecha. Si una carta no os apetece, pulsa <b>Pasar</b>: se va al final del mazo y no pasa nada.</p>
     <button class="play" id="swipeOk" type="button">¡A jugar!</button>
+  </div>
+</div>
+
+<div class="sheet-wrap center" id="restartSheet" hidden>
+  <div class="pop" role="dialog" aria-modal="true" aria-labelledby="restartTitle">
+    <h2 id="restartTitle">¿Empezar de nuevo?</h2>
+    <p id="restartText"></p>
+    <button class="play" id="restartOk" type="button">Empezar de nuevo</button>
+    <button class="cancel" id="restartNo" type="button">Cancelar</button>
   </div>
 </div>
 
@@ -612,8 +664,11 @@ canvas.board { display: block; width: min(100cqw, calc(100cqh * 1000 / 1300)); a
 
 <div class="sheet-wrap" id="paceSheet" hidden>
   <div class="sheet" role="dialog" aria-modal="true" aria-labelledby="paceTitle">
-    <h2 id="paceTitle" class="sr-only">Tiempo por turno</h2>
-    <div id="paces" class="paces"></div>
+    <h2 id="paceTitle" class="sr-only">Cómo jugáis</h2>
+    <div id="rulePick" class="rulepick" role="group" aria-label="Modo de juego"></div>
+    <p class="group-title" id="paceLbl" hidden>Tiempo por turno</p>
+    <div id="paces" class="paces" role="group" aria-labelledby="paceLbl"></div>
+    <button class="play" id="paceGo" type="button" hidden>Jugar</button>
     <button class="cancel" id="cancelPace" type="button">Cancelar</button>
   </div>
 </div>
@@ -939,6 +994,7 @@ const DATA = {
     "No conserva ninguna amistad de hace más de dos años.",
     "Te pide compartir la ubicación en tiempo real.",
     "Llora viendo películas.",
+    "Se duerme siempre que veis una peli.",
     "Es borde con quien le atiende en un bar.",
     "Tiene un plan de vida a cinco años.",
     "No suelta el móvil durante la cena.",
@@ -1658,6 +1714,7 @@ const ICONS = {
   mezcla: '<path d="M3 6h4l10 12h4M3 18h4l10-12h4M18 3l3 3-3 3M18 15l3 3-3 3"/>',
   favoritas: '<path d="M12 20.5S3 15 3 8.8A4.6 4.6 0 0112 6.6a4.6 4.6 0 019 2.2C21 15 12 20.5 12 20.5z"/>',
   reloj: '<circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2.5M9 2h6"/>',
+  again: '<path d="M4 12a8 8 0 1 0 2.4-5.7M4 4v5h5"/>',
   quitar: '<path d="M4 7h16M10 11v6M14 11v6M6 7l1 13h10l1-13M9 7V4h6v3"/>',
   ajustes: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.7 1.7 0 00-1.8-.3 1.7 1.7 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.7 1.7 0 00-1.1-1.5 1.7 1.7 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.7 1.7 0 00.3-1.8 1.7 1.7 0 00-1.5-1H3a2 2 0 110-4h.1a1.7 1.7 0 001.5-1.1 1.7 1.7 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.7 1.7 0 001.8.3H9a1.7 1.7 0 001-1.5V3a2 2 0 114 0v.1a1.7 1.7 0 001 1.5 1.7 1.7 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.7 1.7 0 00-.3 1.8V9a1.7 1.7 0 001.5 1H21a2 2 0 110 4h-.1a1.7 1.7 0 00-1.5 1z"/>'
 };
@@ -1935,12 +1992,15 @@ const $ = id => document.getElementById(id);
 const vars = m => `--c:${MODES[m].c};--fg:${MODES[m].fg};`;
 
 // The home shelf, grouped by what you feel like doing. Neighbours never share a similar colour.
+// Two tabs: the cards to talk (with the Mezcla and the favourites) and the games with points
+// (with the night's score). The tab you were on is remembered.
 const SHELVES = [
   ["", ["profundas", "adivina", "anecdotas", "completa", "top3", "random"]],
   ["Para debatir", ["princess", "prefieres", "redflag", "probable", "hot", "loharia"]],
   ["Para reír y atreverse", ["verdad", "yonunca", "dosverdades"]],
-  ["Juegos con puntos", ["frecuencia", "onda", "trivial", "cifras", "emociones", "codigo", "palabras", "stop", "naval", "dibujo", "reves", "cancion"]]
+  ["", ["frecuencia", "onda", "trivial", "cifras", "emociones", "codigo", "palabras", "stop", "naval", "dibujo", "reves", "cancion"], "juegos"]
 ];
+const TABS = [["preguntas", "Preguntas"], ["juegos", "Juegos con puntos"]];
 const DESC = {
   profundas: "Para conoceros de verdad", adivina: "¿Sabes qué contestaría?", anecdotas: "Historias reales que contar", completa: "Termina la frase sin pensar",
   top3: "Tu podio de cada tema", random: "Para pasar el rato", princess: "¿Detallazo, lo mínimo o red flag?", prefieres: "Dos opciones, solo una",
@@ -1964,11 +2024,13 @@ function renderHome() {
     <span><b>Seguir con ${esc(MODES[r.mode].short || MODES[r.mode].name)}</b><small>Carta ${r.at} de ${r.total}</small></span></button>` : "";
   const nf = cardsFor("favoritas", "todo").length;
   const wide = (k, sub) => `<div class="deck-wrap"><button class="deck wide${k === "favoritas" ? " favs" : ""}" type="button" data-mode="${k}"><span class="badge">${icon(k)}</span><span class="label"><span class="name">${MODES[k].short || MODES[k].name}</span><span class="count">${sub}</span></span></button></div>`;
-  $("nightBox").innerHTML = nightHTML(); bindNight();
+  const tab = store.get("sm.tab", "preguntas") === "juegos" ? "juegos" : "preguntas";
+  $("tabs").innerHTML = TABS.map(([k, n]) => `<button class="tab" type="button" role="tab" data-tab="${k}" aria-selected="${k === tab}" aria-controls="shelves">${n}</button>`).join("");
+  $("nightBox").innerHTML = tab === "juegos" ? nightHTML() : ""; bindNight();
   const nm = mixModes().length;
-  $("quick").innerHTML = wide("mezcla", nm === mixAll().length ? "De todos los juegos" : `De ${nm} ${nm === 1 ? "juego" : "juegos"}`) + (nf ? wide("favoritas", `${nf} ${nf === 1 ? "guardada" : "guardadas"}`) : "");
+  $("quick").innerHTML = tab === "juegos" ? "" : wide("mezcla", nm === mixAll().length ? "De todos los juegos" : `De ${nm} ${nm === 1 ? "juego" : "juegos"}`) + (nf ? wide("favoritas", `${nf} ${nf === 1 ? "guardada" : "guardadas"}`) : "");
   const tile = k => `<div class="deck-wrap"><button class="deck" type="button" data-mode="${k}" style="${vars(k)}"><span class="badge">${icon(k)}</span><span class="name">${MODES[k].name}</span><span class="desc">${DESC[k]}</span></button></div>`;
-  $("shelves").innerHTML = SHELVES.map(([title, list]) => `<section>${title ? `<h2 class="shelf-title">${title}</h2>` : ""}<div class="decks">${list.filter(k => MODES[k]).map(tile).join("")}</div></section>`).join("");
+  $("shelves").innerHTML = SHELVES.filter(sh => (sh[2] || "preguntas") === tab).map(([title, list]) => `<section>${title ? `<h2 class="shelf-title">${title}</h2>` : ""}<div class="decks">${list.filter(k => MODES[k]).map(tile).join("")}</div></section>`).join("");
   renderNet();
   renderLevels();
 }
@@ -1986,7 +2048,7 @@ const NIGHT = 12 * 36e5;
 function night() { const n = store.get("sm.night", null); return n && n.games && Date.now() - n.t < NIGHT ? n : { t: 0, games: {} }; }
 function bankScore() {
   if (!state.mode || !state.gid || !state.score) return;
-  const pts = state.score.map(x => x || 0), n = night(), was = n.games[state.gid];
+  const pts = scoreNow(), n = night(), was = n.games[state.gid];
   if (!pts.some(Boolean) && !was) return;
   if (was && JSON.stringify(was.pts) === JSON.stringify(pts)) return;
   if (pts.some(Boolean)) n.games[state.gid] = { mode: state.mode, names: players(), pts }; else delete n.games[state.gid];
@@ -2021,7 +2083,7 @@ function bindNight() {
 }
 // The end of a deck: how many cards, favourites saved while playing, and who won.
 function endHTML(total) {
-  const pts = (state.score || []).map(x => x || 0), names = players(), scored = pts.some(Boolean);
+  const pts = scoreNow(), names = players(), scored = pts.some(Boolean);
   const nf = state.favNew ? state.favNew.size : 0;
   let result = "";
   if (scored) {
@@ -2069,10 +2131,12 @@ function startMode(mode, level) {
   state.mode = mode; state.level = level || (mode === "profundas" ? store.get("sm.lvl", "todo") : "todo");
   if (!levels().some(l => l[0] === state.level)) state.level = "todo";
   state.score = players().map(() => 0); state.lastPoint = null; state.spun = new Set(); state.plays = {}; state.team = 0;
+  state.rule = RULED.includes(mode) ? store.get(`sm.rule|${mode}`, LIBRE) : LIBRE; resetLife();
   state.secs = PACES[mode] ? store.get(`sm.pace|${mode}`, PACES[mode][1]) : 0;
   state.inputs = {}; state.gid = Math.random().toString(36).slice(2, 8); state.favNew = new Set();
+  // Going back to a game brings back its scores, unless you have just chosen another mode for it.
   const k = kept[mode]; delete kept[mode];
-  if (k) Object.assign(state, k.game);
+  if (k && sameRule(k.game.rule || LIBRE, state.rule)) Object.assign(state, k.game);
   const saved = mode === "favoritas" || net.code ? { idx: 0, round: 0 } : store.get(progressKey(), { idx: 0, round: 0 });
   state.round = saved.round; state.idx = saved.idx;
   state.deck = mode === "favoritas" ? buildDeck(mode, state.level, state.round) : loadDeck();
@@ -2089,7 +2153,7 @@ function startMode(mode, level) {
 const kept = {};
 function goHome() {
   clearInterval(timerId);
-  if (state.mode) kept[state.mode] = { game: { score: state.score, lastPoint: state.lastPoint, team: state.team, plays: state.plays, spun: state.spun, inputs: state.inputs, gid: state.gid },
+  if (state.mode) kept[state.mode] = { game: { score: state.score, lastPoint: state.lastPoint, team: state.team, plays: state.plays, spun: state.spun, inputs: state.inputs, gid: state.gid, rule: state.rule, life: state.life },
     ...(net.code ? { deck: state.deck, idx: state.idx, round: state.round } : {}) };
   dropRecordings(null);
   $("toast").hidden = true; lastHidden = null;
@@ -2350,7 +2414,7 @@ function push() {
   if (!net.code || net.applying) return;
   const v = Math.random().toString(36).slice(2, 9), g = { by: net.me, v, mode: state.mode || null };
   if (state.mode) {
-    Object.assign(g, { level: state.level, round: state.round, idx: state.idx, score: state.score, team: state.team || 0, plays: state.plays, spun: [...(state.spun || [])], gid: state.gid || "", secs: state.secs || 0 });
+    Object.assign(g, { level: state.level, round: state.round, idx: state.idx, score: state.score, team: state.team || 0, plays: state.plays, spun: [...(state.spun || [])], gid: state.gid || "", secs: state.secs || 0, rule: state.rule || LIBRE, life: state.life });
     const sig = `${seedFrom(state.deck.map(cardId).join("\n"))}:${state.deck.length}`;
     if (sig !== net.sig) { g.deck = state.deck; net.sig = sig; }
   }
@@ -2373,7 +2437,8 @@ function applyRemote(g) {
       : newSig !== wasSig ? `${esc(who)} ha pasado la carta` : "";
     if (moved) { net.moved = Date.now(); renderNote(moved, 2500); }
     Object.assign(state, { mode: g.mode, level: g.level || "todo", round: g.round || 0, idx: g.idx || 0, deck,
-      score: toArr(g.score).map(n => n || 0), team: g.team || 0, plays: g.plays || {}, spun: new Set(toArr(g.spun)), gid: g.gid || "", inputs: {}, secs: g.secs || 0 });
+      score: toArr(g.score).map(n => n || 0), team: g.team || 0, plays: g.plays || {}, spun: new Set(toArr(g.spun)), gid: g.gid || "", inputs: {}, secs: g.secs || 0,
+      rule: g.rule && g.rule.k ? { k: g.rule.k, n: g.rule.n || 0 } : LIBRE, life: lifeOf(g.life) });
     if ($("game").hidden) {
       closeOpenDialogs();
       $("home").hidden = true; $("game").hidden = false;
@@ -2443,7 +2508,7 @@ function renderNet() {
     return `<li><span><i class="here${on ? " on" : ""}" aria-hidden="true"></i>${esc(p.name || "Alguien")}${p.id === net.me ? " <small>(tú)</small>" : ""}<span class="sr-only">, ${on ? "en línea" : "sin conexión"}</span></span></li>`; }).join("");
 }
 function closeOpenDialogs() {
-  for (const id of ["netSheet", "setSheet", "infoSheet", "sheet", "paceSheet", "swipePop"]) if (!$(id).hidden) closeDialog(id);
+  for (const id of ["netSheet", "setSheet", "infoSheet", "sheet", "paceSheet", "restartSheet", "swipePop"]) if (!$(id).hidden) closeDialog(id);
 }
 
 // ---------- Juegos con puntos ----------
@@ -2451,7 +2516,7 @@ function closeOpenDialogs() {
 // state.plays, so going back shows it as it was and phones playing at a distance share it.
 const playKey = c => `k${seedFrom(cardId(c))}`;
 const play = c => state.plays[playKey(c)] || (state.plays[playKey(c)] = {});
-function setPlay(c, patch) { Object.assign(play(c), patch); render(null); }
+function setPlay(c, patch) { Object.assign(play(c), patch); settle(c); render(null); }
 const turnIdx = () => state.idx % players().length;
 const meIdx = () => net.code ? roomPeople().findIndex(p => p.id === net.me) : -1;
 const myTurn = () => !net.code || turnIdx() === meIdx();
@@ -3230,14 +3295,117 @@ function cardHTML(c) {
   const how = fact ? `<p class="how">Dato curioso: decid vuestra respuesta antes de mirarla.</p>` : c.level === "chispa" ? `<p class="how">Si no te apetece, pulsa «Pasar».</p>` : HOW[c.mode] ? `<div>${v}<p class="how">${HOW[c.mode]}</p></div>` : "";
   const fav = favs().includes(cardId(c));
   const heart = `<button class="fav" type="button" aria-pressed="${fav}" aria-label="Guardar en favoritas">${icon("favoritas")}</button>`;
-  // Pictionary needs the room for the drawing: its scores show once the word is out.
-  const score = (c.mode === "adivina" || (GAMES[c.mode] && GAMES[c.mode].score)) && !(c.mode === "dibujo" && !play(c).rev) ? scoreHTML() : "";
+  // The games keep their score in the big board above the card (see bandHTML).
+  const score = c.mode === "adivina" ? scoreHTML() : "";
   const ppl = net.code ? roomNames() : people(), who = ppl.length > 1 && !NOTURN.includes(c.mode) ? esc(ppl[state.idx % ppl.length]) : "";
   const turn = !who ? "" : net.code && TURNS.includes(c.mode) && myTurn() ? `<p class="turn"><b>Te toca a ti</b></p>`
     : `<p class="turn">${TURNS.includes(c.mode) ? TURN_LABEL[c.mode] || "Le toca a" : "Empieza"} <b>${who}</b></p>`;
   const timer = TIMED.includes(c.mode) ? `<button class="timer" type="button" aria-pressed="false">${icon("reloj")}<span>30 s</span></button>` : "";
   const bin = `<button class="hide" type="button" aria-label="Quitar esta carta">${icon("quitar")}</button>`;
   return `<div class="cardtop"><span class="tag">${icon(c.mode)}${tag}</span><span class="tools">${bin}${MODES[c.mode].game ? "" : heart}</span></div>${turn}${body}${how}${score}${timer}`;
+}
+
+// ---------- Modos de juego ----------
+// The games where each card is won or missed can be played three ways, chosen when the game opens:
+// Libre (points with no end), Vidas (each miss costs a life; whoever keeps lives the longest wins
+// the round, and the rounds are the score) and A 5 / A 10 puntos (the first to get there wins).
+// Everything lives in state.rule and state.life, which travel with the game to the other phones.
+const RULED = ["frecuencia", "trivial", "cifras", "emociones", "dibujo", "reves", "cancion"];
+const LIBRE = { k: "libre", n: 0 };
+const RULE_OPTS = [["libre", 0, "Libre", "Sumad puntos sin límite"], ["vidas", 3, "3 vidas", "Fallar quita una vida"], ["vidas", 5, "5 vidas", "Fallar quita una vida"],
+  ["meta", 5, "A 5 puntos", "Gana quien llegue antes"], ["meta", 10, "A 10 puntos", "Gana quien llegue antes"]];
+const RULE_MODES = "en Libre sumáis puntos sin límite. Con vidas, cada fallo quita una vida: quien se queda sin ninguna pierde la ronda y el punto es para quien aguanta. A 5 o a 10 puntos gana quien llegue antes. Se cambia tocando el modo, debajo del título.";
+const rule = () => (RULED.includes(state.mode) && state.rule) || LIBRE;
+const ruleLabel = r => r.k === "vidas" ? `${r.n} vidas` : r.k === "meta" ? `A ${r.n} puntos` : "Libre";
+const sameRule = (a, b) => a.k === b.k && (a.n || 0) === (b.n || 0);
+// Lives left and rounds won go by person (p0, p1…); a card that has already counted is in done.
+const lifeOf = x => ({ n: (x && x.n) || {}, won: (x && x.won) || {}, done: (x && x.done) || {}, last: (x && x.last) || null, skips: (x && x.skips) || {} });
+// In the games with points each person can pass 3 cards per game (they are counted in state.life,
+// so they come back with a new game and travel to the other phones).
+const SKIPS = 3;
+const skipLimited = () => BANDED(state.mode) && !MODES[state.mode].board;
+const skipsLeft = i => SKIPS - (state.life.skips[`p${i}`] || 0);
+const livesLeft = i => { const v = state.life.n[`p${i}`]; return v == null ? rule().n : v; };
+// The score that counts: the rounds with lives, the points otherwise.
+const scoreNow = () => players().map((n, i) => rule().k === "vidas" ? state.life.won[`p${i}`] || 0 : (state.score || [])[i] || 0);
+// Who missed on a card once it is over (false while it is still being played).
+const notTurn = () => players().map((n, i) => i).filter(i => i !== turnIdx());
+const missedGuess = (c, p) => p.rev && (p.win != null || p.hit ? [] : notTurn());
+const missedNear = (c, p) => p.rev && Object.keys(p.g || {}).map(k => +k.slice(1)).filter(i => !toArr(p.win).includes(i));
+const MISSED = {
+  frecuencia: missedNear, cifras: missedNear,
+  trivial: (c, p) => !!p.pick && (p.pick === c.ok ? [] : [turnIdx()]),
+  emociones: missedGuess, dibujo: missedGuess, reves: missedGuess,
+  cancion: (c, p) => p.rev && (p.win === turnIdx() ? [] : [turnIdx()])
+};
+function resetLife() {
+  state.life = lifeOf(null);
+  // The cards already played before a new game don't take lives.
+  for (const c of state.deck || []) { const p = state.plays[playKey(c)]; if (p && MISSED[c.mode] && MISSED[c.mode](c, p)) state.life.done[playKey(c)] = 1; }
+}
+// Called each time a card changes: when it is over, whoever missed loses a life.
+function settle(c) {
+  const r = rule(), L = state.life;
+  if (r.k !== "vidas" || !MISSED[c.mode]) return;
+  const k = playKey(c); if (L.done[k]) return;
+  const miss = MISSED[c.mode](c, play(c)); if (!miss) return;
+  L.done[k] = 1;
+  const names = players(), lost = miss.filter(i => i < names.length && livesLeft(i) > 0);
+  if (!lost.length) return;
+  lost.forEach(i => { L.n[`p${i}`] = livesLeft(i) - 1; });
+  const alive = names.map((n, i) => i).filter(i => livesLeft(i) > 0), out = lost.filter(i => !livesLeft(i));
+  let t = `${lost.map(i => names[i]).join(" y ")} ${lost.length > 1 ? "pierden" : "pierde"} una vida`;
+  if (out.length && alive.length <= 1) {
+    if (alive.length) { const w = alive[0]; L.won[`p${w}`] = (L.won[`p${w}`] || 0) + 1; t = `¡${names[w]} gana la ronda! Un punto`; }
+    else t = "Os habéis quedado sin vidas a la vez. Nadie gana la ronda";
+    L.n = {};
+  } else if (out.length) t = `${out.map(i => names[i]).join(" y ")} se ${out.length > 1 ? "quedan" : "queda"} sin vidas`;
+  L.last = { k, t, round: out.length > 0 && alive.length <= 1 };
+  try { navigator.vibrate && navigator.vibrate(L.last.round ? [80, 60, 80] : 50); } catch (e) {}
+}
+// «A 5 / A 10 puntos»: who has got there (null while nobody has).
+function goalWinners() {
+  const r = rule(); if (r.k !== "meta") return null;
+  const p = scoreNow(), best = Math.max(...p);
+  return best >= r.n ? p.map((v, i) => v === best ? i : -1).filter(i => i >= 0) : null;
+}
+
+// The big board above the card in the games with points. In the games where you can add a point
+// by hand, tapping a name adds one. It also says who lost a life or won the round on this card.
+const BANDED = m => MODES[m] && MODES[m].game && m !== "onda";
+function bandHTML() {
+  const names = players(), p = scoreNow(), r = rule(), c = state.deck[state.idx];
+  const tap = !!GAMES[state.mode] && GAMES[state.mode].score && r.k !== "vidas";
+  const lead = Math.max(...p);
+  const hearts = i => r.k !== "vidas" ? "" : `<span class="hearts" role="img" aria-label="${plural(livesLeft(i), "vida", "vidas")}">${Array.from({ length: r.n }, (_, j) => icon("favoritas", `i${j < livesLeft(i) ? " on" : ""}`)).join("")}</span>`;
+  const cell = (n, i) => {
+    const inner = `<span class="who"><span class="nm">${n}</span>${hearts(i)}</span><b>${p[i]}</b>`;
+    const cls = `bs${lead > 0 && p[i] === lead ? " lead" : ""}${r.k === "vidas" && !livesLeft(i) ? " out" : ""}`;
+    return tap ? `<button class="${cls}" type="button" data-p="${i}" aria-label="Sumar un punto a ${n}, lleva ${p[i]}">${inner}</button>`
+      : `<div class="${cls}" role="group" aria-label="${n}: ${plural(p[i], r.k === "vidas" ? "ronda" : "punto", r.k === "vidas" ? "rondas" : "puntos")}">${inner}</div>`;
+  };
+  const w = goalWinners(), last = state.life.last;
+  const msg = w ? `<div class="bsmsg win"><span>🏆 ${w.length === 1 ? `¡Gana <b>${names[w[0]]}</b>!` : `Empate entre ${w.map(i => names[i]).join(" y ")}`}</span><button class="mini" type="button" id="rematch">Revancha</button></div>`
+    : c && last && last.k === playKey(c) ? `<p class="bsmsg${last.round ? " win" : ""}" role="status">${last.round ? "🏆 " : "💔 "}${last.t}</p>`
+    : tap && state.lastPoint != null ? `<button class="undo" type="button" id="bandUndo">Deshacer el último punto</button>` : "";
+  return `<div class="bsrow${names.length > 3 ? " many" : ""}">${names.map(cell).join("")}</div>${msg}`;
+}
+function renderBand() {
+  const el = $("band"), on = BANDED(state.mode) && state.idx < state.deck.length;
+  el.hidden = !on; if (!on) { el.innerHTML = ""; return; }
+  el.classList.toggle("slim", state.mode === "dibujo");
+  $("game").classList.toggle("drawing", state.mode === "dibujo");
+  el.innerHTML = bandHTML();
+  el.querySelectorAll("button.bs").forEach(b => b.onclick = () => {
+    const i = +b.dataset.p; state.lastPoint = i; state.score[i] = (state.score[i] || 0) + 1;
+    save(); renderBand();
+    const again = el.querySelector(`.bs[data-p="${i}"]`); again.focus(); again.classList.add("bump");
+    $("live").textContent = players().map((n, j) => `${n}: ${state.score[j]}.`).join(" ");
+  });
+  const undo = $("bandUndo");
+  if (undo) undo.onclick = () => { state.score[state.lastPoint] = Math.max(0, (state.score[state.lastPoint] || 0) - 1); state.lastPoint = null; save(); renderBand(); };
+  const again = $("rematch");
+  if (again) again.onclick = () => { bankScore(); newGame(); state.idx = Math.min(state.idx + 1, state.deck.length); render("deal"); };
 }
 
 // Score for "Adivina mi respuesta": only lives while you play, back to 0 when you leave the deck.
@@ -3275,14 +3443,22 @@ function render(anim) {
   document.body.style.backgroundColor = m.c;
   $("game").style.cssText = vars(colorMode);
   $("gtitle").textContent = MODES[state.mode].short || MODES[state.mode].name;
-  $("lvlBtn").hidden = state.mode !== "profundas" && !PACES[state.mode];
-  $("lvlBtn").textContent = PACES[state.mode] ? `${paceSecs(state.mode)} s` : (LEVELS.find(l => l[0] === state.level) || LEVELS[0])[1];
-  $("count").textContent = `${Math.min(state.idx + 1, total)}/${total}`;
-  $("count").setAttribute("aria-label", `Carta ${Math.min(state.idx + 1, total)} de ${total}`);
+  const ruled = RULED.includes(state.mode);
+  $("lvlBtn").hidden = state.mode !== "profundas" && !PACES[state.mode] && !ruled;
+  $("lvlBtn").textContent = PACES[state.mode] || ruled ? [ruled ? ruleLabel(rule()).replace(" puntos", "") : "", PACES[state.mode] ? `${paceSecs(state.mode)} s` : ""].filter(Boolean).join(" · ")
+    : (LEVELS.find(l => l[0] === state.level) || LEVELS[0])[1];
+  $("count").innerHTML = `${icon("again")}${Math.min(state.idx + 1, total)}/${total}`;
+  $("count").setAttribute("aria-label", `Carta ${Math.min(state.idx + 1, total)} de ${total}. Empezar de nuevo`);
   $("game").classList.toggle("board", !!MODES[state.mode].board);
   $("barfill").style.width = `${(Math.min(state.idx + 1, total) / total) * 100}%`;
   $("prev").disabled = state.idx === 0;
+  if (anim && BANDED(state.mode)) state.lastPoint = null;
+  renderBand();
   $("skip").hidden = done;
+  const lim = skipLimited() && !done, left = lim ? skipsLeft(turnIdx()) : 0;
+  $("skip").textContent = lim ? (left > 0 ? `Pasar (${left})` : "Sin pases") : "Pasar";
+  $("skip").disabled = lim && left <= 0;
+  if (lim) $("skip").setAttribute("aria-label", `Pasar. ${players()[turnIdx()]} ${left === 1 ? "puede pasar 1 carta más" : `puede pasar ${left} cartas más`}`); else $("skip").removeAttribute("aria-label");
   $("next").hidden = done;
   const table = $("table");
   table.innerHTML = `<div class="ghost-card g1"></div><div class="ghost-card g2"></div>` + (done
@@ -3293,16 +3469,7 @@ function render(anim) {
   clearInterval(timerId);
   if (done) {
     $("otherGame").onclick = goHome;
-    $("reshuffle").onclick = () => {
-      // «Revancha»: same game, new deck order and scores back to 0 (the last game stays in the night's score).
-      if (state.score.some(Boolean)) { state.score = players().map(() => 0); state.lastPoint = null; state.team = 0; state.gid = Math.random().toString(36).slice(2, 8); state.inputs = {}; }
-      state.favNew = new Set();
-      state.round++; state.idx = 0; state.plays = {}; state.deck = buildDeck(state.mode, state.level, state.round); save();
-      if (reduced) { render("deal"); return; }
-      table.classList.add("shuffling");
-      table.querySelector(".card").classList.add("gather");
-      setTimeout(() => { table.classList.remove("shuffling"); render("deal"); }, 460);
-    };
+    $("reshuffle").onclick = restartDeck;
   } else {
     const card = table.querySelector(".card"), fav = card.querySelector(".fav");
     if (fav) fav.addEventListener("pointerdown", e => e.stopPropagation());
@@ -3322,6 +3489,32 @@ function render(anim) {
   save();
   autoTimer();
 }
+
+// «Revancha» at the end, or «Empezar de nuevo» from the counter at any time: every card again in a
+// new order, from the first one, and the scores back to 0 (the last game stays in the night's score).
+function restartDeck() {
+  if (scoreNow().some(Boolean) || state.team) newGame();
+  state.favNew = new Set();
+  state.round++; state.idx = 0; state.plays = {}; resetLife(); state.deck = buildDeck(state.mode, state.level, state.round); save();
+  const table = $("table");
+  if (reduced || !table.querySelector(".card")) { render("deal"); return; }
+  table.classList.add("shuffling");
+  table.querySelector(".card").classList.add("gather");
+  setTimeout(() => { table.classList.remove("shuffling"); render("deal"); }, 460);
+}
+// A new game on the same deck: scores to 0 and a new entry in the night's score.
+function newGame() {
+  state.score = players().map(() => 0); state.lastPoint = null; state.team = 0; state.gid = Math.random().toString(36).slice(2, 8); state.inputs = {};
+  resetLife();
+}
+$("count").onclick = () => {
+  const scored = scoreNow().some(Boolean) || state.team;
+  $("restartText").innerHTML = `Se barajan todas las cartas otra vez y empezáis por la primera.${scored ? " <b>El marcador vuelve a 0.</b>" : ""}`;
+  openDialog("restartSheet", "restartOk");
+};
+$("restartOk").onclick = () => { closeDialog("restartSheet"); restartDeck(); };
+$("restartNo").onclick = () => closeDialog("restartSheet");
+$("restartSheet").addEventListener("click", e => { if (e.target.id === "restartSheet") closeDialog("restartSheet"); });
 
 // 30-second timer: it starts on its own with each new card. Tap it to stop it, or to start it again.
 // It ends with a nudge, no sound.
@@ -3425,6 +3618,7 @@ $("undoHide").onclick = () => {
 
 function skipCard() {
   if (busy || justMoved() || state.idx >= state.deck.length) return;
+  if (skipLimited()) { const i = turnIdx(); if (skipsLeft(i) <= 0) return; state.life.skips[`p${i}`] = (state.life.skips[`p${i}`] || 0) + 1; }
   // On the last card there is nothing to put it behind, so passing just ends the deck.
   if (state.idx === state.deck.length - 1) { throwCard(1); return; }
   const card = $("table").querySelector(".card");
@@ -3467,20 +3661,49 @@ function bindDrag(el) {
   el.addEventListener("pointercancel", end);
 }
 
-// Timed games ask for the pace first; the rest start straight away.
-let paceMode = null;
+// Timed games ask for the pace first, and the games with modes for the mode; the rest start
+// straight away. With only the pace to choose, tapping the seconds starts the game.
+let paceMode = null, pick = {};
 function openPace(mode, inGame) {
   paceMode = mode;
-  const cur = inGame ? paceSecs(mode) : store.get(`sm.pace|${mode}`, PACES[mode][1]);
-  $("paces").innerHTML = [...PACES[mode]].reverse().map(secs => `<button class="lvl${secs === cur ? " rec" : ""}" type="button" data-secs="${secs}" aria-pressed="${secs === cur}" aria-label="${secs} segundos"><b>${secs} s</b></button>`).join("");
+  const ruled = RULED.includes(mode);
+  pick = { inGame, secs: PACES[mode] ? (inGame ? paceSecs(mode) : store.get(`sm.pace|${mode}`, PACES[mode][1])) : 0,
+    rule: inGame ? rule() : store.get(`sm.rule|${mode}`, LIBRE) };
+  $("rulePick").hidden = !ruled;
+  $("rulePick").innerHTML = ruled ? RULE_OPTS.map(([k, n, name, desc], i) => { const on = sameRule(pick.rule, { k, n });
+    return `<button class="lvl${i ? "" : " wide"}" type="button" data-rule="${i}" aria-pressed="${on}"><b>${name}</b><span>${desc}</span></button>`; }).join("") : "";
+  $("paceLbl").hidden = !(ruled && PACES[mode]);
+  $("paces").hidden = !PACES[mode];
+  $("paces").innerHTML = PACES[mode] ? [...PACES[mode]].reverse().map(secs => `<button class="lvl${secs === pick.secs ? " rec" : ""}" type="button" data-secs="${secs}" aria-pressed="${secs === pick.secs}" aria-label="${secs} segundos"><b>${secs} s</b></button>`).join("") : "";
+  $("paceGo").hidden = !ruled;
+  $("paceGo").textContent = inGame ? "Seguir jugando" : "Jugar";
   openDialog("paceSheet", "cancelPace");
-  $("paces").querySelector('[aria-pressed="true"]').focus();
+  $("paceSheet").querySelector('[aria-pressed="true"]').focus();
+}
+// The choice is made: a new mode starts a new game (the old one stays in the night's score),
+// a new pace starts the current card's time again.
+function applyPick() {
+  const mode = paceMode;
+  if (PACES[mode]) store.set(`sm.pace|${mode}`, pick.secs);
+  if (RULED.includes(mode)) store.set(`sm.rule|${mode}`, pick.rule);
+  closeDialog("paceSheet");
+  if ($("game").hidden) { startMode(mode); return; }
+  if (RULED.includes(mode) && !sameRule(pick.rule, rule())) {
+    bankScore(); state.rule = pick.rule; newGame();
+    $("live").textContent = `Modo: ${ruleLabel(pick.rule)}. El marcador empieza de cero.`;
+  }
+  if (PACES[mode] && pick.secs !== paceSecs(mode)) {
+    state.secs = pick.secs;
+    const c = state.deck[state.idx], p = c && play(c);
+    if (p && p.end && !p.rev && clock() < p.end) { delete p.end; delete p.secs; }
+  }
+  render(null);
 }
 // The first time you open a game on this phone, its rules come first. Later they stay behind the "i".
 function openMode(mode, level) {
   const seen = store.get("sm.rulesSeen", []);
   if (!META.includes(mode) && !seen.includes(mode)) { store.set("sm.rulesSeen", [...seen, mode]); openInfo(mode); return; }
-  if (PACES[mode]) openPace(mode, false); else startMode(mode, level);
+  if (PACES[mode] || RULED.includes(mode)) openPace(mode, false); else startMode(mode, level);
 }
 // Dialogs: the page behind goes inert so focus and screen readers stay inside, and focus
 // returns to whatever opened the dialog.
@@ -3502,7 +3725,7 @@ function openInfo(mode) {
   $("infoIcon").innerHTML = icon(mode);
   $("infoTitle").textContent = MODES[mode].name;
   $("infoText").innerHTML = `<p>${esc(RULES[mode])}</p>${RULE_STEPS[mode] ? `<ol>${RULE_STEPS[mode].map(x => `<li>${esc(x)}</li>`).join("")}</ol>` : ""}${
-    RULE_EX[mode] ? `<p class="example"><b>Ejemplo:</b> ${esc(RULE_EX[mode])}</p>` : ""}`;
+    RULE_EX[mode] ? `<p class="example"><b>Ejemplo:</b> ${esc(RULE_EX[mode])}</p>` : ""}${BANDED(mode) && !MODES[mode].board ? `<p class="example"><b>Pasar:</b> cada persona puede pasar 3 cartas por partida.</p>` : ""}${RULED.includes(mode) ? `<p class="example"><b>Modos:</b> ${RULE_MODES}</p>` : ""}`;
   const inGame = !$("game").hidden;
   $("infoPlay").textContent = inGame ? "Seguir jugando" : "Jugar";
   $("infoClose").hidden = inGame;
@@ -3518,6 +3741,11 @@ const onShelf = e => {
   openMode(b.dataset.mode, b.dataset.level);
 };
 for (const id of ["resume", "quick", "shelves"]) $(id).addEventListener("click", onShelf);
+$("tabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-tab]"); if (!b || b.getAttribute("aria-selected") === "true") return;
+  store.set("sm.tab", b.dataset.tab); renderHome();
+  $("tabs").querySelector(`[data-tab="${b.dataset.tab}"]`).focus();
+});
 $("lvls").addEventListener("click", e => {
   const b = e.target.closest("[data-level]"); if (!b) return;
   store.set("sm.lvl", b.dataset.level); renderLevels();
@@ -3527,20 +3755,21 @@ $("cancelSheet").onclick = () => closeDialog("sheet");
 $("sheet").addEventListener("click", e => { if (e.target.id === "sheet") closeDialog("sheet"); });
 $("back").onclick = goHome;
 $("lvlBtn").onclick = () => {
-  if (PACES[state.mode]) { openPace(state.mode, true); return; }
+  if (PACES[state.mode] || RULED.includes(state.mode)) { openPace(state.mode, true); return; }
   openDialog("sheet", "cancelSheet"); $("lvls").querySelector('[aria-pressed="true"]').focus();
 };
 $("paces").addEventListener("click", e => {
   const b = e.target.closest("[data-secs]"); if (!b) return;
-  const secs = +b.dataset.secs; store.set(`sm.pace|${paceMode}`, secs);
-  closeDialog("paceSheet");
-  if ($("game").hidden) { startMode(paceMode); return; }
-  // A new pace starts the current card's time again with the new seconds.
-  state.secs = secs;
-  const c = state.deck[state.idx], p = c && play(c);
-  if (p && p.end && !p.rev && clock() < p.end) { delete p.end; delete p.secs; }
-  render(null);
+  pick.secs = +b.dataset.secs;
+  if (!RULED.includes(paceMode)) { applyPick(); return; }
+  $("paces").querySelectorAll("[data-secs]").forEach(x => { const on = x === b; x.setAttribute("aria-pressed", on); x.classList.toggle("rec", on); });
 });
+$("rulePick").addEventListener("click", e => {
+  const b = e.target.closest("[data-rule]"); if (!b) return;
+  const [k, n] = RULE_OPTS[+b.dataset.rule]; pick.rule = { k, n };
+  $("rulePick").querySelectorAll("[data-rule]").forEach(x => x.setAttribute("aria-pressed", x === b));
+});
+$("paceGo").onclick = applyPick;
 $("cancelPace").onclick = () => closeDialog("paceSheet");
 $("paceSheet").addEventListener("click", e => { if (e.target.id === "paceSheet") closeDialog("paceSheet"); });
 $("prev").onclick = () => throwCard(-1);
@@ -3552,6 +3781,7 @@ document.addEventListener("keydown", e => {
   if (!$("infoSheet").hidden) { if (e.key === "Escape") closeDialog("infoSheet"); return; }
   if (!$("sheet").hidden) { if (e.key === "Escape") closeDialog("sheet"); return; }
   if (!$("paceSheet").hidden) { if (e.key === "Escape") closeDialog("paceSheet"); return; }
+  if (!$("restartSheet").hidden) { if (e.key === "Escape") closeDialog("restartSheet"); return; }
   if (!$("setSheet").hidden) { if (e.key === "Escape") closeSettings(); return; }
   if (!$("netSheet").hidden) { if (e.key === "Escape") closeDialog("netSheet"); return; }
   if ($("game").hidden || e.target.closest("input, textarea, [role=slider]") || (e.key === " " && e.target.closest("button"))) return;
