@@ -236,7 +236,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 @keyframes enter { from { opacity: 0; transform: scale(.97); } }
 .wheel-wrap { position: relative; display: grid; justify-items: center; gap: 16px; margin: auto 0; }
 .wheel { width: min(62vw, 230px); aspect-ratio: 1; max-width: 100%; transition: transform 1.9s cubic-bezier(.15,.85,.2,1); }
-.wheel text { font-family: var(--font-display); font-size: 5.6px; fill: #1E1633; }
+.wheel text { font-family: var(--font-display); font-size: 6.4px; fill: #1E1633; }
 .pointer { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border: 12px solid transparent; border-top: 20px solid var(--ink); border-bottom: 0; z-index: 1; }
 .spin { min-height: 50px; padding: 0 22px; border-radius: 16px; background: var(--ink); color: #fff; font-family: var(--font-display); font-size: 1.2rem; box-shadow: 0 4px 0 rgba(0,0,0,.3); }
 .spin:disabled { opacity: .7; }
@@ -2098,7 +2098,7 @@ const needsSpin = c => c.kind === "Reto" && c.style && !(state.spun && state.spu
 function wheelHTML() {
   const a = 360 / STYLES.length, pt = d => { const r = (d - 90) * Math.PI / 180; return `${(46 * Math.cos(r)).toFixed(2)} ${(46 * Math.sin(r)).toFixed(2)}`; };
   const parts = STYLES.map(([n, col], i) => `<path d="M0 0L${pt(i * a)}A46 46 0 0 1 ${pt((i + 1) * a)}Z" fill="${col}"/>
-    <text transform="rotate(${i * a + a / 2}) translate(0 -30)${i * a + a / 2 > 90 && i * a + a / 2 < 270 ? " rotate(180)" : ""}" text-anchor="middle" dominant-baseline="middle">${n}</text>`).join("");
+    <text transform="rotate(${i * a + a / 2}) translate(0 -27) rotate(90)" text-anchor="middle" dominant-baseline="middle">${n}</text>`).join("");
   return `<div class="wheel-wrap"><span class="pointer" aria-hidden="true"></span>
     <svg class="wheel" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="48" fill="#1E1633"/>${parts}<circle r="7" fill="#1E1633"/></svg>
     <button class="spin" type="button">Girar la ruleta</button></div>`;
