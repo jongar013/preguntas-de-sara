@@ -36,6 +36,7 @@ body { background: var(--table); color: #fff; font-family: var(--font-body); fon
 * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
 button { font: inherit; color: inherit; cursor: pointer; border: 0; background: none; }
 button:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.card button:focus-visible, .sheet button:focus-visible, .card [tabindex]:focus-visible { outline-color: var(--ink); }
 svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-width: 2.4; stroke-linecap: round; stroke-linejoin: round; }
 
 .app { height: 100%; max-width: 540px; margin: 0 auto; display: flex; flex-direction: column;
@@ -63,7 +64,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .resume .badge { width: 44px; height: 44px; border-radius: 14px; background: var(--c); color: var(--fg); border: 2.5px solid var(--ink); display: grid; place-items: center; flex: none; }
 .resume b { display: block; font-family: var(--font-display); font-weight: 400; font-size: 1.2rem; line-height: 1.1; }
 .resume small { font-weight: 800; font-size: .88rem; }
-.deck .desc { font-size: .85rem; font-weight: 800; line-height: 1.25; opacity: .92; }
+.deck .desc { font-size: .85rem; font-weight: 800; line-height: 1.25; }
 .decks { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
 #quick { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
 .deck { position: relative; text-align: left; border-radius: 22px; padding: 12px 12px 14px; min-height: 112px;
@@ -122,7 +123,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .round:disabled { opacity: .45; cursor: default; transform: none; }
 .round svg.i { width: 22px; height: 22px; stroke-width: 3; }
 .gt { min-width: 0; display: grid; justify-items: start; gap: 2px; }
-.gtitle { font-family: var(--font-display); font-size: clamp(1rem, 5.4vw, 1.25rem); line-height: 1.05; max-width: 100%; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
+.gtitle { margin: 0; font-weight: 400; font-family: var(--font-display); font-size: clamp(1rem, 5.4vw, 1.25rem); line-height: 1.05; max-width: 100%; overflow: hidden; display: -webkit-box; -webkit-box-orient: vertical; -webkit-line-clamp: 2; }
 @media (max-width: 320px) { .topbar { gap: 8px; grid-template-columns: 44px 1fr auto auto; } .topbar .round { width: 44px; height: 44px; } .pill { padding: 6px 9px; font-size: .8rem; } .topbar .info { width: 36px; height: 36px; } }
 .lvlbtn { position: relative; white-space: nowrap; max-width: 100%; overflow: hidden; text-overflow: ellipsis; font-weight: 900; font-size: .85rem; padding: 3px 10px; margin-left: -2px; min-height: 30px; border-radius: 999px; background: rgba(30,22,51,.28); color: var(--fg); }
 .lvlbtn::before { content: ""; position: absolute; inset: -7px -4px; }
@@ -468,7 +469,7 @@ canvas.board { display: block; width: min(100cqw, 100cqh); aspect-ratio: 1; back
 <style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)} body{margin:0}</style>
 </head>
 <body>
-<div class="app" id="app">
+<main class="app" id="app">
   <section id="home">
     <header class="logo">
       <h1>Preguntas de Sara</h1>
@@ -485,7 +486,7 @@ canvas.board { display: block; width: min(100cqw, 100cqh); aspect-ratio: 1; back
     <div class="bg-dots"></div>
     <div class="topbar">
       <button class="round" id="back" type="button" aria-label="Volver a los mazos"><svg class="i" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
-      <div class="gt"><div class="gtitle" id="gtitle"></div><button class="lvlbtn" id="lvlBtn" type="button" hidden aria-haspopup="dialog"></button></div>
+      <div class="gt"><h1 class="gtitle" id="gtitle"></h1><button class="lvlbtn" id="lvlBtn" type="button" hidden aria-haspopup="dialog"></button></div>
       <div class="pill" id="count"></div>
       <button class="info" id="gameInfo" type="button" aria-label="Cómo se juega">i</button>
     </div>
@@ -500,7 +501,7 @@ canvas.board { display: block; width: min(100cqw, 100cqh); aspect-ratio: 1; back
     <p class="sr-only" id="live" aria-live="polite"></p>
     <div class="toast" id="toast" hidden><span>Carta quitada</span><button type="button" id="undoHide">Deshacer</button></div>
   </section>
-</div>
+</main>
 
 <div class="sheet-wrap center" id="swipePop" hidden>
   <div class="pop" role="dialog" aria-modal="true" aria-labelledby="swipeTitle">
@@ -2678,9 +2679,9 @@ function shotMap(c, s) {
 const sunkAll = (c, s) => { const fleet = fleetOf(c, 1 - s), m = shotMap(c, s); return fleet.length > 0 && fleet.every(ship => ship.every(x => m.get(x) === "hundido")); };
 const COLS = "ABCDEFGH";
 function gridHTML(cell, fire, small) {
-  return `<div class="grid${small ? " small" : ""}" role="grid">${Array.from({ length: SIDE * SIDE }, (_, x) => {
+  return `<div class="grid${small ? " small" : ""}">${Array.from({ length: SIDE * SIDE }, (_, x) => {
     const [cls, txt] = cell(x), name = `${COLS[x % SIDE]}${Math.floor(x / SIDE) + 1}`;
-    return fire && !cls ? `<button type="button" class="cell" data-act="fire" data-v="${x}" aria-label="Disparar a ${name}"></button>` : `<span class="cell ${cls}" aria-label="${name} ${txt}">${txt === "agua" ? "•" : txt === "tocado" || txt === "hundido" ? "✕" : ""}</span>`;
+    return fire && !cls ? `<button type="button" class="cell" data-act="fire" data-v="${x}" aria-label="Disparar a ${name}"></button>` : `<span class="cell ${cls}" role="img" aria-label="${(name + " " + txt).trim()}">${txt === "agua" ? "•" : txt === "tocado" || txt === "hundido" ? "✕" : ""}</span>`;
   }).join("")}</div>`;
 }
 const shotCell = m => x => m.has(x) ? [m.get(x), m.get(x)] : ["", ""];
