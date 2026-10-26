@@ -239,8 +239,10 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .wheel { width: min(62vw, 230px); aspect-ratio: 1; max-width: 100%; transition: transform 1.9s cubic-bezier(.15,.85,.2,1); }
 .wheel text { font-family: var(--font-display); font-size: 6.4px; fill: #1E1633; }
 .pointer { position: absolute; top: -6px; left: 50%; transform: translateX(-50%); width: 0; height: 0; border: 12px solid transparent; border-top: 20px solid var(--ink); border-bottom: 0; z-index: 1; }
-.spin { min-height: 50px; padding: 0 22px; border-radius: 16px; background: var(--ink); color: #fff; font-family: var(--font-display); font-size: 1.2rem; box-shadow: 0 4px 0 rgba(0,0,0,.3); }
-.spin:disabled { opacity: .7; }
+.spin { position: relative; display: grid; place-items: center; padding: 0; border-radius: 50%; background: none; cursor: pointer; -webkit-tap-highlight-color: transparent; }
+.spin:not(:disabled):active .wheel { transform: scale(.97); transition: transform .1s; }
+.spin:focus-visible { outline: 4px solid var(--ink); outline-offset: 4px; }
+.spinhint { text-align: center; }
 .q.reveal { animation: reveal .35s cubic-bezier(.2,.9,.3,1.3); }
 @keyframes reveal { from { opacity: 0; transform: scale(.9); } }
 .turn { margin: -4px 0 0; font-weight: 800; font-size: 1rem; color: var(--muted-ink); }
@@ -333,6 +335,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .secret.slim:not(.on) { grid-template-columns: 1fr; gap: 6px; }
 .act { min-height: 52px; flex: none; border-radius: 16px; border: 3px solid var(--ink); background: var(--c); color: var(--fg); font-family: var(--font-display); font-size: 1.2rem; box-shadow: 0 4px 0 var(--ink); }
 .act:active { transform: translateY(3px); box-shadow: 0 1px 0 var(--ink); }
+.act:disabled { opacity: .45; transform: none; box-shadow: 0 4px 0 var(--ink); }
 .scale { display: flex; justify-content: space-between; gap: 12px; margin: -8px 0 0; font-weight: 800; font-size: .9rem; color: var(--muted-ink); }
 .scale span:last-child { text-align: right; }
 .result { margin: 0; font-family: var(--font-display); font-size: 1.6rem; text-align: center; }
@@ -363,6 +366,9 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .col .lbl { position: absolute; left: 0; right: 0; text-align: center; font-weight: 900; font-size: .72rem; }
 .col .top { top: 10px; } .col .bot { bottom: 10px; }
 .locks { display: flex; flex-wrap: wrap; gap: 8px; }
+.nums { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+.nums button { height: 48px; border-radius: 14px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); font-family: var(--font-display); font-size: 1.35rem; box-shadow: 0 3px 0 var(--ink); }
+.nums button:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--ink); }
 .lock { padding: 6px 12px; border-radius: 999px; background: var(--soft); font-weight: 900; font-size: .9rem; }
 .lock.done { background: #22B573; }
 .answer { display: grid; gap: 2px; text-align: center; background: var(--soft); border-radius: 18px; padding: 12px; }
@@ -380,6 +386,7 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
   font-family: var(--font-display); font-size: 1.2rem; line-height: 1; font-variant-numeric: tabular-nums; color: var(--ink);
   background: radial-gradient(closest-side, #fff 78%, transparent 80%), conic-gradient(var(--ring) calc(var(--f) * 360deg), #E4DEF0 0); }
 .card > .countdown { align-self: center; justify-self: center; }
+button.countdown { padding: 0; border: 0; cursor: pointer; }
 .countdown.low { --ring: #E5383B; color: #B3171A; }
 .countdown.over { font-size: .85rem; }
 
@@ -398,6 +405,17 @@ svg.i { width: 26px; height: 26px; fill: none; stroke: currentColor; stroke-widt
 .keys .ok { background: var(--c); color: var(--fg); font-size: .95rem; padding: 0; }
 .keys .ok:disabled { opacity: .45; }
 .tries { display: grid; gap: 6px; }
+.mycode { display: flex; align-items: center; justify-content: center; gap: 12px; padding: 8px 14px; border: 3px solid var(--ink); border-radius: 16px; background: var(--soft); }
+.mycode small { font-weight: 900; color: var(--muted-ink); }
+.mycode b { font-family: var(--font-display); font-size: 1.8rem; letter-spacing: .2em; line-height: 1; }
+.notes { display: grid; gap: 4px; padding: 10px; border: 3px solid var(--ink); border-radius: 18px; background: var(--soft); }
+.notes .padlbl { margin-bottom: 4px; }
+.noterow { display: grid; grid-template-columns: 26px repeat(10, minmax(0, 1fr)); gap: 3px; align-items: center; }
+.noterow small { font-weight: 900; color: var(--muted-ink); font-size: .8rem; }
+.note { height: 34px; padding: 0; border-radius: 9px; border: 2px solid var(--ink); background: var(--card); color: var(--ink); font-family: var(--font-display); font-size: 1.1rem; line-height: 1; }
+.note.x { background: transparent; border-color: rgba(30,22,51,.25); color: rgba(30,22,51,.35); text-decoration: line-through; text-decoration-thickness: 3px; }
+.note.ok { background: #22B573; color: #fff; }
+.notehint { font-weight: 700; color: var(--muted-ink); font-size: .78rem; line-height: 1.3; margin-top: 4px; }
 .try { display: flex; align-items: center; gap: 10px; background: var(--soft); border-radius: 12px; padding: 6px 12px; }
 .try .code { font-family: var(--font-display); font-size: 1.4rem; letter-spacing: .15em; }
 .try small { margin-left: auto; font-weight: 800; color: var(--muted-ink); }
@@ -415,6 +433,13 @@ button.cell:active { background: var(--c); }
 .cell.hundido { background: var(--ink); border-color: var(--ink); color: #FF5A36; }
 .turn .last { color: var(--muted-ink); }
 .row2 > button { min-height: 52px; }
+.fleetbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 8px; font-weight: 900; font-size: .9rem; }
+.shipchip { display: inline-flex; gap: 2px; padding: 4px; border-radius: 8px; background: var(--soft); opacity: .55; }
+.shipchip.now { opacity: 1; outline: 3px solid var(--ink); }
+.shipchip i { width: 12px; height: 12px; border-radius: 3px; background: var(--ink); }
+.fleettools { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; }
+.fleettools .mini { min-height: 40px; padding: 0 14px; }
+button.cell:disabled { opacity: 1; }
 .clues { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; font-weight: 900; }
 .clues b { font-family: var(--font-display); font-weight: 400; font-size: 1.6rem; }
 .clues .mini { margin-left: auto; }
@@ -447,9 +472,16 @@ button.pword:disabled { cursor: default; }
 .tally button { min-width: 48px; min-height: 44px; border-radius: 12px; border: 2.5px solid var(--ink); background: var(--card); color: var(--ink); font-weight: 900; margin-left: 4px; }
 
 /* Tanda 3: Pictionary, Palabras al revés, Canta una canción */
-.boardwrap { flex: 1 1 0; min-height: 130px; container-type: size; display: grid; place-items: center; }
-canvas.board { display: block; width: min(100cqw, 100cqh); aspect-ratio: 1; background: #fff; border: 3px solid var(--ink); border-radius: 18px; touch-action: none; cursor: crosshair; }
-.inks { display: flex; align-items: center; justify-content: center; gap: 6px; flex-wrap: wrap; }
+.drawrow { flex: 1 1 0; min-height: 372px; display: flex; gap: 8px; align-items: stretch; }
+.boardwrap { flex: 1 1 0; min-width: 0; container-type: size; display: grid; place-items: start center; }
+canvas.board { display: block; width: min(100cqw, calc(100cqh * 1000 / 1300)); aspect-ratio: 1000 / 1300; background: #fff; border: 3px solid var(--ink); border-radius: 18px; touch-action: none; cursor: crosshair; }
+.card.draw { padding: 16px 12px 14px; gap: 8px; }
+.inks { flex: none; width: 50px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; gap: 7px; }
+.inks .countdown { width: 50px; height: 50px; font-size: .95rem; margin-bottom: 2px; }
+.inks .ink, .inks .tool { width: 38px; height: 38px; flex: none; }
+.inks .giveup { margin-top: auto; min-height: 36px; width: 100%; padding: 0 2px; font-size: .72rem; border-radius: 12px; }
+.secret.tiny { padding: 6px 10px; }
+.secret.tiny:not(.on) p { display: none; }
 .inks .tool { width: 40px; height: 40px; border-radius: 50%; background: var(--soft); color: var(--ink); font-size: 1.4rem; font-weight: 900; display: grid; place-items: center; }
 .inks .tool svg.i { width: 22px; height: 22px; }
 .ink { width: 40px; height: 40px; border-radius: 50%; border: 3px solid #fff; box-shadow: 0 0 0 2px var(--ink); }
@@ -1681,11 +1713,11 @@ const RULES = {
   top3: "Cada persona dice su podio del tema, del tercero al primero, y explica por qué. Si coincidís en alguno, punto para quienes coincidan.",
   dosverdades: "Quien tiene el móvil cuenta tres cosas sobre el tema: dos verdaderas y una inventada. El resto adivina cuál es la mentira.",
   random: "Preguntas para pasar el rato. Contestad por turnos y sin pensarlo mucho.",
-  frecuencia: "A quien le toca le sale un número secreto del 1 al 10 y dice algo del tema que, para su gusto, valga justo ese número. El resto adivina el número, y quien acierte se lleva un punto.",
+  frecuencia: "A quien le toca le sale un número secreto del 1 al 10 y dice algo del tema que, para su gusto, valga justo ese número. El resto elige el número en la app: quien lo clave o se quede a uno se lleva un punto.",
   onda: "Quien da la pista ve dónde está la zona de colores y dice una sola cosa que caiga ahí. El resto mueve la aguja: cuanto más cerca del centro, más puntos para el equipo.",
   trivial: "Por turnos, cada persona contesta una pregunta con cuatro opciones. Si acierta, se lleva un punto.",
   cifras: "Todo el mundo responde a la misma pregunta con la barra y fija su respuesta sin enseñarla. Quien más se acerque al número de verdad se lleva el punto.",
-  emociones: "A quien le toca le sale una emoción secreta y cuenta una situación en la que la sentiría, sin decir la palabra. Quien la adivine antes de que acabe el tiempo se lleva un punto.",
+  emociones: "A quien le toca le sale una emoción secreta y cuenta una situación en la que la sentiría, sin decir la palabra. El resto la escribe en la app, y quien la acierte antes de que acabe el tiempo se lleva un punto.",
   codigo: "Hay un código secreto de 4 cifras: por turnos, cada persona prueba uno y la app dice cuántas cifras están en su sitio. Gana quien lo descubra antes.",
   palabras: "Quien explica ve 8 palabras secretas y da pistas de una sola palabra para que el resto las adivine. Hay 20 pistas para las 8, y cada acierto es un punto para quien explica.",
   stop: "Sale una letra: escribid una palabra que empiece por ella para cada categoría, y quien acabe pulsa «¡Stop!». Respuesta única, 10 puntos; repetida, 5.",
@@ -1698,9 +1730,9 @@ const RULES = {
 };
 const RULE_STEPS = {
   reves: ["Quien tiene el turno ve su palabra en secreto y se graba diciéndola.", "La app pone la grabación del revés: suena como un idioma rarísimo.",
-    "El resto imita ese sonido y se graba.", "La app da la vuelta a la imitación. Si suena a la palabra, punto para quien la adivine."],
-  cancion: ["Sale una palabra y quien tiene el turno pulsa «Empezar».", "Canta un trozo de cualquier canción que diga esa palabra.",
-    "Si se queda en blanco antes de que acabe el tiempo, la siguiente persona puede robar el punto."]
+    "El resto imita ese sonido y se graba.", "La app da la vuelta a la imitación y la pone sola. Quien adivine la palabra la escribe y se lleva el punto."],
+  cancion: ["Sale una palabra y el tiempo empieza solo.", "Canta un trozo de cualquier canción que diga esa palabra.",
+    "Si se queda en blanco antes de que acabe el tiempo, la siguiente persona puede robar el punto.", "Pulsad «¡Cantada!» o «roba» y el punto se suma solo."]
 };
 const RULE_EX = {
   profundas: "«¿Qué te hace sentir en casa?» → «Llegar y que huela a comida recién hecha».",
@@ -2100,9 +2132,10 @@ function wheelHTML() {
   const a = 360 / STYLES.length, pt = d => { const r = (d - 90) * Math.PI / 180; return `${(46 * Math.cos(r)).toFixed(2)} ${(46 * Math.sin(r)).toFixed(2)}`; };
   const parts = STYLES.map(([n, col], i) => `<path d="M0 0L${pt(i * a)}A46 46 0 0 1 ${pt((i + 1) * a)}Z" fill="${col}"/>
     <text transform="rotate(${i * a + a / 2}) translate(0 -27) rotate(90)" text-anchor="middle" dominant-baseline="middle">${n}</text>`).join("");
-  return `<div class="wheel-wrap"><span class="pointer" aria-hidden="true"></span>
-    <svg class="wheel" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="48" fill="#1E1633"/>${parts}<circle r="7" fill="#1E1633"/></svg>
-    <button class="spin" type="button">Girar la ruleta</button></div>`;
+  // The wheel itself is the button: tap it to spin.
+  return `<div class="wheel-wrap"><button class="spin" type="button" aria-label="Girar la ruleta"><span class="pointer" aria-hidden="true"></span>
+    <svg class="wheel" viewBox="-50 -50 100 100" aria-hidden="true"><circle r="48" fill="#1E1633"/>${parts}<circle r="7" fill="#1E1633"/></svg></button>
+    <p class="how spinhint">Toca la ruleta para girarla</p></div>`;
 }
 function spinTick() {
   try {
@@ -2124,7 +2157,7 @@ function bindSpin(card, c) {
       $("live").textContent = `Reto de ${c.style.toLowerCase()}. ${c.text}`;
       const q = $("table").querySelector(".q"); if (q) q.classList.add("reveal");
     };
-    b.disabled = true; b.textContent = "Girando…";
+    b.disabled = true; card.querySelector(".spinhint").textContent = "Girando…";
     if (reduced) { done(); return; }
     busy = true;
     const wheel = card.querySelector(".wheel");
@@ -2426,8 +2459,10 @@ const myTurn = () => !net.code || turnIdx() === meIdx();
 // phone they tap to look while the others look away.
 let peeking = null;
 const canSee = c => !!play(c).rev || (net.code ? myTurn() : peeking === playKey(c));
-function secretHTML(c, inner, what, slim) {
-  const cls = slim ? " slim" : "";
+function secretHTML(c, inner, what, slim, tiny) {
+  const cls = slim ? ` slim${tiny ? " tiny" : ""}` : "";
+  // Tiny (Pictionary): at a distance the others don't get a box, the line above already says who has it.
+  if (tiny && net.code && !canSee(c)) return "";
   if (canSee(c)) return `<div class="secret on${cls}">${inner}${!net.code && !play(c).rev ? `<button class="mini" type="button" data-act="hide">Ocultar</button>` : ""}</div>`;
   if (net.code) return `<div class="secret${cls}"><p>Solo lo ve <b>${players()[turnIdx()]}</b>.</p></div>`;
   return `<div class="secret${cls}"><button class="mini" type="button" data-act="peek">Ver ${what}</button><p>Solo quien tiene el turno. Que no mire nadie más.</p></div>`;
@@ -2466,17 +2501,11 @@ const offBy = (g, a) => { const r = g / a; if (r > .95 && r < 1.05) return "¡Cl
 const PACES = { emociones: [90, 60, 30], dibujo: [120, 90, 60], cancion: [45, 30, 20], stop: [120, 90, 60] };
 const SECS = PACES;
 const paceSecs = mode => state.secs || store.get(`sm.pace|${mode}`, PACES[mode][1]);
-function countdownHTML(c) {
+// The ring: it starts on its own (see autoTimer); until then, tapping it starts it too.
+function ringHTML(c) {
   const p = play(c), secs = p.secs || paceSecs(c.mode);
-  return p.end ? `<div class="secs"><span class="countdown" aria-live="off">${secs} s</span></div>` : `<button class="act" type="button" data-act="go">Empezar · ${secs} s</button>`;
-}
-// Games with a timer and a secret: one main button per step. Before the time starts it is
-// "Empezar" (revealing early stays possible, smaller); once it runs, the reveal button.
-function timedActs(c, revLabel) {
-  const p = play(c), secs = p.secs || paceSecs(c.mode);
-  if (p.rev) return "";
-  return p.end ? `<div class="actrow"><span class="countdown" aria-live="off">${secs} s</span><button class="act" type="button" data-act="rev">${revLabel}</button></div>`
-    : `<div class="actrow"><button class="act" type="button" data-act="go">Empezar · ${secs} s</button><button class="mini soft" type="button" data-act="rev">${revLabel}</button></div>`;
+  return p.end ? `<span class="countdown" aria-live="off">${secs} s</span>`
+    : `<button class="countdown" type="button" data-act="go" aria-label="Empezar el tiempo: ${secs} segundos">${secs} s</button>`;
 }
 // The countdown is a ring that empties; in the last 10 seconds it turns red with one short buzz.
 function runCountdown(card, c) {
@@ -2498,13 +2527,43 @@ function runCountdown(card, c) {
 }
 
 const GAMES = {
+  // Frecuencia: whoever guesses picks the number in the app; the exact number or one away is a point.
   frecuencia: {
     score: true,
-    html: c => { const rev = play(c).rev;
-      return `<p class="q">${esc(c.text)}</p><p class="scale"><span>1 = ${esc(c.lo)}</span><span>10 = ${esc(c.hi)}</span></p>
-        ${secretHTML(c, `<span class="big">${c.n}</span>`, "tu número")}
-        <p class="how">${rev ? `Era un ${c.n}. Tocad el nombre de quien lo haya acertado.` : "Di algo del tema que para ti sea justo ese número. El resto adivina cuál es."}</p>
-        ${rev ? "" : `<button class="act" type="button" data-act="rev">Descubrir el número</button>`}`; }
+    html: c => {
+      const p = play(c), g = p.g || {}, names = players(), t = turnIdx(), guessers = names.map((n, i) => i).filter(i => i !== t);
+      const head = `<p class="q">${esc(c.text)}</p><p class="scale"><span>1 = ${esc(c.lo)}</span><span>10 = ${esc(c.hi)}</span></p>`;
+      if (p.rev) {
+        const win = new Set(toArr(p.win));
+        return `${head}<p class="result">Era un ${c.n}</p>
+          <ul class="guesses">${guessers.map(i => g[`p${i}`] == null ? "" : `<li${win.has(i) ? ' class="win"' : ""}><span>${win.has(i) ? "🏆 " : ""}${names[i]}</span><b>${g[`p${i}`]}</b></li>`).join("")}</ul>
+          <p class="how">${win.size ? "Punto para quien lo ha clavado o se ha quedado a uno." : "Nadie se ha acercado: esta vez no hay puntos."}</p>`;
+      }
+      const who = net.code ? meIdx() : guessers.find(i => g[`p${i}`] == null);
+      const mine = who != null && who >= 0 && who !== t && g[`p${who}`] == null;
+      const picker = mine ? `<p class="padlbl">${net.code || guessers.length < 2 ? "¿Qué número crees que es?" : `${names[who]}, ¿qué número crees que es?`}</p>
+        <div class="nums">${Array.from({ length: 10 }, (_, i) => `<button type="button" data-act="num" data-v="${i + 1}">${i + 1}</button>`).join("")}</div>`
+        : `<p class="how">${guessers.every(i => g[`p${i}`] != null) ? "Ya habéis elegido." : net.code && who === t ? "El resto está eligiendo el número." : "Esperando al resto."}</p>`;
+      const locks = guessers.length < 2 ? "" : `<div class="locks">${guessers.map(i => `<span class="lock${g[`p${i}`] != null ? " done" : ""}">${names[i]}${g[`p${i}`] != null ? " ✓" : ""}</span>`).join("")}</div>`;
+      return `${head}${secretHTML(c, `<span class="big">${c.n}</span>`, "tu número", true)}
+        <p class="how">Di algo del tema que para ti sea justo ese número. El resto lo elige aquí abajo.</p>
+        ${picker}${locks}${Object.keys(g).length ? `<button class="act" type="button" data-act="rev">Descubrir el número</button>` : ""}`;
+    },
+    act(c, a, b) {
+      const p = play(c), g = p.g || {}, t = turnIdx();
+      if (a === "num") {
+        const guessers = players().map((n, i) => i).filter(i => i !== t), who = net.code ? meIdx() : guessers.find(i => g[`p${i}`] == null);
+        if (who == null || who < 0 || who === t) return;
+        setPlay(c, { g: { ...g, [`p${who}`]: +b.dataset.v } });
+        $("live").textContent = "Número elegido.";
+      }
+      if (a === "rev" && !p.rev) {
+        const win = Object.entries(g).filter(([, v]) => Math.abs(v - c.n) <= 1).map(([k]) => +k.slice(1));
+        win.forEach(i => { state.score[i] = (state.score[i] || 0) + 1; });
+        setPlay(c, { rev: true, win });
+        $("live").textContent = `Era un ${c.n}.`;
+      }
+    }
   },
   onda: {
     html: c => { const p = play(c), g = p.guess == null ? 50 : p.guess, show = canSee(c);
@@ -2601,12 +2660,14 @@ const GAMES = {
       }
     }
   },
+  // Emociones: whoever guesses writes the emotion; when it matches, the app gives the point.
   emociones: {
     score: true,
     html: c => { const rev = play(c).rev;
       return `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "tu emoción", true)}
-        <p class="how">${rev ? `Era «${esc(c.text)}». Tocad el nombre de quien la haya adivinado.` : "Cuenta una situación, real o inventada, en la que sentirías esa emoción, sin decir la palabra."}</p>
-        ${timedActs(c, "Revelar")}`; }
+        <p class="how">${rev ? guessDone(c) : "Cuenta una situación, real o inventada, en la que sentirías esa emoción, sin decir la palabra. El resto escribe qué emoción es."}</p>
+        ${rev ? "" : guessHTML(c)}`; },
+    bind: (card, c) => bindGuess(card, c)
   }
 };
 // What each person enters at the same time as the others (a secret code, a fleet, the Stop answers)
@@ -2650,25 +2711,56 @@ function bindPad(card) {
     };
   });
 }
+// Bloc de notas: each person's own marks, kept only on their phone. Tapping a figure in a position
+// crosses it out, then marks it as sure, then clears it. The figures of a try with 0 in place are
+// crossed out on their own, since none of them can be there.
+const codeNotes = {};
+function notesHTML(c, who, tries) {
+  const mine = codeNotes[`${inKey(c)}|${who}`] || {}, auto = new Set();
+  for (const x of tries) if (!x.h) [...String(x.g)].forEach((d, i) => auto.add(`${i}-${d}`));
+  const mark = k => mine[k] != null ? mine[k] : auto.has(k) ? 1 : 0;
+  return `<div class="notes"><p class="padlbl">${net.code || players().length < 2 ? "Tu bloc de notas" : `Bloc de notas de ${players()[who]}`}</p>
+    ${Array.from({ length: CODE_LEN }, (_, i) => `<div class="noterow"><small>${i + 1}ª</small>${Array.from({ length: 10 }, (_, d) => {
+      const m = mark(`${i}-${d}`);
+      return `<button type="button" class="note${m === 1 ? " x" : m === 2 ? " ok" : ""}" data-act="note" data-v="${i}-${d}" data-w="${who}" aria-label="Cifra ${d} en la posición ${i + 1}: ${m === 1 ? "descartada" : m === 2 ? "segura" : "sin marcar"}">${d}</button>`; }).join("")}</div>`).join("")}
+    <small class="notehint">Toca una cifra: ✕ descartada, ✓ segura. Las de un intento con 0 se tachan solas.</small></div>`;
+}
+function noteTap(c, b) {
+  const k = `${inKey(c)}|${b.dataset.w}`, box = codeNotes[k] || (codeNotes[k] = {}), now = b.classList.contains("x") ? 1 : b.classList.contains("ok") ? 2 : 0;
+  const next = (now + 1) % 3; box[b.dataset.v] = next;
+  b.classList.toggle("x", next === 1); b.classList.toggle("ok", next === 2);
+  const [i, d] = b.dataset.v.split("-");
+  b.setAttribute("aria-label", `Cifra ${d} en la posición ${+i + 1}: ${["sin marcar", "descartada", "segura"][next]}`);
+}
 const dots = h => `<span class="dots" aria-label="${h} en su sitio">${Array.from({ length: CODE_LEN }, (_, i) => `<i${i < h ? ' class="on"' : ""}></i>`).join("")}</span>`;
 
 // ---------- Batalla naval ----------
 const SIDE = 8, SHIPS = [4, 3, 3, 2];
+// Ships never touch, not even corner to corner.
+function touches(cells, ships) {
+  const taken = new Set(ships.flatMap(s => String(s).split(",").map(Number)));
+  return cells.some(x => { const r = Math.floor(x / SIDE), q = x % SIDE; for (let dr = -1; dr <= 1; dr++) for (let dq = -1; dq <= 1; dq++) { const rr = r + dr, qq = q + dq; if (rr >= 0 && rr < SIDE && qq >= 0 && qq < SIDE && taken.has(rr * SIDE + qq)) return true; } return false; });
+}
+// A ship of len cells starting at cell x, to the right or downwards; moved back if it would go off the board.
+function shipAt(x, len, hor) {
+  const r = Math.floor(x / SIDE), q = x % SIDE, r0 = hor ? r : Math.min(r, SIDE - len), q0 = hor ? Math.min(q, SIDE - len) : q;
+  return Array.from({ length: len }, (_, i) => hor ? r0 * SIDE + q0 + i : (r0 + i) * SIDE + q0);
+}
 function randomFleet() {
-  const taken = new Set(), ships = [];
-  const near = x => { const r = Math.floor(x / SIDE), q = x % SIDE; for (let dr = -1; dr <= 1; dr++) for (let dq = -1; dq <= 1; dq++) { const rr = r + dr, qq = q + dq; if (rr >= 0 && rr < SIDE && qq >= 0 && qq < SIDE && taken.has(rr * SIDE + qq)) return true; } return false; };
+  const ships = [];
   for (const len of SHIPS) {
     for (;;) {
-      const hor = Math.random() < .5, r = Math.floor(Math.random() * (hor ? SIDE : SIDE - len + 1)), q = Math.floor(Math.random() * (hor ? SIDE - len + 1 : SIDE));
-      const cells = Array.from({ length: len }, (_, i) => hor ? r * SIDE + q + i : (r + i) * SIDE + q);
-      if (cells.some(near)) continue;
-      cells.forEach(x => taken.add(x)); ships.push(cells.join(",")); break;
+      const cells = shipAt(Math.floor(Math.random() * SIDE * SIDE), len, Math.random() < .5);
+      if (touches(cells, ships)) continue;
+      ships.push(cells.join(",")); break;
     }
   }
   return ships;
 }
+// The ships still to place, biggest first.
+const shipsLeft = ships => { const left = SHIPS.slice(); for (const s of ships) left.splice(left.indexOf(String(s).split(",").length), 1); return left; };
 const fleetOf = (c, i) => toArr(getIn(c, i)).map(s => String(s).split(",").map(Number));
-let fleetDraft = { key: null, ships: null };
+let fleetDraft = { key: null, ships: [], hor: true, msg: "" };
 // What player s's shots did to the other player's fleet.
 function shotMap(c, s) {
   const shots = toArr(play(c).shots).filter(x => x.p === s).map(x => x.x), fleet = fleetOf(c, 1 - s), hit = new Set(shots), out = new Map();
@@ -2716,11 +2808,13 @@ Object.assign(GAMES, {
       if (!p.kind) return `<p class="q">¿Cómo jugáis?</p><div class="opts">
         <button class="opt2" type="button" data-act="kind" data-v="app">La app se inventa el código<small>Os turnáis y gana quien lo complete antes.</small></button>
         <button class="opt2" type="button" data-act="kind" data-v="duelo">Cada persona pone el suyo<small>Adivinas el código de la siguiente persona.</small></button></div>`;
+      // At a distance, whoever set a code always sees it, so they can follow how close the others get.
+      const own = net.code && p.kind === "duelo" && getIn(c, meIdx()) ? `<div class="mycode"><small>Tu código secreto</small><b>${esc(getIn(c, meIdx()))}</b></div>` : "";
       if (p.kind === "duelo") {
         const missing = names.map((x, i) => i).filter(i => !getIn(c, i));
         if (missing.length) {
           const me = net.code ? meIdx() : missing[0];
-          if (net.code && !missing.includes(me)) return `<p class="q">Código guardado</p><p class="how">Esperando a que ${missing.map(i => `<b>${names[i]}</b>`).join(" y ")} ponga su código.</p>`;
+          if (net.code && !missing.includes(me)) return `<p class="q">Código guardado</p>${own}<p class="how">Esperando a que ${missing.map(i => `<b>${names[i]}</b>`).join(" y ")} ponga su código.</p>`;
           return `${net.code ? "" : `<p class="how">Pásale el móvil a <b>${names[me]}</b>. Que no mire nadie más.</p>`}${padHTML(`${k}|s${me}`, net.code ? "Escribe tu código secreto" : `${names[me]}, escribe tu código secreto`, "save", "Guardar")}`;
         }
       }
@@ -2733,11 +2827,14 @@ Object.assign(GAMES, {
         `<div class="tries">${i == null ? "" : `<p class="padlbl">${names[i]} → código de ${names[(i + 1) % n]}</p>`}${l.slice().reverse().map(x =>
           `<div class="try"><span class="code">${x.g}</span>${dots(x.h)}<small>${p.kind === "app" ? names[x.p] : `${x.h} en su sitio`}</small></div>`).join("")}</div>`; }).join("");
       const solved = p.win != null ? `<p class="how">El código era <b>${esc(target(p.win))}</b>.</p><button class="act" type="button" data-act="again">Otra partida</button>` : "";
-      return `${head}${p.win == null && mine ? padHTML(`${k}|t${tries.length}`, "Prueba un código", "try", "Probar") : ""}${solved}${hist}`;
+      // The notes are for whoever is guessing: at a distance your own, with one phone those of whoever has the turn.
+      const viewer = net.code ? meIdx() : t, notes = p.win == null && viewer >= 0 ? notesHTML(c, viewer, list(viewer)) : "";
+      return `${head}${own}${p.win == null && mine ? padHTML(`${k}|t${tries.length}`, "Prueba un código", "try", "Probar") : ""}${solved}${notes}${hist}`;
     },
     bind: card => bindPad(card),
     act(c, a, b) {
       const p = play(c), names = players(), n = names.length;
+      if (a === "note") { noteTap(c, b); return; }
       if (a === "kind") setPlay(c, { kind: b.dataset.v, code: b.dataset.v === "app" ? Array.from({ length: CODE_LEN }, () => Math.floor(Math.random() * 10)).join("") : null });
       if (a === "save") { const missing = names.map((x, i) => i).filter(i => !getIn(c, i)); setIn(c, net.code ? meIdx() : missing[0], pad.v); pad.key = null; }
       if (a === "try" && p.win == null) {
@@ -2758,11 +2855,19 @@ Object.assign(GAMES, {
       if (missing.length) {
         const who = net.code ? me : missing[0];
         if (net.code && !missing.includes(who)) return `<p class="q">Flota lista</p><p class="how">${who > 1 ? "Mirando la partida. " : ""}Esperando a que ${missing.map(i => `<b>${names[i]}</b>`).join(" y ")} coloque sus barcos.</p>`;
-        if (fleetDraft.key !== `${k}|${who}`) fleetDraft = { key: `${k}|${who}`, ships: randomFleet() };
-        const ships = fleetDraft.ships.map(s => s.split(",").map(Number));
+        if (fleetDraft.key !== `${k}|${who}`) fleetDraft = { key: `${k}|${who}`, ships: [], hor: true, msg: "" };
+        // Placing by hand: tap a free cell to put the next ship there, tap a ship to pick it up again.
+        const fd = fleetDraft, left = shipsLeft(fd.ships), placed = fd.ships.map(s => s.split(",").map(Number));
+        const cells = `<div class="grid">${Array.from({ length: SIDE * SIDE }, (_, x) => { const name = `${COLS[x % SIDE]}${Math.floor(x / SIDE) + 1}`;
+          return placed.some(sh => sh.includes(x)) ? `<button type="button" class="cell mine" data-act="lift" data-v="${x}" aria-label="${name}: barco. Tocar para quitarlo"></button>`
+            : `<button type="button" class="cell" data-act="place" data-v="${x}" aria-label="${left.length ? `Poner el barco de ${left[0]} en ${name}` : name}"${left.length ? "" : " disabled"}></button>`; }).join("")}</div>`;
+        const todo = left.length ? `<div class="fleetbar"><span>Coloca:</span>${left.map((len, i) => `<span class="shipchip${i ? "" : " now"}" aria-label="Barco de ${len}">${"<i></i>".repeat(len)}</span>`).join("")}</div>
+          <p class="how" aria-live="polite">${fd.msg || `Toca una casilla para poner el barco de ${left[0]} ${fd.hor ? "hacia la derecha" : "hacia abajo"}. Toca un barco para quitarlo.`}</p>`
+          : `<p class="how" aria-live="polite">¡Flota completa! Toca un barco si quieres moverlo.</p>`;
         return `${net.code ? "" : `<p class="how">Pásale el móvil a <b>${names[who]}</b>. Que no mire nadie más.</p>`}
-          <p class="padlbl">${net.code ? "Tus barcos" : `Barcos de ${names[who]}`}</p>${gridHTML(ownCell(ships, new Set()), false)}
-          <div class="row2"><button class="skip" type="button" data-act="shuffle">Otra colocación</button><button class="act" type="button" data-act="ready">¡Listos!</button></div>`;
+          <p class="padlbl">${net.code ? "Coloca tus barcos" : `Barcos de ${names[who]}`}</p>${todo}${cells}
+          <div class="fleettools"><button class="mini soft" type="button" data-act="turn" aria-pressed="${!fd.hor}">${fd.hor ? "↔ Horizontal" : "↕ Vertical"}</button><button class="mini soft" type="button" data-act="shuffle">Al azar</button>${fd.ships.length ? `<button class="mini soft" type="button" data-act="clearfleet">Quitar todos</button>` : ""}</div>
+          <button class="act" type="button" data-act="ready"${left.length ? " disabled" : ""}>¡Listos!</button>`;
       }
       const shots = toArr(p.shots), t = shots.length % 2, o = 1 - t;
       const last = shots.length ? (m => `${names[shots[shots.length - 1].p]}: ${upper(m.get(shots[shots.length - 1].x))}`)(shotMap(c, shots[shots.length - 1].p)) : "";
@@ -2781,8 +2886,19 @@ Object.assign(GAMES, {
     },
     act(c, a, b) {
       const p = play(c);
-      if (a === "shuffle") { fleetDraft.ships = randomFleet(); render(null); }
-      if (a === "ready") { const missing = [0, 1].filter(i => !toArr(getIn(c, i)).length); const who = net.code ? meIdx() : missing[0]; fleetDraft.key = null; setIn(c, who, fleetDraft.ships); }
+      const fd = fleetDraft;
+      if (a === "shuffle") { fd.ships = randomFleet(); fd.msg = ""; render(null); }
+      if (a === "clearfleet") { fd.ships = []; fd.msg = ""; render(null); }
+      if (a === "turn") { fd.hor = !fd.hor; fd.msg = ""; render(null); }
+      if (a === "lift") { fd.ships = fd.ships.filter(sh => !sh.split(",").map(Number).includes(+b.dataset.v)); fd.msg = ""; render(null); }
+      if (a === "place") {
+        const len = shipsLeft(fd.ships)[0]; if (!len) return;
+        const cells = shipAt(+b.dataset.v, len, fd.hor);
+        if (touches(cells, fd.ships)) fd.msg = "Ahí no cabe: los barcos no pueden tocarse, ni en diagonal.";
+        else { fd.ships = [...fd.ships, cells.join(",")]; fd.msg = ""; }
+        render(null);
+      }
+      if (a === "ready" && !shipsLeft(fd.ships).length) { const missing = [0, 1].filter(i => !toArr(getIn(c, i)).length); const who = net.code ? meIdx() : missing[0]; fleetDraft.key = null; setIn(c, who, fleetDraft.ships); }
       if (a === "peekfleet") { const shots = toArr(p.shots); peeking = `${playKey(c)}|${net.code ? meIdx() : shots.length % 2}`; render(null); }
       if (a === "fire" && p.win == null) {
         const shots = toArr(p.shots), t = shots.length % 2, x = +b.dataset.v;
@@ -2825,7 +2941,7 @@ Object.assign(GAMES, {
     html: c => {
       const p = play(c), names = players(), k = inKey(c), me = meIdx(), secs = p.secs || paceSecs("stop");
       const letter = `<div class="letter"><small>Letra</small><b>${esc(c.text)}</b></div>`;
-      if (!p.end) return `${letter}<p class="how">${stopCats(c).join(", ")}.</p><button class="act" type="button" data-act="go">Empezar · ${secs} s</button>`;
+      if (!p.end) return `${letter}<p class="how">${stopCats(c).join(", ")}.</p>${ringHTML(c)}`;
       if (!stopEnded(c)) {
         if (!net.code) return `${letter}<span class="countdown">${secs} s</span><ol class="cats">${stopCats(c).map(x => `<li>${x}</li>`).join("")}</ol>
           <p class="how">Escribid en papel. Quien acabe, que diga «¡Stop!».</p><button class="act" type="button" data-act="stop">¡Stop!</button>`;
@@ -2868,9 +2984,10 @@ Object.assign(GAMES, {
 });
 
 // ---------- Pictionary ----------
-// Each stroke is "color|x,y,x,y…" on a 1000×1000 board and goes to in/<key>/ps<n> when the finger
+// Each stroke is "color|x,y,x,y…" on a 1000×1300 board (taller than wide, like the phone) and goes to in/<key>/ps<n> when the finger
 // lifts, so the other phones see the drawing grow. "pclr" hides every stroke before it.
-const INK = ["#1E1633", "#F0384F", "#2C67E6", "#22B573"];
+const BOARD_H = 1300;
+const INK = ["#1E1633", "#F0384F", "#2C67E6", "#22B573"], INK_NAME = ["Negro", "Rojo", "Azul", "Verde"];
 let inkColor = INK[0];
 function inBox(c) { const k = inKey(c); return (net.code ? ((net.room && net.room.in) || {})[k] : state.inputs[k]) || {}; }
 function strokesOf(c) {
@@ -2880,7 +2997,7 @@ function strokesOf(c) {
 const nextStroke = c => Object.keys(inBox(c)).filter(k => /^ps\d+$/.test(k)).reduce((m, k) => Math.max(m, +k.slice(2) + 1), +inBox(c).pclr || 0);
 function paint(canvas, c) {
   const ctx = canvas.getContext("2d");
-  ctx.clearRect(0, 0, 1000, 1000);
+  ctx.clearRect(0, 0, 1000, BOARD_H);
   ctx.lineCap = ctx.lineJoin = "round"; ctx.lineWidth = 9;
   for (const [, s] of strokesOf(c)) {
     const [col, pts] = String(s).split("|"), v = pts.split(",").map(Number);
@@ -2905,7 +3022,8 @@ async function startRec(c, slot) {
     mr.onstop = () => {
       stream.getTracks().forEach(t => t.stop());
       const fr = new FileReader();
-      fr.onload = () => { rec = null; setIn(c, slot, fr.result); };
+      // The imitation plays turned around straight away: that is the moment to hear if it sounds like the word.
+      fr.onload = () => { rec = null; setIn(c, slot, fr.result); if (slot === "b") playAudio(fr.result, true); };
       fr.readAsDataURL(new Blob(chunks, { type: mr.mimeType || "audio/webm" }));
     };
     rec = { slot, mr, t: setTimeout(() => { if (mr.state === "recording") mr.stop(); }, 5000) };
@@ -2913,13 +3031,26 @@ async function startRec(c, slot) {
   } catch (e) { rec = null; recErr = "No se ha podido usar el micrófono. Revisa que la app tenga permiso."; render(null); }
 }
 function stopRec() { if (rec && rec.mr.state === "recording") { clearTimeout(rec.t); rec.mr.stop(); } }
+// Before playing, the silence before and after the voice is cut and the volume evened out, so the
+// sound turned around starts at once and a quiet imitation is heard as well as the word.
+let playing = null;
 async function playAudio(url, backwards) {
   try {
     actx = actx || new (window.AudioContext || window.webkitAudioContext)();
     await actx.resume();
-    const buf = await actx.decodeAudioData(await (await fetch(url)).arrayBuffer());
-    if (backwards) for (let ch = 0; ch < buf.numberOfChannels; ch++) buf.getChannelData(ch).reverse();
-    const src = actx.createBufferSource(); src.buffer = buf; src.connect(actx.destination); src.start();
+    const raw = await actx.decodeAudioData(await (await fetch(url)).arrayBuffer());
+    const data = [...Array(raw.numberOfChannels)].map((_, ch) => raw.getChannelData(ch));
+    let peak = 0;
+    for (const d of data) for (let i = 0; i < d.length; i++) peak = Math.max(peak, Math.abs(d[i]));
+    const loud = i => data.some(d => Math.abs(d[i]) > peak * .08), pad = Math.round(raw.sampleRate * .08);
+    let a = 0, b = raw.length - 1;
+    while (a < b && !loud(a)) a++;
+    while (b > a && !loud(b)) b--;
+    a = Math.max(0, a - pad); b = Math.min(raw.length - 1, b + pad);
+    const buf = actx.createBuffer(raw.numberOfChannels, b - a + 1, raw.sampleRate), gain = peak > .001 ? Math.min(8, .9 / peak) : 1;
+    data.forEach((d, ch) => { const out = buf.getChannelData(ch); for (let i = 0; i <= b - a; i++) out[i] = d[backwards ? b - i : a + i] * gain; });
+    if (playing) try { playing.stop(); } catch (e) {}
+    const src = playing = actx.createBufferSource(); src.buffer = buf; src.connect(actx.destination); src.start();
   } catch (e) { $("live").textContent = "No se ha podido reproducir la grabación."; }
 }
 function recBtn(slot, label) {
@@ -2935,18 +3066,20 @@ const normWord = s => s.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toLower
 const sameWord = (a, b) => { a = normWord(a); b = normWord(b); return !!a && (a === b || a.replace(/e?s$/, "") === b.replace(/e?s$/, "")); };
 let guessDraft = { key: null, v: "" }, guessTyping = false;
 const guesser = c => !net.code || !myTurn();
-function guessHTML(c) {
-  const p = play(c), secs = p.secs || paceSecs(c.mode), miss = p.miss;
-  const box = guesser(c) ? `<form class="guess"><input type="text" enterkeyhint="send" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" placeholder="¿Qué es?" aria-label="Escribe qué es el dibujo"><button class="act" type="submit">Probar</button></form>` : "";
+const GUESS_LABEL = { dibujo: "Escribe qué es el dibujo", emociones: "Escribe qué emoción es", reves: "Escribe qué palabra es" };
+function guessBox(c) {
+  const miss = play(c).miss;
+  const box = guesser(c) ? `<form class="guess"><input type="text" enterkeyhint="send" autocomplete="off" autocapitalize="off" spellcheck="false" maxlength="40" placeholder="${c.mode === "dibujo" ? "¿Qué es?" : c.mode === "emociones" ? "¿Qué emoción es?" : "¿Qué palabra es?"}" aria-label="${GUESS_LABEL[c.mode]}"><button class="act" type="submit">Probar</button></form>` : "";
   const no = miss ? `<p class="how miss" aria-live="polite">${net.code ? `${players()[miss.who] || ""}: ` : ""}«${esc(miss.t)}» no es.</p>` : "";
-  const time = p.end ? `<div class="actrow"><span class="countdown" aria-live="off">${secs} s</span><button class="mini soft" type="button" data-act="rev">Rendirse</button></div>`
-    : `<div class="actrow"><button class="${box ? "mini" : "act"}" type="button" data-act="go">Empezar · ${secs} s</button></div>`;
-  return box + no + time;
+  return box + no;
+}
+function guessHTML(c) {
+  return `${guessBox(c)}<div class="actrow">${ringHTML(c)}<button class="mini soft" type="button" data-act="rev">Rendirse</button></div>`;
 }
 function guessDone(c) {
   const p = play(c), w = `«${esc(c.text)}»`;
   if (p.win != null) return `¡<b>${players()[p.win]}</b> lo ha adivinado! Era ${w}. Un punto.`;
-  if (p.hit) return `¡Correcto! Era ${w}. Tocad el nombre de quien lo haya adivinado.`;
+  if (p.hit) return `¡Correcto! Era ${w}. Tocad el nombre de quien ${c.mode === "emociones" ? "la" : "lo"} haya adivinado.`;
   return `Era ${w}.`;
 }
 function bindGuess(card, c) {
@@ -2975,18 +3108,20 @@ Object.assign(GAMES, {
     score: true,
     html: c => {
       const rev = play(c).rev, can = drawer(c) && !rev;
-      return `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "la palabra", true)}
-        <div class="boardwrap"><canvas class="board" width="1000" height="1000" aria-label="Dibujo"></canvas></div>
-        ${can ? `<div class="inks">${INK.map(col => `<button type="button" class="ink" data-act="ink" data-v="${col}" style="background:${col}" aria-label="Color" aria-pressed="${col === inkColor}"></button>`).join("")}
-          <button class="tool" type="button" data-act="undoline" aria-label="Deshacer el último trazo">↶</button><button class="tool" type="button" data-act="clear" aria-label="Borrar todo el dibujo">${icon("quitar")}</button></div>` : ""}
-        ${rev ? `<p class="how">${guessDone(c)}</p>` : guessHTML(c)}`;
+      // The board takes all the room it can; the time, the colours and the tools go in a column at its side.
+      return `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "la palabra", true, true)}
+        <div class="drawrow"><div class="boardwrap"><canvas class="board" width="1000" height="${BOARD_H}" aria-label="Dibujo"></canvas></div>
+        ${rev ? "" : `<div class="inks">${ringHTML(c)}${can ? `${INK.map((col, i) => `<button type="button" class="ink" data-act="ink" data-v="${col}" style="background:${col}" aria-label="${INK_NAME[i]}" aria-pressed="${col === inkColor}"></button>`).join("")}
+          <button class="tool" type="button" data-act="undoline" aria-label="Deshacer el último trazo">↶</button><button class="tool" type="button" data-act="clear" aria-label="Borrar todo el dibujo">${icon("quitar")}</button>` : ""}
+          <button class="mini soft giveup" type="button" data-act="rev">Rendirse</button></div>`}</div>
+        ${rev ? `<p class="how">${guessDone(c)}</p>` : guessBox(c)}`;
     },
     bind(card, c) {
       const cv = card.querySelector(".board"); paint(cv, c);
       bindGuess(card, c);
       if (!drawer(c) || play(c).rev) return;
       let pts = null;
-      const at = e => { const r = cv.getBoundingClientRect(); return [Math.round((e.clientX - r.left) / r.width * 1000), Math.round((e.clientY - r.top) / r.height * 1000)]; };
+      const at = e => { const r = cv.getBoundingClientRect(); return [Math.round((e.clientX - r.left) / r.width * 1000), Math.round((e.clientY - r.top) / r.height * BOARD_H)]; };
       const ctx = cv.getContext("2d");
       cv.addEventListener("pointerdown", e => {
         e.stopPropagation(); cv.setPointerCapture(e.pointerId); pts = at(e);
@@ -3018,14 +3153,15 @@ Object.assign(GAMES, {
         ? `${secretHTML(c, `<span class="big word">${esc(c.text)}</span>`, "tu palabra")}
           ${canSee(c) && !p.rev ? `<p class="how">Graba la palabra en voz alta, normal.</p>${recBtn("a", a ? "Grabar otra vez" : "🎤 Grabar")}${a ? playBtn("a", "Escuchar al revés") : ""}` : ""}`
         : `<p class="how">${a ? "" : `Esperando a que <b>${names[t]}</b> grabe su palabra.`}</p>`;
-      const step2 = !a ? "" : net.code && mine ? (b ? `<div class="steps2">${playBtn("b", "Escuchar su imitación al revés")}</div>` : "") : `<div class="steps2"><p class="padlbl">${net.code && !mine ? "Tu turno de imitar" : `El resto: imitad el sonido`}</p>
+      const step2 = !a || p.rev ? "" : net.code && mine ? (b ? `<div class="steps2">${playBtn("b", "Escuchar su imitación del derecho")}</div>` : "") : `<div class="steps2"><p class="padlbl">${net.code && !mine ? "Tu turno de imitar" : `El resto: imitad el sonido`}</p>
         ${playBtn("a", "1. Escuchar al revés")}
         ${!net.code || !mine ? recBtn("b", b ? "2. Grabar otra vez" : "🎤 2. Grabar la imitación") : ""}
-        ${b ? playBtn("b", "3. Escuchar la imitación al revés") : ""}</div>`;
-      const end = p.rev ? `<p class="how">Era «${esc(c.text)}». Tocad el nombre de quien la haya adivinado.</p>${a ? playBtn("a", "Escuchar la original", false) : ""}`
-        : a ? `<button class="act" type="button" data-act="rev">Ver la palabra</button>` : "";
+        ${b ? playBtn("b", "3. Escuchar la imitación del derecho") : ""}</div>`;
+      const end = p.rev ? `<p class="how">${guessDone(c)}</p><div class="steps2">${a ? playBtn("a", "Escuchar la original", false) : ""}${b ? playBtn("b", "Escuchar la imitación del derecho") : ""}</div>`
+        : a ? `${guessBox(c)}<button class="mini soft" type="button" data-act="rev">Rendirse y ver la palabra</button>` : "";
       return `${step1}${step2}${err}${end}`;
     },
+    bind: (card, c) => bindGuess(card, c),
     act(c, a, b) {
       if (a === "rec") startRec(c, b.dataset.v);
       if (a === "stoprec") stopRec();
@@ -3036,10 +3172,24 @@ Object.assign(GAMES, {
     score: true,
     html: c => `<p class="padlbl">Canta una canción que diga…</p><span class="big word">${esc(c.text)}</span>
       <p class="how">Vale cualquier canción que tenga esa palabra. Si te quedas en blanco, la siguiente persona puede robarte el punto.</p>
-      ${countdownHTML(c)}`
+      ${furorActs(c)}`,
+    act(c, a) {
+      const p = play(c), n = players().length, i = a === "sung" ? turnIdx() : a === "stole" ? (turnIdx() + 1) % n : -1;
+      if (i < 0 || p.rev) return;
+      state.score[i] = (state.score[i] || 0) + 1;
+      setPlay(c, { rev: true, win: i });
+      $("live").textContent = `Punto para ${players()[i]}.`;
+    }
   }
 });
 
+// Furor: «¡Cantada!» gives the point to whoever sang; if they go blank, the next person can steal it.
+function furorActs(c) {
+  const p = play(c), names = players(), t = turnIdx();
+  if (p.rev) return `<p class="result">¡Punto para ${names[p.win]}!</p>`;
+  return `<div class="actrow">${ringHTML(c)}<button class="act" type="button" data-act="sung">¡Cantada! +1</button></div>
+    ${names.length > 1 ? `<button class="mini soft" type="button" data-act="stole">Se queda en blanco: roba ${names[(t + 1) % names.length]}</button>` : ""}`;
+}
 function bindGame(card, c) {
   const game = GAMES[c.mode]; if (!game) return;
   card.querySelectorAll("[data-act], .opts button, .steps button").forEach(b => b.addEventListener("pointerdown", e => e.stopPropagation()));
@@ -3051,7 +3201,7 @@ function bindGame(card, c) {
       if (a === "peek") { peeking = playKey(c); render(null); return; }
       if (SECS[c.mode] && c.mode !== "stop" && a === "go") { const secs = paceSecs(c.mode); setPlay(c, { secs, end: clock() + secs * 1000 }); return; }
       if (a === "hide") { peeking = null; render(null); return; }
-      if (a === "rev" && GAMES[c.mode].score && c.mode !== "cifras") { setPlay(c, { rev: true }); return; }
+      if (a === "rev" && GAMES[c.mode].score && c.mode !== "cifras" && c.mode !== "frecuencia") { setPlay(c, { rev: true }); return; }
       game.act && game.act(c, a, b);
     };
   });
@@ -3137,7 +3287,7 @@ function render(anim) {
   const table = $("table");
   table.innerHTML = `<div class="ghost-card g1"></div><div class="ghost-card g2"></div>` + (done
     ? `<div class="card end-card${anim ? " deal" : ""}">${endHTML(total)}</div>`
-    : `<div class="card${GAMES[c.mode] ? " game" : ""}${anim ? ` ${anim}` : ""}" role="group" aria-roledescription="carta">${cardHTML(c)}</div>`);
+    : `<div class="card${GAMES[c.mode] ? " game" : ""}${c.mode === "dibujo" ? " draw" : ""}${anim ? ` ${anim}` : ""}" role="group" aria-roledescription="carta">${cardHTML(c)}</div>`);
   if (anim) $("live").textContent = done ? `Mazo terminado. Habéis pasado las ${total} cartas.`
     : `Carta ${state.idx + 1} de ${total}. ${[...table.querySelector(".card").children].filter(e => !e.matches(".score")).map(e => e.innerText).join(" ").replace(/\s+/g, " ")}`;
   clearInterval(timerId);
@@ -3165,32 +3315,57 @@ function render(anim) {
     bin.onclick = () => hideCard(c);
     bindScore(card);
     bindSpin(card, c);
-    bindTimer(card);
+    bindTimer(card, c);
     if (!MODES[c.mode].board && !MODES[c.mode].nodrag) bindDrag(card);
     bindGame(card, c);
   }
   save();
+  autoTimer();
 }
 
-// Optional 30-second timer: off until you tap it, tap again to stop. It ends with a nudge, no sound.
-let timerId = null;
-function bindTimer(card) {
+// 30-second timer: it starts on its own with each new card. Tap it to stop it, or to start it again.
+// It ends with a nudge, no sound.
+let timerId = null, freeT = { key: null, end: 0 };
+function bindTimer(card, c) {
   const b = card.querySelector(".timer"); if (!b) return;
-  b.addEventListener("pointerdown", e => e.stopPropagation());
-  b.onclick = () => {
-    const label = b.querySelector("span");
+  const key = `${state.mode}|${state.idx}|${cardId(c)}`, label = b.querySelector("span");
+  if (freeT.key !== key) freeT = { key, end: Date.now() + 30000 };
+  const run = () => {
     clearInterval(timerId); b.classList.remove("done");
-    if (b.getAttribute("aria-pressed") === "true") { b.setAttribute("aria-pressed", "false"); label.textContent = "30 s"; return; }
-    let left = 30;
-    b.setAttribute("aria-pressed", "true"); label.textContent = `${left} s`;
-    timerId = setInterval(() => {
-      left--; label.textContent = left > 0 ? `${left} s` : "¡Tiempo!";
+    if (!freeT.end) { b.setAttribute("aria-pressed", "false"); label.textContent = "30 s"; return; }
+    b.setAttribute("aria-pressed", "true");
+    const tick = () => {
+      const left = Math.ceil((freeT.end - Date.now()) / 1000);
+      label.textContent = left > 0 ? `${left} s` : "¡Tiempo!";
       if (left > 0) return;
-      clearInterval(timerId); b.setAttribute("aria-pressed", "false"); b.classList.add("done");
-      $("live").textContent = "Se acabó el tiempo.";
-      try { navigator.vibrate && navigator.vibrate(150); } catch (e) {}
-    }, 1000);
+      clearInterval(timerId); b.setAttribute("aria-pressed", "false");
+      if (Date.now() - freeT.end < 1500) {
+        b.classList.add("done"); $("live").textContent = "Se acabó el tiempo.";
+        try { navigator.vibrate && navigator.vibrate(150); } catch (e) {}
+      }
+    };
+    tick(); timerId = setInterval(tick, 250);
   };
+  b.addEventListener("pointerdown", e => e.stopPropagation());
+  b.onclick = () => { freeT.end = freeT.end > Date.now() ? 0 : Date.now() + 30000; run(); };
+  run();
+}
+
+// The timers of the games start on their own as soon as the card is on the table. At a distance
+// the phone whose turn it is starts it (in Stop, the first one in the room); if that phone is
+// away, any other starts it a moment later, so every phone counts the same seconds.
+let autoId = null;
+function autoTimer() {
+  clearTimeout(autoId);
+  const c = state.deck[state.idx];
+  if (!c || !SECS[c.mode] || $("game").hidden || $("app").inert || play(c).end || play(c).rev) return;
+  const lead = !net.code || (c.mode === "stop" ? meIdx() === 0 : myTurn());
+  autoId = setTimeout(() => {
+    if (state.deck[state.idx] !== c || play(c).end || play(c).rev || $("game").hidden || $("app").inert) return;
+    if (busy) { autoTimer(); return; }
+    const secs = paceSecs(c.mode);
+    setPlay(c, { secs, end: clock() + secs * 1000 });
+  }, lead ? 400 : 4000);
 }
 
 let busy = false;
@@ -3318,6 +3493,7 @@ function openDialog(id, focusId) {
 function closeDialog(id) {
   $(id).hidden = true; $("app").inert = false;
   if (lastFocus && document.contains(lastFocus)) lastFocus.focus();
+  if (state.mode && !$("game").hidden) autoTimer();
 }
 let infoMode = null;
 function openInfo(mode) {
@@ -3358,7 +3534,12 @@ $("paces").addEventListener("click", e => {
   const b = e.target.closest("[data-secs]"); if (!b) return;
   const secs = +b.dataset.secs; store.set(`sm.pace|${paceMode}`, secs);
   closeDialog("paceSheet");
-  if ($("game").hidden) startMode(paceMode); else { state.secs = secs; render(null); }
+  if ($("game").hidden) { startMode(paceMode); return; }
+  // A new pace starts the current card's time again with the new seconds.
+  state.secs = secs;
+  const c = state.deck[state.idx], p = c && play(c);
+  if (p && p.end && !p.rev && clock() < p.end) { delete p.end; delete p.secs; }
+  render(null);
 });
 $("cancelPace").onclick = () => closeDialog("paceSheet");
 $("paceSheet").addEventListener("click", e => { if (e.target.id === "paceSheet") closeDialog("paceSheet"); });
