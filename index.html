@@ -332,6 +332,7 @@ div.bsmsg.win { display: flex; align-items: center; gap: 10px; padding: 3px 3px 
 .next { background: var(--ink); color: #fff; box-shadow: 0 6px 0 rgba(0,0,0,.45); }
 .next:active { transform: translateY(5px); box-shadow: 0 1px 0 rgba(0,0,0,.45); }
 .skip { background: var(--card); color: var(--ink); box-shadow: 0 6px 0 var(--ink); }
+.skip:disabled { opacity: .5; box-shadow: 0 2px 0 var(--ink); transform: translateY(4px); cursor: default; font-size: 1.15rem; }
 .skip:active { transform: translateY(5px); box-shadow: 0 1px 0 var(--ink); }
 .controls button:disabled { opacity: .45; cursor: default; transform: none; }
 .sr-only { position: absolute; width: 1px; height: 1px; padding: 0; margin: -1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; border: 0; }
@@ -3318,7 +3319,12 @@ const rule = () => (RULED.includes(state.mode) && state.rule) || LIBRE;
 const ruleLabel = r => r.k === "vidas" ? `${r.n} vidas` : r.k === "meta" ? `A ${r.n} puntos` : "Libre";
 const sameRule = (a, b) => a.k === b.k && (a.n || 0) === (b.n || 0);
 // Lives left and rounds won go by person (p0, p1…); a card that has already counted is in done.
-const lifeOf = x => ({ n: (x && x.n) || {}, won: (x && x.won) || {}, done: (x && x.done) || {}, last: (x && x.last) || null });
+const lifeOf = x => ({ n: (x && x.n) || {}, won: (x && x.won) || {}, done: (x && x.done) || {}, last: (x && x.last) || null, skips: (x && x.skips) || {} });
+// In the games with points each person can pass 3 cards per game (they are counted in state.life,
+// so they come back with a new game and travel to the other phones).
+const SKIPS = 3;
+const skipLimited = () => BANDED(state.mode) && !MODES[state.mode].board;
+const skipsLeft = i => SKIPS - (state.life.skips[`p${i}`] || 0);
 const livesLeft = i => { const v = state.life.n[`p${i}`]; return v == null ? rule().n : v; };
 // The score that counts: the rounds with lives, the points otherwise.
 const scoreNow = () => players().map((n, i) => rule().k === "vidas" ? state.life.won[`p${i}`] || 0 : (state.score || [])[i] || 0);
@@ -3449,6 +3455,10 @@ function render(anim) {
   if (anim && BANDED(state.mode)) state.lastPoint = null;
   renderBand();
   $("skip").hidden = done;
+  const lim = skipLimited() && !done, left = lim ? skipsLeft(turnIdx()) : 0;
+  $("skip").textContent = lim ? (left > 0 ? `Pasar (${left})` : "Sin pases") : "Pasar";
+  $("skip").disabled = lim && left <= 0;
+  if (lim) $("skip").setAttribute("aria-label", `Pasar. ${players()[turnIdx()]} ${left === 1 ? "puede pasar 1 carta más" : `puede pasar ${left} cartas más`}`); else $("skip").removeAttribute("aria-label");
   $("next").hidden = done;
   const table = $("table");
   table.innerHTML = `<div class="ghost-card g1"></div><div class="ghost-card g2"></div>` + (done
@@ -3608,6 +3618,7 @@ $("undoHide").onclick = () => {
 
 function skipCard() {
   if (busy || justMoved() || state.idx >= state.deck.length) return;
+  if (skipLimited()) { const i = turnIdx(); if (skipsLeft(i) <= 0) return; state.life.skips[`p${i}`] = (state.life.skips[`p${i}`] || 0) + 1; }
   // On the last card there is nothing to put it behind, so passing just ends the deck.
   if (state.idx === state.deck.length - 1) { throwCard(1); return; }
   const card = $("table").querySelector(".card");
@@ -3714,7 +3725,7 @@ function openInfo(mode) {
   $("infoIcon").innerHTML = icon(mode);
   $("infoTitle").textContent = MODES[mode].name;
   $("infoText").innerHTML = `<p>${esc(RULES[mode])}</p>${RULE_STEPS[mode] ? `<ol>${RULE_STEPS[mode].map(x => `<li>${esc(x)}</li>`).join("")}</ol>` : ""}${
-    RULE_EX[mode] ? `<p class="example"><b>Ejemplo:</b> ${esc(RULE_EX[mode])}</p>` : ""}${RULED.includes(mode) ? `<p class="example"><b>Modos:</b> ${RULE_MODES}</p>` : ""}`;
+    RULE_EX[mode] ? `<p class="example"><b>Ejemplo:</b> ${esc(RULE_EX[mode])}</p>` : ""}${BANDED(mode) && !MODES[mode].board ? `<p class="example"><b>Pasar:</b> cada persona puede pasar 3 cartas por partida.</p>` : ""}${RULED.includes(mode) ? `<p class="example"><b>Modos:</b> ${RULE_MODES}</p>` : ""}`;
   const inGame = !$("game").hidden;
   $("infoPlay").textContent = inGame ? "Seguir jugando" : "Jugar";
   $("infoClose").hidden = inGame;
